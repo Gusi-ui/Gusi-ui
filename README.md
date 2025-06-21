@@ -66,7 +66,7 @@
 
 ### 😄 Pronombres
 
-Él/El
+Él/Ella
 
 ### ⚡ Dato curioso
 
@@ -75,33 +75,6 @@
 ---
 
 ### 📈 Proyectos destacados
-
-<table>
-  <tr>
-    <td width="50%">
-      <h3 align="center">Proyecto 1</h3>
-      <p align="center">
-        <a href="https://github.com/Gusi-ui/proyecto-1" target="_blank">
-          <img src="https://via.placeholder.com/400x200/4A90E2/FFFFFF?text=Proyecto+1" width="100%" alt="Proyecto 1"/>
-        </a>
-        <p align="center">
-          Descripción breve del proyecto 1
-        </p>
-      </p>
-    </td>
-    <td width="50%">
-      <h3 align="center">Proyecto 2</h3>
-      <p align="center">
-        <a href="https://github.com/Gusi-ui/proyecto-2" target="_blank">
-          <img src="https://via.placeholder.com/400x200/50C878/FFFFFF?text=Proyecto+2" width="100%" alt="Proyecto 2"/>
-        </a>
-        <p align="center">
-          Descripción breve del proyecto 2
-        </p>
-      </p>
-    </td>
-  </tr>
-</table>
 
 ---
 
