@@ -191,7 +191,6 @@ function initContactForm() {
         })
         .then(function(response) {
             if (response.ok) {
-                console.log('Formulario enviado exitosamente a Netlify');
                 showNotification('Mensaje enviado correctamente. Te contactaré pronto.', 'success');
                 
                 // Limpiar formulario
@@ -408,34 +407,3 @@ initLazyLoading();
 window.addEventListener('error', function(e) {
     console.error('Error en la aplicación:', e.error);
 });
-
-// ===== FUNCIONES DE DEBUG (remover en producción) =====
-function debugInfo() {
-    console.log('=== DEBUG INFO ===');
-    console.log('Navegador:', navigator.userAgent);
-    console.log('Resolución:', window.innerWidth + 'x' + window.innerHeight);
-    console.log('Elementos cargados:', {
-        navToggle: !!document.getElementById('nav-toggle'),
-        navMenu: !!document.getElementById('nav-menu'),
-        filterButtons: document.querySelectorAll('.filter-btn').length,
-        projectCards: document.querySelectorAll('.project-card').length,
-        contactForm: !!document.querySelector('.contact-form')
-    });
-}
-
-// Ejecutar debug en desarrollo
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    debugInfo();
-}
-
-// ===== EXPORTAR FUNCIONES PARA TESTING =====
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initNavigation,
-        initScrollAnimations,
-        initProjectFilters,
-        initContactForm,
-        isValidEmail,
-        showNotification
-    };
-}

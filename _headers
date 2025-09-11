@@ -1,0 +1,41 @@
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Encoding: gzip
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  Content-Encoding: gzip
+
+/*.html
+  Cache-Control: public, max-age=3600
+  Content-Encoding: gzip
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.json
+  Cache-Control: public, max-age=3600
+  Content-Encoding: gzip
+
+/*.xml
+  Cache-Control: public, max-age=3600
+  Content-Encoding: gzip

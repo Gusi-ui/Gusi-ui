@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tu-dominio.com/sitemap.xml
+
+# Crawl-delay: 10
+
+# Disallow: /private/
+# Disallow: /tmp/

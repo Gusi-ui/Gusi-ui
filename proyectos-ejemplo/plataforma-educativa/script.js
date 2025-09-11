@@ -1,5 +1,5 @@
 // Script corregido para la plataforma educativa
-console.log('=== CARGANDO SCRIPT CORREGIDO ===');
+// console.log('=== CARGANDO SCRIPT CORREGIDO ===');
 
 // Estado de la aplicación
 const appState = {
@@ -157,10 +157,10 @@ function generateStars(rating) {
 
 // Función para renderizar cursos destacados
 function renderFeaturedCourses() {
-    console.log('=== RENDERIZANDO CURSOS DESTACADOS ===');
+    // console.log('=== RENDERIZANDO CURSOS DESTACADOS ===');
     
     const container = document.getElementById('featuredCourses');
-    console.log('Contenedor encontrado:', container);
+    // console.log('Contenedor encontrado:', container);
     
     if (!container) {
         console.error('No se encontró el contenedor de cursos destacados');
@@ -168,7 +168,7 @@ function renderFeaturedCourses() {
     }
     
     const featuredCourses = coursesData.filter(course => course.featured);
-    console.log('Cursos destacados encontrados:', featuredCourses.length);
+    // console.log('Cursos destacados encontrados:', featuredCourses.length);
     
     if (featuredCourses.length === 0) {
         container.innerHTML = `
@@ -182,17 +182,16 @@ function renderFeaturedCourses() {
     }
     
     const html = featuredCourses.map(course => createCourseCard(course)).join('');
-    container.innerHTML = html;
-    
-    console.log('Cursos destacados renderizados correctamente');
+     container.innerHTML = html;
+     // console.log('Cursos destacados renderizados correctamente');
 }
 
 // Función para renderizar todos los cursos
 function renderAllCourses() {
-    console.log('=== RENDERIZANDO TODOS LOS CURSOS ===');
+    // console.log('=== RENDERIZANDO TODOS LOS CURSOS ===');
     
     const container = document.getElementById('allCourses');
-    console.log('Contenedor encontrado:', container);
+    // console.log('Contenedor encontrado:', container);
     
     if (!container) {
         console.error('No se encontró el contenedor de todos los cursos');
@@ -202,7 +201,7 @@ function renderAllCourses() {
     // Aplicar filtros y búsqueda
     let filteredCourses = filterCourses(coursesData);
     
-    console.log('Cursos filtrados:', filteredCourses.length);
+    // console.log('Cursos filtrados:', filteredCourses.length);
     
     if (filteredCourses.length === 0) {
         container.innerHTML = `
@@ -225,7 +224,7 @@ function renderAllCourses() {
     // Agregar event listeners a las tarjetas
     addCourseCardListeners(container);
     
-    console.log('Todos los cursos renderizados correctamente');
+    // console.log('Todos los cursos renderizados correctamente');
 }
 
 // Función para filtrar cursos
@@ -423,7 +422,7 @@ function loadDemoVideo() {
     const video = document.getElementById('demoVideo');
     if (video) {
         // El video ya está cargado en el HTML, solo necesitamos asegurarnos de que esté visible
-        console.log('Video de demo cargado');
+        // console.log('Video de demo cargado');
     }
 }
 
@@ -433,7 +432,7 @@ function pauseDemoVideo() {
     if (video) {
         // Pausar el video cuando se cierra el modal
         video.src = video.src; // Esto reinicia el video
-        console.log('Video de demo pausado');
+        // console.log('Video de demo pausado');
     }
 }
 
@@ -590,8 +589,127 @@ function filterByCategory(categoryId) {
     renderAllCourses();
 }
 
-// Función para configurar event listeners
+// ===== FUNCIONALIDAD DEL MENÚ MÓVIL =====
+
+// Función para alternar el menú móvil
+function toggleMobileMenu() {
+    const nav = document.getElementById('nav');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    
+    if (nav && mobileMenuBtn) {
+        nav.classList.toggle('active');
+        
+        // Cambiar ícono del botón
+        const icon = mobileMenuBtn.querySelector('i');
+        if (icon) {
+            if (nav.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        }
+    }
+}
+
+// Función para cerrar el menú móvil al hacer clic en un enlace
+function closeMobileMenuOnLinkClick() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const nav = document.getElementById('nav');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            if (nav && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                
+                // Restaurar ícono del botón
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.className = 'fas fa-bars';
+                }
+            }
+        });
+    });
+}
+
+// Función para cerrar el menú móvil al hacer clic fuera de él
+function closeMobileMenuOnClickOutside() {
+    document.addEventListener('click', (event) => {
+        const nav = document.getElementById('nav');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        
+        if (nav && nav.classList.contains('active') && 
+            !nav.contains(event.target) && 
+            !mobileMenuBtn.contains(event.target)) {
+            
+            nav.classList.remove('active');
+            
+            // Restaurar ícono del botón
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
+        }
+    });
+}
+
+// Función para cerrar el menú móvil al redimensionar la ventana
+function closeMobileMenuOnResize() {
+    window.addEventListener('resize', () => {
+        const nav = document.getElementById('nav');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        
+        if (nav && nav.classList.contains('active') && window.innerWidth > 768) {
+            nav.classList.remove('active');
+            
+            // Restaurar ícono del botón
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
+        }
+    });
+}
+
+// Inicializar funcionalidad del menú móvil
+function initMobileMenu() {
+    // console.log('=== INICIANDO MENÚ MÓVIL ===');
+    
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const nav = document.getElementById('nav');
+    
+    // console.log('Botón del menú móvil encontrado:', mobileMenuBtn);
+    // console.log('Navegación encontrada:', nav);
+    
+    if (mobileMenuBtn && nav) {
+        // Agregar event listener al botón del menú móvil
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        
+        // Cerrar menú al hacer clic en enlaces
+        closeMobileMenuOnLinkClick();
+        
+        // Cerrar menú al hacer clic fuera
+        closeMobileMenuOnClickOutside();
+        
+        // Cerrar menú al redimensionar
+        closeMobileMenuOnResize();
+        
+        // console.log('Menú móvil inicializado correctamente');
+    } else {
+        console.error('Elementos del menú móvil no encontrados:', {
+            mobileMenuBtn: mobileMenuBtn,
+            nav: nav
+        });
+    }
+}
+
+// ===== INICIALIZACIÓN DE LA APLICACIÓN =====
+
+// Función para configurar todos los event listeners
 function setupEventListeners() {
+    // console.log('=== CONFIGURANDO EVENT LISTENERS ===');
+    
     // Búsqueda de cursos
     const searchInput = document.querySelector('#searchInput');
     if (searchInput) {
@@ -690,27 +808,39 @@ function setupEventListeners() {
 
 // Función principal de inicialización
 function init() {
-    console.log('=== INICIANDO APLICACIÓN ===');
+    // console.log('=== INICIANDO APLICACIÓN PLATAFORMA EDUCATIVA ===');
+    // console.log('Estado del DOM:', document.readyState);
     
     // Verificar que el DOM está listo
     if (document.readyState === 'loading') {
+        // console.log('DOM aún cargando, agregando event listener...');
         document.addEventListener('DOMContentLoaded', init);
         return;
     }
     
-    console.log('DOM listo, renderizando contenido...');
+    // console.log('DOM listo, renderizando contenido...');
+     // console.log('Elementos encontrados al iniciar:', {
+     //     mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+     //     nav: document.getElementById('nav'),
+     //     body: document.body
+     // });
     
-    // Renderizar cursos
+    // Inicializar menú móvil
+    initMobileMenu();
+    
+    // Renderizar cursos destacados
     renderFeaturedCourses();
+    
+    // Renderizar todos los cursos
     renderAllCourses();
     
     // Configurar event listeners
     setupEventListeners();
     
-    console.log('=== APLICACIÓN INICIADA CORRECTAMENTE ===');
+    // console.log('=== APLICACIÓN INICIADA CORRECTAMENTE ===');
 }
 
 // Iniciar la aplicación
 init();
 
-console.log('=== SCRIPT CARGADO ===');
+// console.log('=== SCRIPT CARGADO ===');

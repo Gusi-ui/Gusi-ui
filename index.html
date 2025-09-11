@@ -3,13 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jose Martínez - Desarrollador Freelance | Gusi.dev</title>
-    <meta name="description" content="Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales personalizadas. Transformo ideas en experiencias digitales excepcionales.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Jose Martínez - Desarrollador Freelance | Desarrollo Web & Apps Móviles | Gusi.dev</title>
+    <meta name="description" content="Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales. Creo sitios web modernos, apps móviles y ecommerce. Más de 50 proyectos realizados.">
+    <meta name="keywords" content="desarrollador freelance, desarrollo web, aplicaciones móviles, programador web, diseño web, SEO, React, Node.js, JavaScript, desarrollo frontend, desarrollo backend">
+    <meta name="author" content="Jose Martínez - Gusi.dev">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gusi.dev/">
+    <meta property="og:title" content="Jose Martínez - Desarrollador Freelance | Desarrollo Web & Apps Móviles">
+    <meta property="og:description" content="Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales. Transformo ideas en experiencias digitales excepcionales.">
+    <meta property="og:image" content="https://gusi.dev/tu-foto-perfil.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Gusi.dev - Portfolio">
+    <meta property="og:locale" content="es_ES">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gusi.dev/">
+    <meta property="twitter:title" content="Jose Martínez - Desarrollador Freelance | Gusi.dev">
+    <meta property="twitter:description" content="Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales. Más de 50 proyectos realizados.">
+    <meta property="twitter:image" content="https://gusi.dev/tu-foto-perfil.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gusi.dev/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="freelancer-icon.png" type="image/png">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="freelancer-icon.png">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Jose Martínez",
+      "alternateName": "Gusi",
+      "url": "https://gusi.dev",
+      "image": "https://gusi.dev/tu-foto-perfil.jpg",
+      "jobTitle": "Desarrollador Freelance",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Gusi.dev"
+      },
+      "description": "Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales personalizadas.",
+      "knowsAbout": ["Desarrollo Web", "Aplicaciones Móviles", "React", "Node.js", "JavaScript", "SEO", "Diseño UX/UI"],
+      "sameAs": [
+        "https://wa.me/34619027645",
+        "https://github.com/tu-usuario",
+        "https://linkedin.com/in/tu-perfil"
+      ]
+    }
+    </script>
 </head>
 <body>
     <!-- WhatsApp Flotante -->
@@ -22,6 +85,7 @@
     <header class="header">
         <nav class="nav">
             <div class="nav-brand">
+                <img src="freelancer-icon-optimizado.png" alt="Gusi.dev - Desarrollador Freelance" class="brand-logo">
                 <span class="brand-text">Gusi.dev</span>
             </div>
             <div class="nav-menu" id="nav-menu">
@@ -39,7 +103,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="inicio" class="hero">
+    <section id="inicio" class="hero" itemscope itemtype="https://schema.org/Person">
         <div class="hero-background">
             <div class="hero-pattern"></div>
         </div>
@@ -51,8 +115,8 @@
                         <span>Desarrollador Freelance</span>
                     </div>
                     <h1 class="hero-title">
-                        <span class="hero-name">Jose Martínez</span>
-                        <span class="hero-alias"><span class="highlight">Gusi</span></span>
+                        <span class="hero-name" itemprop="name">Jose Martínez</span>
+                        <span class="hero-alias"><span class="highlight" itemprop="alternateName">Gusi</span></span>
                     </h1>
                     <p class="hero-description">
                         Transformo ideas en experiencias digitales excepcionales. 
@@ -96,7 +160,7 @@
                         <!-- Contenedor principal de la imagen -->
                         <div class="hero-image-wrapper">
                             <div class="hero-image">
-                                <img src="tu-foto-perfil.jpg" alt="Jose Martínez - Desarrollador Freelance" class="profile-image">
+                                <img src="tu-foto-perfil-optimizada.jpg" alt="Jose Martínez - Desarrollador Freelance" class="profile-image" itemprop="image">
                                 <div class="image-overlay"></div>
                                 <!-- Marco decorativo -->
                                 <div class="image-frame"></div>
@@ -136,7 +200,7 @@
     </section>
 
     <!-- Servicios Section -->
-    <section id="servicios" class="services">
+    <section id="servicios" class="services" itemscope itemtype="https://schema.org/Service">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Mis Servicios</h2>
@@ -144,128 +208,140 @@
                 <div class="section-divider"></div>
             </div>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service">
                     <div class="service-icon">
                         <i class="fas fa-laptop-code"></i>
                     </div>
-                    <h3 class="service-title">Desarrollo Web</h3>
-                    <p class="service-description">
+                    <h3 class="service-title" itemprop="name">Desarrollo Web</h3>
+                    <p class="service-description" itemprop="description">
                         Sitios web modernos, responsivos y optimizados para SEO. 
                         Desde landing pages hasta aplicaciones web complejas.
                     </p>
                     <div class="service-features">
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Diseño Responsivo</span>
+                            <span itemprop="serviceType">Diseño Responsivo</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Optimización SEO</span>
+                            <span itemprop="serviceType">Optimización SEO</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Velocidad de Carga</span>
+                            <span itemprop="serviceType">Velocidad de Carga</span>
                         </div>
                     </div>
                     <div class="service-footer">
-                        <div class="service-price">Desde €20/mes</div>
-                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank">
+                        <div class="service-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <span itemprop="price">20</span>
+                            <span itemprop="priceCurrency">EUR</span>/mes
+                        </div>
+                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank" itemprop="url">
                             <i class="fab fa-whatsapp"></i>
                             <span>Consultar</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service">
                     <div class="service-icon">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
-                    <h3 class="service-title">Apps Móviles</h3>
-                    <p class="service-description">
+                    <h3 class="service-title" itemprop="name">Apps Móviles</h3>
+                    <p class="service-description" itemprop="description">
                         Aplicaciones móviles nativas e híbridas para iOS y Android. 
                         Experiencia de usuario excepcional garantizada.
                     </p>
                     <div class="service-features">
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>iOS & Android</span>
+                            <span itemprop="serviceType">iOS & Android</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>UI/UX Moderno</span>
+                            <span itemprop="serviceType">UI/UX Moderno</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Integración API</span>
+                            <span itemprop="serviceType">Integración API</span>
                         </div>
                     </div>
                     <div class="service-footer">
-                        <div class="service-price">Desde €50/mes</div>
-                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank">
+                        <div class="service-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <span itemprop="price">50</span>
+                            <span itemprop="priceCurrency">EUR</span>/mes
+                        </div>
+                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank" itemprop="url">
                             <i class="fab fa-whatsapp"></i>
                             <span>Consultar</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service">
                     <div class="service-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
-                    <h3 class="service-title">E-Commerce</h3>
-                    <p class="service-description">
+                    <h3 class="service-title" itemprop="name">E-Commerce</h3>
+                    <p class="service-description" itemprop="description">
                         Tiendas online completas con pasarelas de pago, 
                         gestión de inventario y panel de administración.
                     </p>
                     <div class="service-features">
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Pasarelas de Pago</span>
+                            <span itemprop="serviceType">Pasarelas de Pago</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Panel Admin</span>
+                            <span itemprop="serviceType">Panel Admin</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Inventario</span>
+                            <span itemprop="serviceType">Inventario</span>
                         </div>
                     </div>
                     <div class="service-footer">
-                        <div class="service-price">Desde €75/mes</div>
-                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank">
+                        <div class="service-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <span itemprop="price">75</span>
+                            <span itemprop="priceCurrency">EUR</span>/mes
+                        </div>
+                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank" itemprop="url">
                             <i class="fab fa-whatsapp"></i>
                             <span>Consultar</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service">
                     <div class="service-icon">
                         <i class="fas fa-tools"></i>
                     </div>
-                    <h3 class="service-title">Mantenimiento</h3>
-                    <p class="service-description">
+                    <h3 class="service-title" itemprop="name">Mantenimiento</h3>
+                    <p class="service-description" itemprop="description">
                         Soporte técnico continuo, actualizaciones de seguridad, 
                         optimización de rendimiento y hosting con dominio incluido.
                     </p>
                     <div class="service-features">
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Soporte 24/7</span>
+                            <span itemprop="serviceType">Soporte 24/7</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Actualizaciones</span>
+                            <span itemprop="serviceType">Actualizaciones</span>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-check"></i>
-                            <span>Backups</span>
+                            <span itemprop="serviceType">Backups</span>
                         </div>
                     </div>
                     <div class="service-footer">
-                        <div class="service-price">Desde €10/mes</div>
-                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank">
+                        <div class="service-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                            <span itemprop="price">10</span>
+                            <span itemprop="priceCurrency">EUR</span>/mes
+                        </div>
+                        <a href="https://wa.me/34619027645" class="service-btn" target="_blank" itemprop="url">
                             <i class="fab fa-whatsapp"></i>
                             <span>Consultar</span>
                         </a>
@@ -293,14 +369,14 @@
             <div class="projects-grid">
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop" alt="App Restaurante">
+                        <img src="images/proyectos/app-restaurante.jpg" alt="App móvil para restaurante - Sistema de pedidos online" loading="lazy" srcset="images/proyectos/app-restaurante.jpg 1x, images/proyectos/app-restaurante.jpg 2x">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/app-restaurante/index.html" class="project-btn" target="_blank">
                                     <i class="fas fa-eye"></i>
                                     <span>Ver Proyecto</span>
                                 </a>
-                                <a href="https://wa.me/34619027645?text=Hola! Me interesa contratar un proyecto similar al de App de Restaurante. ¿Podrías darme más información?" class="project-btn project-btn-whatsapp" target="_blank">
+                                <a href="https://wa.me/34619027645?text=Hola! Me interesa contratar un proyecto similar al de App Restaurante. ¿Podrías darme más información?" class="project-btn project-btn-whatsapp" target="_blank">
                                     <i class="fab fa-whatsapp"></i>
                                     <span>Contratar Similar</span>
                                 </a>
@@ -308,22 +384,22 @@
                         </div>
                     </div>
                     <div class="project-content">
-                        <div class="project-badge">App Restaurante</div>
-                        <h3 class="project-title">Menú Digital Interactivo</h3>
+                        <div class="project-badge">App Móvil</div>
+                        <h3 class="project-title">App Restaurante</h3>
                         <p class="project-description">
-                            Aplicación web para restaurante con menú digital, carrito de compras y sistema de reservas.
+                            Aplicación móvil para restaurantes con menú digital, pedidos online y sistema de reservas.
                         </p>
                         <div class="project-tech">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">CSS3</span>
-                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop" alt="Dashboard Analytics">
+                        <img src="images/proyectos/dashboard-analytics.jpg" alt="Dashboard de analytics - Métricas y análisis de datos en tiempo real" loading="lazy" srcset="images/proyectos/dashboard-analytics.jpg 1x, images/proyectos/dashboard-analytics.jpg 2x">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/dashboard-analytics/index.html" class="project-btn" target="_blank">
@@ -353,7 +429,7 @@
 
                 <div class="project-card" data-project-type="ecommerce">
                     <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop" alt="E-Commerce Boutique">
+                        <img src="images/proyectos/ecommerce-boutique.jpg" alt="E-commerce boutique - Tienda online con carrito de compras" loading="lazy" srcset="images/proyectos/ecommerce-boutique.jpg 1x, images/proyectos/ecommerce-boutique.jpg 2x">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/ecommerce-boutique/index.html" class="project-btn" target="_blank">
@@ -383,7 +459,7 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="imagen-gestion-citas.svg" alt="Gestión de Citas">
+                        <img src="imagen-gestion-citas.svg" alt="Sistema de gestión de citas - Calendario y agenda online" loading="lazy">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/gestion-citas/index.html" class="project-btn" target="_blank">
@@ -413,7 +489,7 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop" alt="Plataforma Educativa">
+                        <img src="images/proyectos/plataforma-educativa.jpg" alt="Plataforma educativa - Cursos online y aprendizaje digital" loading="lazy" srcset="images/proyectos/plataforma-educativa.jpg 1x, images/proyectos/plataforma-educativa.jpg 2x">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/plataforma-educativa/index.html" class="project-btn" target="_blank">
@@ -443,7 +519,7 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop" alt="Portal Inmobiliario">
+                        <img src="images/proyectos/portal-inmobiliario.jpg" alt="Portal inmobiliario - Búsqueda de propiedades y bienes raíces" loading="lazy" srcset="images/proyectos/portal-inmobiliario.jpg 1x, images/proyectos/portal-inmobiliario.jpg 2x">
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/portal-inmobiliario/index.html" class="project-btn" target="_blank">
@@ -618,6 +694,6 @@
 
     <!-- EmailJS Script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.min.js"></script>
 </body>
 </html>
