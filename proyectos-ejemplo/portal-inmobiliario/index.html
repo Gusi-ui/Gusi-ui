@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InmoVision - Portal Inmobiliario</title>
+    <meta name="description" content="Encuentra tu hogar ideal con InmoVision. Portal inmobiliario con las mejores propiedades en venta y alquiler.">
+    <meta name="keywords" content="inmobiliaria, propiedades, casas, apartamentos, venta, alquiler">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <span>InmoVision</span>
+                </div>
+                
+                <nav class="nav-menu">
+                    <a href="#inicio" class="nav-link">Inicio</a>
+                    <a href="#propiedades" class="nav-link">Propiedades</a>
+                    <a href="#servicios" class="nav-link">Servicios</a>
+                    <a href="#nosotros" class="nav-link">Nosotros</a>
+                    <a href="#contacto" class="nav-link">Contacto</a>
+                </nav>
+                
+                <div class="header-actions">
+                    <button class="btn btn-outline" data-modal="login-modal">
+                        <i class="fas fa-user"></i>
+                        Iniciar Sesión
+                    </button>
+                    <button class="btn btn-primary" data-modal="register-modal">
+                        <i class="fas fa-user-plus"></i>
+                        Registrarse
+                    </button>
+                    <button class="mobile-menu-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title fade-in">Encuentra tu hogar ideal</h1>
+                <p class="hero-subtitle fade-in">Descubre las mejores propiedades en venta y alquiler con InmoVision</p>
+                
+                <!-- Search Form -->
+                <div class="search-form fade-in">
+                    <div class="search-tabs">
+                        <button class="search-tab active" data-type="venta">Comprar</button>
+                        <button class="search-tab" data-type="alquiler">Alquilar</button>
+                    </div>
+                    
+                    <form class="search-filters">
+                        <div class="filter-group">
+                            <label for="location">Ubicación</label>
+                            <div class="input-group">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="location" placeholder="Ciudad, barrio o código postal">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="property-type">Tipo de propiedad</label>
+                            <select id="property-type">
+                                <option value="">Todos los tipos</option>
+                                <option value="apartamento">Apartamento</option>
+                                <option value="casa">Casa</option>
+                                <option value="villa">Villa</option>
+                                <option value="penthouse">Penthouse</option>
+                                <option value="estudio">Estudio</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="price-range">Rango de precio</label>
+                            <select id="price-range">
+                                <option value="">Cualquier precio</option>
+                                <option value="0-100000">Hasta €100,000</option>
+                                <option value="100000-200000">€100,000 - €200,000</option>
+                                <option value="200000-300000">€200,000 - €300,000</option>
+                                <option value="300000-500000">€300,000 - €500,000</option>
+                                <option value="500000+">Más de €500,000</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="bedrooms">Habitaciones</label>
+                            <select id="bedrooms">
+                                <option value="">Cualquiera</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
+                                <option value="3">3+</option>
+                                <option value="4">4+</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary search-btn">
+                            <i class="fas fa-search"></i>
+                            Buscar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section class="featured-properties">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Propiedades Destacadas</h2>
+                <p class="section-subtitle">Descubre nuestras mejores ofertas seleccionadas especialmente para ti</p>
+            </div>
+            
+            <div class="properties-grid" id="featured-properties">
+                <!-- Properties will be loaded here -->
+            </div>
+            
+            <div class="section-footer">
+                <a href="#propiedades" class="btn btn-outline">
+                    Ver todas las propiedades
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nuestros Servicios</h2>
+                <p class="section-subtitle">Te acompañamos en cada paso del proceso inmobiliario</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card slide-in-left">
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Búsqueda Personalizada</h3>
+                    <p>Encontramos la propiedad perfecta según tus necesidades y presupuesto específicos.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Asesoramiento personalizado</li>
+                        <li><i class="fas fa-check"></i> Búsqueda exclusiva</li>
+                        <li><i class="fas fa-check"></i> Visitas programadas</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card slide-up">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Gestión de Ventas</h3>
+                    <p>Vendemos tu propiedad al mejor precio con estrategias de marketing efectivas.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Valoración gratuita</li>
+                        <li><i class="fas fa-check"></i> Marketing digital</li>
+                        <li><i class="fas fa-check"></i> Negociación experta</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card slide-in-right">
+                    <div class="service-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3>Gestión de Alquileres</h3>
+                    <p>Administramos tu propiedad de alquiler con total tranquilidad y rentabilidad.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Selección de inquilinos</li>
+                        <li><i class="fas fa-check"></i> Gestión de cobros</li>
+                        <li><i class="fas fa-check"></i> Mantenimiento incluido</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card slide-in-left">
+                    <div class="service-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Asesoría Financiera</h3>
+                    <p>Te ayudamos con hipotecas, financiación y todos los aspectos legales.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Gestión hipotecaria</li>
+                        <li><i class="fas fa-check"></i> Asesoría legal</li>
+                        <li><i class="fas fa-check"></i> Tramitación completa</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card slide-up">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Inversión Inmobiliaria</h3>
+                    <p>Identificamos las mejores oportunidades de inversión en el mercado inmobiliario.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Análisis de mercado</li>
+                        <li><i class="fas fa-check"></i> ROI garantizado</li>
+                        <li><i class="fas fa-check"></i> Portfolio diversificado</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card slide-in-right">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Valoración Gratuita</h3>
+                    <p>Conoce el valor real de tu propiedad con nuestro análisis profesional gratuito.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Estudio de mercado</li>
+                        <li><i class="fas fa-check"></i> Informe detallado</li>
+                        <li><i class="fas fa-check"></i> Sin compromiso</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section id="propiedades" class="properties">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Todas las Propiedades</h2>
+                <p class="section-subtitle">Explora nuestro catálogo completo de propiedades disponibles</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="properties-filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="filter-type">Tipo</label>
+                        <select id="filter-type">
+                            <option value="">Todos</option>
+                            <option value="venta">Venta</option>
+                            <option value="alquiler">Alquiler</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-property-type">Propiedad</label>
+                        <select id="filter-property-type">
+                            <option value="">Todas</option>
+                            <option value="apartamento">Apartamento</option>
+                            <option value="casa">Casa</option>
+                            <option value="villa">Villa</option>
+                            <option value="penthouse">Penthouse</option>
+                            <option value="estudio">Estudio</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-location">Ubicación</label>
+                        <select id="filter-location">
+                            <option value="">Todas</option>
+                            <option value="madrid">Madrid</option>
+                            <option value="barcelona">Barcelona</option>
+                            <option value="valencia">Valencia</option>
+                            <option value="sevilla">Sevilla</option>
+                            <option value="bilbao">Bilbao</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-price">Precio</label>
+                        <select id="filter-price">
+                            <option value="">Cualquier precio</option>
+                            <option value="0-100000">Hasta €100,000</option>
+                            <option value="100000-200000">€100,000 - €200,000</option>
+                            <option value="200000-300000">€200,000 - €300,000</option>
+                            <option value="300000-500000">€300,000 - €500,000</option>
+                            <option value="500000+">Más de €500,000</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filter-bedrooms">Habitaciones</label>
+                        <select id="filter-bedrooms">
+                            <option value="">Cualquiera</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                            <option value="4">4+</option>
+                            <option value="5">5+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sort-by">Ordenar por</label>
+                        <select id="sort-by">
+                            <option value="newest">Más recientes</option>
+                            <option value="price-low">Precio: menor a mayor</option>
+                            <option value="price-high">Precio: mayor a menor</option>
+                            <option value="size-large">Tamaño: mayor a menor</option>
+                            <option value="size-small">Tamaño: menor a mayor</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn btn-outline" id="clear-filters">
+                        <i class="fas fa-times"></i>
+                        Limpiar filtros
+                    </button>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Properties Grid -->
+            <div class="properties-container">
+                <div class="properties-grid" id="all-properties">
+                    <!-- Properties will be loaded here -->
+                </div>
+                
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="nosotros" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text slide-in-left">
+                    <h2 class="section-title">¿Por qué elegir InmoVision?</h2>
+                    <p class="section-subtitle">Más de 15 años de experiencia en el mercado inmobiliario nos respaldan</p>
+                    
+                    <div class="about-features">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Experiencia Comprobada</h4>
+                                <p>Más de 15 años ayudando a familias a encontrar su hogar ideal</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Equipo Profesional</h4>
+                                <p>Agentes certificados y especializados en diferentes zonas</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Garantía Total</h4>
+                                <p>Transacciones seguras con garantía legal completa</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Atención 24/7</h4>
+                                <p>Soporte continuo durante todo el proceso de compra o venta</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-stats">
+                        <div class="stat">
+                            <div class="stat-number">2,500+</div>
+                            <div class="stat-label">Propiedades vendidas</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Clientes satisfechos</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Años de experiencia</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Agentes expertos</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-image slide-in-right">
+                    <div class="image-placeholder">
+                        <i class="fas fa-building"></i>
+                        <p>Imagen de oficinas InmoVision</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Contáctanos</h2>
+                <p class="section-subtitle">Estamos aquí para ayudarte a encontrar tu próximo hogar</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info slide-in-left">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Oficina Principal</h4>
+                            <p>Calle Gran Vía 123, 28013 Madrid, España</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Teléfono</h4>
+                            <p>+34 91 123 45 67</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>info@inmovision.es</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Horario de Atención</h4>
+                            <p>Lunes a Viernes: 9:00 - 19:00<br>Sábados: 10:00 - 14:00</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container slide-in-right">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name">Nombre completo</label>
+                                <input type="text" id="contact-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-phone">Teléfono</label>
+                                <input type="tel" id="contact-phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Asunto</label>
+                                <select id="contact-subject" name="subject" required>
+                                    <option value="">Seleccionar asunto</option>
+                                    <option value="compra">Quiero comprar</option>
+                                    <option value="venta">Quiero vender</option>
+                                    <option value="alquiler">Busco alquiler</option>
+                                    <option value="valoracion">Solicitar valoración</option>
+                                    <option value="inversion">Oportunidades de inversión</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-message">Mensaje</label>
+                            <textarea id="contact-message" name="message" rows="5" placeholder="Cuéntanos qué tipo de propiedad buscas o cualquier consulta que tengas..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="newsletter" value="1">
+                                <span class="checkmark"></span>
+                                Quiero recibir información sobre nuevas propiedades
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="privacy" value="1" required>
+                                <span class="checkmark"></span>
+                                Acepto la <a href="#" data-modal="privacy-modal">política de privacidad</a>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-home"></i>
+                        <span>InmoVision</span>
+                    </div>
+                    <p>Tu socio de confianza en el mercado inmobiliario. Encontramos el hogar perfecto para ti.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Servicios</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Compra de propiedades</a></li>
+                        <li><a href="#">Venta de propiedades</a></li>
+                        <li><a href="#">Alquiler</a></li>
+                        <li><a href="#">Valoración gratuita</a></li>
+                        <li><a href="#">Asesoría financiera</a></li>
+                        <li><a href="#">Inversión inmobiliaria</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Zonas</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Madrid Centro</a></li>
+                        <li><a href="#">Barcelona</a></li>
+                        <li><a href="#">Valencia</a></li>
+                        <li><a href="#">Sevilla</a></li>
+                        <li><a href="#">Bilbao</a></li>
+                        <li><a href="#">Málaga</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Calle Gran Vía 123, Madrid</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+34 91 123 45 67</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@inmovision.es</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 InmoVision. Todos los derechos reservados.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#" data-modal="privacy-modal">Política de Privacidad</a>
+                        <a href="#" data-modal="terms-modal">Términos de Uso</a>
+                        <a href="#">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Iniciar Sesión</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember">
+                            <span class="checkmark"></span>
+                            Recordarme
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Iniciar Sesión
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>¿No tienes cuenta? <a href="#" data-modal="register-modal">Regístrate aquí</a></p>
+                    <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear Cuenta</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="register-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-name">Nombre</label>
+                            <input type="text" id="register-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-lastname">Apellidos</label>
+                            <input type="text" id="register-lastname" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-phone">Teléfono</label>
+                        <input type="tel" id="register-phone" name="phone" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-password">Contraseña</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password">Confirmar Contraseña</label>
+                            <input type="password" id="register-confirm-password" name="confirm-password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkmark"></span>
+                            Acepto los <a href="#" data-modal="terms-modal">términos y condiciones</a>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter">
+                            <span class="checkmark"></span>
+                            Quiero recibir ofertas y novedades por email
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Crear Cuenta
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>¿Ya tienes cuenta? <a href="#" data-modal="login-modal">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details Modal -->
+    <div id="property-modal" class="modal modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="property-modal-title">Detalles de la Propiedad</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="property-modal-body">
+                <!-- Property details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Property Modal -->
+    <div id="contact-property-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Contactar sobre esta propiedad</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="contact-property-form">
+                    <input type="hidden" id="property-id" name="property-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-prop-name">Nombre</label>
+                            <input type="text" id="contact-prop-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-prop-email">Email</label>
+                            <input type="email" id="contact-prop-email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-prop-phone">Teléfono</label>
+                        <input type="tel" id="contact-prop-phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-prop-message">Mensaje</label>
+                        <textarea id="contact-prop-message" name="message" rows="4" placeholder="Me interesa esta propiedad. Me gustaría recibir más información..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Consulta
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

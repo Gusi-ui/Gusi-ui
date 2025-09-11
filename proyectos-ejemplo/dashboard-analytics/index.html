@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Panel de Control Empresarial</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics Pro</span>
+            </div>
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item active">
+                    <a href="#dashboard" class="nav-link" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analytics" class="nav-link" data-section="analytics">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports" class="nav-link" data-section="reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reportes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#users" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Configuración</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">José Martínez</div>
+                    <div class="user-role">Administrador</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title" id="pageTitle">Dashboard Principal</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="date-range-picker">
+                    <select id="dateRange" onchange="updateDateRange()">
+                        <option value="7">Últimos 7 días</option>
+                        <option value="30" selected>Últimos 30 días</option>
+                        <option value="90">Últimos 3 meses</option>
+                        <option value="365">Último año</option>
+                    </select>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-icon" onclick="refreshData()" title="Actualizar datos">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn btn-icon" onclick="exportData()" title="Exportar datos">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn btn-primary" onclick="generateReport()">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Reporte
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="totalUsers">12,847</div>
+                        <div class="kpi-label">Usuarios Totales</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12.5%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="revenue">€89,432</div>
+                        <div class="kpi-label">Ingresos</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8.2%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="orders">3,247</div>
+                        <div class="kpi-label">Pedidos</div>
+                        <div class="kpi-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>-2.1%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="conversion">3.8%</div>
+                        <div class="kpi-label">Conversión</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+0.3%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Ingresos por Mes</h3>
+                        <div class="chart-actions">
+                            <button class="btn btn-sm" onclick="toggleChartType('revenueChart')">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Usuarios Activos</h3>
+                        <div class="chart-actions">
+                            <button class="btn btn-sm" onclick="toggleChartType('usersChart')">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Fuentes de Tráfico</h3>
+                        <div class="chart-actions">
+                            <button class="btn btn-sm" onclick="showTrafficDetails()">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Productos Más Vendidos</h3>
+                        <div class="chart-actions">
+                            <button class="btn btn-sm" onclick="showProductDetails()">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h3>Actividad Reciente</h3>
+                        <button class="btn btn-sm" onclick="showAllActivity()">
+                            Ver Todo
+                        </button>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <!-- Se carga dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="card-header">
+                        <h3>Estadísticas Rápidas</h3>
+                    </div>
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-label">Tiempo promedio en sitio</span>
+                            <span class="stat-value">4m 32s</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Páginas por sesión</span>
+                            <span class="stat-value">3.2</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tasa de rebote</span>
+                            <span class="stat-value">42.1%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Nuevos usuarios</span>
+                            <span class="stat-value">68.5%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Dispositivos móviles</span>
+                            <span class="stat-value">71.3%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="content-section">
+            <div class="section-header">
+                <h2>Análisis Detallado</h2>
+                <p>Métricas avanzadas y análisis de tendencias</p>
+            </div>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>Análisis de Cohortes</h3>
+                    <div class="cohort-table" id="cohortTable">
+                        <!-- Tabla de cohortes -->
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Embudo de Conversión</h3>
+                    <div class="funnel-chart" id="funnelChart">
+                        <!-- Gráfico de embudo -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="content-section">
+            <div class="section-header">
+                <h2>Reportes</h2>
+                <p>Genera y gestiona reportes personalizados</p>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <h3>Reporte Mensual</h3>
+                    <p>Resumen completo del mes actual</p>
+                    <button class="btn btn-primary" onclick="generateMonthlyReport()">
+                        Generar Reporte
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section id="users" class="content-section">
+            <div class="section-header">
+                <h2>Gestión de Usuarios</h2>
+                <p>Administra usuarios y permisos</p>
+            </div>
+            
+            <div class="users-table" id="usersTable">
+                <!-- Tabla de usuarios -->
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="content-section">
+            <div class="section-header">
+                <h2>Configuración</h2>
+                <p>Personaliza tu dashboard y preferencias</p>
+            </div>
+            
+            <div class="settings-grid">
+                <div class="settings-card">
+                    <h3>Preferencias de Dashboard</h3>
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label for="theme">Tema</label>
+                            <select id="theme" onchange="changeTheme()">
+                                <option value="light">Claro</option>
+                                <option value="dark">Oscuro</option>
+                                <option value="auto">Automático</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="language">Idioma</label>
+                            <select id="language">
+                                <option value="es">Español</option>
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notifications">Notificaciones</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" checked>
+                                    <span>Email</span>
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" checked>
+                                    <span>Push</span>
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox">
+                                    <span>SMS</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Configuración
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando datos...</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Título del Modal</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+                <button class="btn btn-primary" id="modalAction">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

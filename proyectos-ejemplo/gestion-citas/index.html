@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCitas - Gestión de Citas Médicas</title>
+    <meta name="description" content="Sistema integral de gestión de citas médicas para clínicas y consultorios">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>MediCitas</span>
+                </div>
+                
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li><a href="#inicio" class="nav-link active">Inicio</a></li>
+                        <li><a href="#servicios" class="nav-link">Servicios</a></li>
+                        <li><a href="#doctores" class="nav-link">Doctores</a></li>
+                        <li><a href="#citas" class="nav-link">Mis Citas</a></li>
+                        <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="user-menu" id="user-menu">
+                        <button class="btn btn-primary" data-modal="login-modal">
+                            <i class="fas fa-user"></i>
+                            Iniciar Sesión
+                        </button>
+                        <button class="btn btn-secondary" data-modal="register-modal">
+                            Registrarse
+                        </button>
+                    </div>
+                    
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Gestiona tus <span class="highlight">citas médicas</span> de forma inteligente
+                    </h1>
+                    <p class="hero-description">
+                        Plataforma integral para la gestión de citas médicas. Agenda, consulta y administra 
+                        todas tus citas de manera fácil y eficiente.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" data-modal="register-modal">
+                            <i class="fas fa-calendar-plus"></i>
+                            Agendar Cita
+                        </button>
+                        <button class="btn btn-secondary btn-lg" data-modal="demo-modal">
+                            <i class="fas fa-play"></i>
+                            Ver Demo
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">5,000+</span>
+                            <span class="stat-label">Pacientes</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">150+</span>
+                            <span class="stat-label">Doctores</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">25,000+</span>
+                            <span class="stat-label">Citas Realizadas</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-image">
+                    <div class="appointment-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="card-info">
+                                <h4>Próxima Cita</h4>
+                                <p>Dr. María González</p>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="appointment-details">
+                                <div class="detail">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>15 de Enero, 2024</span>
+                                </div>
+                                <div class="detail">
+                                    <i class="fas fa-clock"></i>
+                                    <span>10:30 AM</span>
+                                </div>
+                                <div class="detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Consulta 205</span>
+                                </div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn btn-sm btn-primary">Confirmar</button>
+                                <button class="btn btn-sm btn-secondary">Reprogramar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestros Servicios</h2>
+                <p>Ofrecemos una amplia gama de servicios médicos especializados para cuidar tu salud</p>
+            </div>
+            
+            <div class="services-grid" id="services-grid">
+                <!-- Services will be rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section id="doctores" class="doctors">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestros Especialistas</h2>
+                <p>Equipo médico altamente calificado y con amplia experiencia</p>
+            </div>
+            
+            <div class="doctors-filters">
+                <div class="filter-group">
+                    <label for="specialty-filter">Especialidad:</label>
+                    <select id="specialty-filter" name="specialty">
+                        <option value="all">Todas las especialidades</option>
+                        <option value="cardiologia">Cardiología</option>
+                        <option value="dermatologia">Dermatología</option>
+                        <option value="pediatria">Pediatría</option>
+                        <option value="ginecologia">Ginecología</option>
+                        <option value="neurologia">Neurología</option>
+                        <option value="traumatologia">Traumatología</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="availability-filter">Disponibilidad:</label>
+                    <select id="availability-filter" name="availability">
+                        <option value="all">Cualquier horario</option>
+                        <option value="morning">Mañana</option>
+                        <option value="afternoon">Tarde</option>
+                        <option value="evening">Noche</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="doctors-grid" id="doctors-grid">
+                <!-- Doctors will be rendered by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointments Section -->
+    <section id="citas" class="appointments">
+        <div class="container">
+            <div class="section-header">
+                <h2>Gestión de Citas</h2>
+                <p>Administra todas tus citas médicas desde un solo lugar</p>
+            </div>
+            
+            <div class="appointments-dashboard">
+                <div class="dashboard-sidebar">
+                    <div class="sidebar-menu">
+                        <button class="menu-item active" data-section="upcoming">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Próximas Citas</span>
+                        </button>
+                        <button class="menu-item" data-section="history">
+                            <i class="fas fa-history"></i>
+                            <span>Historial</span>
+                        </button>
+                        <button class="menu-item" data-section="schedule">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Agendar Nueva</span>
+                        </button>
+                        <button class="menu-item" data-section="prescriptions">
+                            <i class="fas fa-prescription-bottle-alt"></i>
+                            <span>Recetas</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="content-section active" id="upcoming-section">
+                        <div class="section-title">
+                            <h3>Próximas Citas</h3>
+                            <button class="btn btn-primary" data-modal="schedule-modal">
+                                <i class="fas fa-plus"></i>
+                                Nueva Cita
+                            </button>
+                        </div>
+                        <div class="appointments-list" id="upcoming-appointments">
+                            <!-- Upcoming appointments will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" id="history-section">
+                        <div class="section-title">
+                            <h3>Historial de Citas</h3>
+                            <div class="search-box">
+                                <input type="text" placeholder="Buscar en historial..." id="history-search">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="appointments-list" id="history-appointments">
+                            <!-- History appointments will be rendered here -->
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" id="schedule-section">
+                        <div class="section-title">
+                            <h3>Agendar Nueva Cita</h3>
+                        </div>
+                        <div class="schedule-form-container">
+                            <form id="schedule-form" class="schedule-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="doctor-select">Especialista</label>
+                                        <select id="doctor-select" name="doctor" required>
+                                            <option value="">Seleccionar doctor</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="service-select">Servicio</label>
+                                        <select id="service-select" name="service" required>
+                                            <option value="">Seleccionar servicio</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="appointment-date">Fecha</label>
+                                        <input type="date" id="appointment-date" name="date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="appointment-time">Hora</label>
+                                        <select id="appointment-time" name="time" required>
+                                            <option value="">Seleccionar hora</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="appointment-notes">Notas adicionales</label>
+                                    <textarea id="appointment-notes" name="notes" rows="3" placeholder="Describe brevemente el motivo de la consulta..."></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Agendar Cita
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section" id="prescriptions-section">
+                        <div class="section-title">
+                            <h3>Recetas Médicas</h3>
+                        </div>
+                        <div class="prescriptions-list" id="prescriptions-list">
+                            <!-- Prescriptions will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Contáctanos</h2>
+                    <p>Estamos aquí para ayudarte. Contáctanos para cualquier consulta o emergencia.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Teléfono</h4>
+                                <p>+34 900 123 456</p>
+                                <small>Lun - Vie: 8:00 - 20:00</small>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Email</h4>
+                                <p>info@medicitas.com</p>
+                                <small>Respuesta en 24h</small>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Dirección</h4>
+                                <p>Calle Salud 123, Madrid</p>
+                                <small>Planta 2, Consultorios</small>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method emergency">
+                            <div class="method-icon">
+                                <i class="fas fa-ambulance"></i>
+                            </div>
+                            <div class="method-info">
+                                <h4>Emergencias</h4>
+                                <p>+34 112</p>
+                                <small>Disponible 24/7</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form id="contact-form" class="contact-form">
+                        <h3>Envíanos un mensaje</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-name">Nombre completo</label>
+                                <input type="text" id="contact-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact-phone">Teléfono</label>
+                                <input type="tel" id="contact-phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Asunto</label>
+                                <select id="contact-subject" name="subject" required>
+                                    <option value="">Seleccionar asunto</option>
+                                    <option value="cita">Consulta sobre cita</option>
+                                    <option value="servicio">Información de servicios</option>
+                                    <option value="emergencia">Emergencia médica</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-message">Mensaje</label>
+                            <textarea id="contact-message" name="message" rows="5" required placeholder="Describe tu consulta o mensaje..."></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar Mensaje
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>MediCitas</span>
+                    </div>
+                    <p>Plataforma integral para la gestión de citas médicas. Cuidamos tu salud con tecnología avanzada y atención personalizada.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Servicios</h3>
+                    <ul>
+                        <li><a href="#">Consulta General</a></li>
+                        <li><a href="#">Especialidades</a></li>
+                        <li><a href="#">Urgencias</a></li>
+                        <li><a href="#">Telemedicina</a></li>
+                        <li><a href="#">Análisis Clínicos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Información</h3>
+                    <ul>
+                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="#">Nuestro Equipo</a></li>
+                        <li><a href="#">Instalaciones</a></li>
+                        <li><a href="#">Seguros Médicos</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Calle Salud 123, Madrid</li>
+                        <li><i class="fas fa-phone"></i> +34 900 123 456</li>
+                        <li><i class="fas fa-envelope"></i> info@medicitas.com</li>
+                        <li><i class="fas fa-clock"></i> Lun - Vie: 8:00 - 20:00</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 MediCitas. Todos los derechos reservados.</p>
+                <p>Desarrollado como proyecto de ejemplo por Jose Martínez (Gusi)</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Iniciar Sesión</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <input type="password" id="login-password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="remember">
+                            Recordarme
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <p>¿No tienes cuenta? <a href="#" data-modal="register-modal">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear Cuenta</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="register-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-name">Nombre completo</label>
+                            <input type="text" id="register-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">Email</label>
+                            <input type="email" id="register-email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-phone">Teléfono</label>
+                            <input type="tel" id="register-phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-birthdate">Fecha de nacimiento</label>
+                            <input type="date" id="register-birthdate" name="birthdate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-password">Contraseña</label>
+                            <input type="password" id="register-password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password">Confirmar contraseña</label>
+                            <input type="password" id="register-confirm-password" name="confirm-password" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="terms" required>
+                            Acepto los <a href="#">términos y condiciones</a>
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus"></i>
+                            Crear Cuenta
+                        </button>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <p>¿Ya tienes cuenta? <a href="#" data-modal="login-modal">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="schedule-modal" class="modal modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agendar Nueva Cita</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="schedule-wizard">
+                    <div class="wizard-steps">
+                        <div class="step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <span>Especialista</span>
+                        </div>
+                        <div class="step" data-step="2">
+                            <div class="step-number">2</div>
+                            <span>Fecha y Hora</span>
+                        </div>
+                        <div class="step" data-step="3">
+                            <div class="step-number">3</div>
+                            <span>Confirmación</span>
+                        </div>
+                    </div>
+                    
+                    <div class="wizard-content">
+                        <div class="wizard-step active" id="step-1">
+                            <h4>Selecciona un especialista</h4>
+                            <div class="doctors-selection" id="doctors-selection">
+                                <!-- Doctors will be rendered here -->
+                            </div>
+                        </div>
+                        
+                        <div class="wizard-step" id="step-2">
+                            <h4>Selecciona fecha y hora</h4>
+                            <div class="datetime-selection">
+                                <div class="calendar-container">
+                                    <div class="calendar-header">
+                                        <button class="calendar-nav" id="prev-month">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <h5 id="calendar-month">Enero 2024</h5>
+                                        <button class="calendar-nav" id="next-month">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="calendar" id="calendar">
+                                        <!-- Calendar will be rendered here -->
+                                    </div>
+                                </div>
+                                <div class="time-slots">
+                                    <h5>Horarios disponibles</h5>
+                                    <div class="time-slots-grid" id="time-slots">
+                                        <!-- Time slots will be rendered here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="wizard-step" id="step-3">
+                            <h4>Confirma tu cita</h4>
+                            <div class="appointment-summary" id="appointment-summary">
+                                <!-- Summary will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wizard-actions">
+                        <button class="btn btn-secondary" id="wizard-prev" style="display: none;">
+                            <i class="fas fa-arrow-left"></i>
+                            Anterior
+                        </button>
+                        <button class="btn btn-primary" id="wizard-next">
+                            Siguiente
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div id="demo-modal" class="modal modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Demo de MediCitas</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-content">
+                    <div class="demo-video">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play-circle"></i>
+                            <h4>Video Demostrativo</h4>
+                            <p>Conoce todas las funcionalidades de MediCitas</p>
+                        </div>
+                    </div>
+                    <div class="demo-features">
+                        <h4>Características principales:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Gestión completa de citas</li>
+                            <li><i class="fas fa-check"></i> Perfiles de especialistas</li>
+                            <li><i class="fas fa-check"></i> Historial médico digital</li>
+                            <li><i class="fas fa-check"></i> Recordatorios automáticos</li>
+                            <li><i class="fas fa-check"></i> Telemedicina integrada</li>
+                            <li><i class="fas fa-check"></i> Gestión de recetas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner"></i>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
