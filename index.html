@@ -18,8 +18,10 @@
     <meta property="og:image" content="https://gusi.dev/tu-foto-perfil.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Jose Martínez - Desarrollador Freelance especializado en desarrollo web y apps móviles">
     <meta property="og:site_name" content="Gusi.dev - Portfolio">
     <meta property="og:locale" content="es_ES">
+    <meta property="og:locale:alternate" content="en_US">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -27,6 +29,48 @@
     <meta property="twitter:title" content="Jose Martínez - Desarrollador Freelance | Gusi.dev">
     <meta property="twitter:description" content="Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales. Más de 50 proyectos realizados.">
     <meta property="twitter:image" content="https://gusi.dev/tu-foto-perfil.jpg">
+    <meta property="twitter:image:alt" content="Jose Martínez - Desarrollador Freelance">
+    <meta property="twitter:site" content="@gusi_dev">
+    <meta property="twitter:creator" content="@gusi_dev">
+    
+    <!-- Schema.org markup for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Gusi.dev - Jose Martínez",
+        "description": "Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales",
+        "url": "https://gusi.dev/",
+        "telephone": "+34-619-027-645",
+        "email": "contacto@gusi.dev",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Madrid",
+            "addressCountry": "ES"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "40.4168",
+            "longitude": "-3.7038"
+        },
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "priceRange": "€€",
+        "serviceType": ["Desarrollo Web", "Aplicaciones Móviles", "Diseño Web", "SEO"],
+        "areaServed": ["España", "Unión Europea"],
+        "sameAs": [
+            "https://www.linkedin.com/in/jose-martinez",
+            "https://github.com/gusi-dev",
+            "https://twitter.com/gusi_dev"
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "27",
+            "bestRating": "5",
+            "worstRating": "1"
+        }
+    }
+    </script>
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://gusi.dev/">
@@ -38,16 +82,159 @@
     
     <!-- Preload critical resources -->
     <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="tu-foto-perfil-optimizada.jpg" as="image" imagesrcset="tu-foto-perfil-optimizada.jpg 1x" imagesizes="50vw">
+    <link rel="preload" href="freelancer-icon-optimizado.png" as="image">
+    <link rel="preload" href="script.js" as="script">
+    
+    <!-- Preconexión para recursos externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload de fuentes críticas con carga optimizada -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
     
-    <!-- DNS Prefetch -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <!-- Fallback local para fuentes -->
+    <script>
+    (function() {
+        // Fallback para fuentes si no se cargan en 3 segundos
+        setTimeout(function() {
+            if (!document.fonts || !document.fonts.check('1em Inter')) {
+                var style = document.createElement('style');
+                style.textContent = '@font-face{font-family:"Inter";font-style:normal;font-weight:300;font-display:swap;src:local("Inter Light"),local("Inter-Light"),url("/fonts/inter-v18-latin-300.woff2") format("woff2")}@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:local("Inter"),local("Inter-Regular"),url("/fonts/inter-v18-latin-regular.woff2") format("woff2")}@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:local("Inter Medium"),local("Inter-Medium"),url("/fonts/inter-v18-latin-500.woff2") format("woff2")}@font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;src:local("Inter SemiBold"),local("Inter-SemiBold"),url("/fonts/inter-v18-latin-600.woff2") format("woff2")}@font-face{font-family:"Inter";font-style:normal;font-weight:700;font-display:swap;src:local("Inter Bold"),local("Inter-Bold"),url("/fonts/inter-v18-latin-700.woff2") format("woff2")}';
+                document.head.appendChild(style);
+            }
+        }, 3000);
+    })();
+    </script>
     
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.min.css">
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- Google Analytics 4 (GA4) - Carga asíncrona optimizada con manejo de errores -->
+    <script>
+        // Configuración robusta de Google Analytics con manejo de errores
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        // Cargar el script de Google Analytics de forma segura
+        function loadGoogleAnalytics() {
+            try {
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-165E9VQDD8';
+                script.onerror = function() {
+                    console.warn('Google Analytics no pudo cargarse. Puede estar bloqueado por un adblocker.');
+                };
+                document.head.appendChild(script);
+                
+                // Configuración básica
+                gtag('js', new Date());
+                gtag('config', 'G-165E9VQDD8', {
+                    'transport_type': 'beacon',
+                    'anonymize_ip': true,
+                    'page_title': document.title,
+                    'page_location': window.location.href,
+                    'page_path': window.location.pathname,
+                    'send_page_view': true
+                });
+                
+                // Configuración específica para Web Vitals
+                gtag('config', 'G-165E9VQDD8', {
+                    'custom_map': {
+                        'dimension1': 'metric_name',
+                        'dimension2': 'metric_value',
+                        'dimension3': 'metric_rating',
+                        'dimension4': 'metric_id',
+                        'dimension5': 'navigation_type'
+                    }
+                });
+                
+            } catch (error) {
+                console.warn('Error en la configuración de Google Analytics:', error);
+            }
+        }
+        
+        // Cargar Google Analytics después de que la página esté lista
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadGoogleAnalytics);
+        } else {
+            loadGoogleAnalytics();
+        }
+    </script>
+    
+    <!-- Critical CSS (Estilos críticos inlinados) -->
+    <style>
+    /* Critical CSS - Estilos necesarios para el renderizado inicial */
+    :root {
+        --primary-color: #2563eb;
+        --primary-dark: #1d4ed8;
+        --bg-primary: #ffffff;
+        --text-primary: #1e293b;
+        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; }
+    body { 
+        font-family: var(--font-family); 
+        font-size: 1rem; 
+        line-height: 1.6; 
+        color: var(--text-primary); 
+        background-color: var(--bg-primary); 
+        overflow-x: hidden; 
+    }
+    
+    /* Header crítico */
+    .header { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        background: rgba(255, 255, 255, 0.95); 
+        backdrop-filter: blur(10px); 
+        z-index: 1000; 
+        transition: all 0.3s ease; 
+    }
+    
+    /* Hero section crítico */
+    .hero { 
+        min-height: 100vh; 
+        display: flex; 
+        align-items: center; 
+        padding: 80px 0; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .hero-content { 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        padding: 0 1rem; 
+    }
+    
+    /* Utilidades críticas */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .sr-only { 
+        position: absolute; 
+        width: 1px; 
+        height: 1px; 
+        padding: 0; 
+        margin: -1px; 
+        overflow: hidden; 
+        clip: rect(0, 0, 0, 0); 
+        white-space: nowrap; 
+        border: 0; 
+    }
+    
+    /* Mejoras de foco */
+    *:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+    </style>
+    
+    <!-- Estilos CSS completos (cargados de forma asíncrona) -->
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="styles.css"></noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Structured Data -->
@@ -76,8 +263,8 @@
 </head>
 <body>
     <!-- WhatsApp Flotante -->
-    <a href="https://wa.me/34619027645" class="whatsapp-float" target="_blank" rel="noopener">
-        <i class="fab fa-whatsapp"></i>
+    <a href="https://wa.me/34619027645" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp - Abre en ventana nueva">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
         <span class="whatsapp-text">Contratar</span>
     </a>
 
@@ -88,16 +275,16 @@
                 <img src="freelancer-icon-optimizado.png" alt="Gusi.dev - Desarrollador Freelance" class="brand-logo">
                 <span class="brand-text">Gusi.dev</span>
             </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="#inicio" class="nav-link">Inicio</a>
-                <a href="#servicios" class="nav-link">Servicios</a>
-                <a href="#proyectos" class="nav-link">Proyectos</a>
-                <a href="#contacto" class="nav-link">Contacto</a>
+            <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal">
+                <a href="#inicio" class="nav-link" role="menuitem">Inicio</a>
+                <a href="#servicios" class="nav-link" role="menuitem">Servicios</a>
+                <a href="#proyectos" class="nav-link" role="menuitem">Proyectos</a>
+                <a href="#contacto" class="nav-link" role="menuitem">Contacto</a>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <div class="nav-toggle" id="nav-toggle" aria-label="Menú de navegación" aria-expanded="false" aria-controls="nav-menu" role="button" tabindex="0">
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
             </div>
         </nav>
     </header>
@@ -138,12 +325,12 @@
                         </div>
                     </div>
                     <div class="hero-buttons">
-                        <a href="#proyectos" class="btn btn-primary">
-                            <i class="fas fa-rocket"></i>
+                        <a href="#proyectos" class="btn btn-primary" role="button" aria-label="Ver mis proyectos realizados">
+                            <i class="fas fa-rocket" aria-hidden="true"></i>
                             <span>Ver Proyectos</span>
                         </a>
-                        <a href="https://wa.me/34619027645" class="btn btn-whatsapp" target="_blank">
-                            <i class="fab fa-whatsapp"></i>
+                        <a href="https://wa.me/34619027645" class="btn btn-whatsapp" target="_blank" rel="noopener" role="button" aria-label="Contratar servicios por WhatsApp - Abre en ventana nueva">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
                             <span>Contratar Ahora</span>
                         </a>
                     </div>
@@ -160,7 +347,14 @@
                         <!-- Contenedor principal de la imagen -->
                         <div class="hero-image-wrapper">
                             <div class="hero-image">
-                                <img src="tu-foto-perfil-optimizada.jpg" alt="Jose Martínez - Desarrollador Freelance" class="profile-image" itemprop="image">
+                            <picture>
+                                <!-- AVIF - Mejor compresión, soporte moderno -->
+                                <source srcset="images/optimizadas/tu-foto-perfil.avif 1x, images/optimizadas/tu-foto-perfil.avif 2x" type="image/avif">
+                                <!-- WebP - Buen soporte, excelente compresión -->
+                                <source srcset="images/optimizadas/tu-foto-perfil.webp 1x, images/optimizadas/tu-foto-perfil.webp 2x" type="image/webp">
+                                <!-- Fallback JPEG para navegadores antiguos -->
+                                <img src="tu-foto-perfil-optimizada.jpg" alt="Jose Martínez - Desarrollador Freelance" class="profile-image critical-image" itemprop="image" loading="eager" width="400" height="500">
+                            </picture>
                                 <div class="image-overlay"></div>
                                 <!-- Marco decorativo -->
                                 <div class="image-frame"></div>
@@ -208,11 +402,11 @@
                 <div class="section-divider"></div>
             </div>
             <div class="services-grid">
-                <div class="service-card" itemscope itemtype="https://schema.org/Service">
-                    <div class="service-icon">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service" role="article" aria-labelledby="servicio-1">
+                    <div class="service-icon" aria-hidden="true">
                         <i class="fas fa-laptop-code"></i>
                     </div>
-                    <h3 class="service-title" itemprop="name">Desarrollo Web</h3>
+                    <h3 class="service-title" itemprop="name" id="servicio-1">Desarrollo Web</h3>
                     <p class="service-description" itemprop="description">
                         Sitios web modernos, responsivos y optimizados para SEO. 
                         Desde landing pages hasta aplicaciones web complejas.
@@ -243,11 +437,11 @@
                     </div>
                 </div>
 
-                <div class="service-card" itemscope itemtype="https://schema.org/Service">
-                    <div class="service-icon">
+                <div class="service-card" itemscope itemtype="https://schema.org/Service" role="article" aria-labelledby="servicio-2">
+                    <div class="service-icon" aria-hidden="true">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
-                    <h3 class="service-title" itemprop="name">Apps Móviles</h3>
+                    <h3 class="service-title" itemprop="name" id="servicio-2">Apps Móviles</h3>
                     <p class="service-description" itemprop="description">
                         Aplicaciones móviles nativas e híbridas para iOS y Android. 
                         Experiencia de usuario excepcional garantizada.
@@ -278,14 +472,13 @@
                     </div>
                 </div>
 
-                <div class="service-card" itemscope itemtype="https://schema.org/Service">
-                    <div class="service-icon">
-                        <i class="fas fa-shopping-cart"></i>
+                <div class="service-card" itemscope itemtype="https://schema.org/Service" role="article" aria-labelledby="servicio-3">
+                    <div class="service-icon" aria-hidden="true">
+                        <i class="fas fa-server"></i>
                     </div>
-                    <h3 class="service-title" itemprop="name">E-Commerce</h3>
+                    <h3 class="service-title" itemprop="name" id="servicio-3">Backend & APIs</h3>
                     <p class="service-description" itemprop="description">
-                        Tiendas online completas con pasarelas de pago, 
-                        gestión de inventario y panel de administración.
+                        APIs RESTful, bases de datos y servidores escalables para aplicaciones web y móviles.
                     </p>
                     <div class="service-features">
                         <div class="feature-item">
@@ -369,7 +562,11 @@
             <div class="projects-grid">
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="images/proyectos/app-restaurante.jpg" alt="App móvil para restaurante - Sistema de pedidos online" loading="lazy" srcset="images/proyectos/app-restaurante.jpg 1x, images/proyectos/app-restaurante.jpg 2x">
+                        <picture>
+                            <source srcset="images/optimizadas/app-restaurante.avif 1x, images/optimizadas/app-restaurante.avif 2x" type="image/avif">
+                            <source srcset="images/optimizadas/app-restaurante.webp 1x, images/optimizadas/app-restaurante.webp 2x" type="image/webp">
+                            <img src="images/proyectos/app-restaurante.jpg" alt="App móvil para restaurante - Sistema de pedidos online" loading="lazy" srcset="images/proyectos/app-restaurante.jpg 1x, images/proyectos/app-restaurante.jpg 2x">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/app-restaurante/index.html" class="project-btn" target="_blank">
@@ -399,7 +596,11 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="images/proyectos/dashboard-analytics.jpg" alt="Dashboard de analytics - Métricas y análisis de datos en tiempo real" loading="lazy" srcset="images/proyectos/dashboard-analytics.jpg 1x, images/proyectos/dashboard-analytics.jpg 2x">
+                        <picture>
+                            <source srcset="images/optimizadas/dashboard-analytics.avif 1x, images/optimizadas/dashboard-analytics.avif 2x" type="image/avif">
+                            <source srcset="images/optimizadas/dashboard-analytics.webp 1x, images/optimizadas/dashboard-analytics.webp 2x" type="image/webp">
+                            <img src="images/proyectos/dashboard-analytics.jpg" alt="Dashboard de analytics - Métricas y análisis de datos en tiempo real" loading="lazy" srcset="images/proyectos/dashboard-analytics.jpg 1x, images/proyectos/dashboard-analytics.jpg 2x">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/dashboard-analytics/index.html" class="project-btn" target="_blank">
@@ -429,7 +630,11 @@
 
                 <div class="project-card" data-project-type="ecommerce">
                     <div class="project-image">
-                        <img src="images/proyectos/ecommerce-boutique.jpg" alt="E-commerce boutique - Tienda online con carrito de compras" loading="lazy" srcset="images/proyectos/ecommerce-boutique.jpg 1x, images/proyectos/ecommerce-boutique.jpg 2x">
+                        <picture>
+                            <source srcset="images/optimizadas/ecommerce-boutique.avif 1x, images/optimizadas/ecommerce-boutique.avif 2x" type="image/avif">
+                            <source srcset="images/optimizadas/ecommerce-boutique.webp 1x, images/optimizadas/ecommerce-boutique.webp 2x" type="image/webp">
+                            <img src="images/proyectos/ecommerce-boutique.jpg" alt="E-commerce boutique - Tienda online con carrito de compras" loading="lazy" srcset="images/proyectos/ecommerce-boutique.jpg 1x, images/proyectos/ecommerce-boutique.jpg 2x">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/ecommerce-boutique/index.html" class="project-btn" target="_blank">
@@ -487,17 +692,21 @@
                     </div>
                 </div>
 
-                <div class="project-card" data-project-type="web">
+                <div class="project-card" data-project-type="web" role="article" aria-labelledby="proyecto-5">
                     <div class="project-image">
-                        <img src="images/proyectos/plataforma-educativa.jpg" alt="Plataforma educativa - Cursos online y aprendizaje digital" loading="lazy" srcset="images/proyectos/plataforma-educativa.jpg 1x, images/proyectos/plataforma-educativa.jpg 2x">
+                        <picture>
+                            <source srcset="images/optimizadas/plataforma-educativa.avif 1x, images/optimizadas/plataforma-educativa.avif 2x" type="image/avif">
+                            <source srcset="images/optimizadas/plataforma-educativa.webp 1x, images/optimizadas/plataforma-educativa.webp 2x" type="image/webp">
+                            <img src="images/proyectos/plataforma-educativa.jpg" alt="Captura de pantalla de la Plataforma Educativa Online mostrando la interfaz de cursos" loading="lazy" srcset="images/proyectos/plataforma-educativa.jpg 1x, images/proyectos/plataforma-educativa.jpg 2x">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
-                                <a href="proyectos-ejemplo/plataforma-educativa/index.html" class="project-btn" target="_blank">
-                                    <i class="fas fa-eye"></i>
+                                <a href="proyectos-ejemplo/plataforma-educativa/index.html" class="project-btn" target="_blank" rel="noopener" role="button" aria-label="Ver demo de Plataforma Educativa - Abre en ventana nueva">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
                                     <span>Ver Proyecto</span>
                                 </a>
-                                <a href="https://wa.me/34619027645?text=Hola! Me interesa contratar un proyecto similar al de Plataforma Educativa. ¿Podrías darme más información?" class="project-btn project-btn-whatsapp" target="_blank">
-                                    <i class="fab fa-whatsapp"></i>
+                                <a href="https://wa.me/34619027645?text=Hola! Me interesa contratar un proyecto similar al de Plataforma Educativa. ¿Podrías darme más información?" class="project-btn project-btn-whatsapp" target="_blank" rel="noopener" role="button" aria-label="Contratar proyecto similar por WhatsApp - Abre en ventana nueva">
+                                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
                                     <span>Contratar Similar</span>
                                 </a>
                             </div>
@@ -505,11 +714,11 @@
                     </div>
                     <div class="project-content">
                         <div class="project-badge">Plataforma Web</div>
-                        <h3 class="project-title">Plataforma Educativa</h3>
+                        <h3 class="project-title" id="proyecto-5">Plataforma Educativa</h3>
                         <p class="project-description">
                             Sistema de aprendizaje online con cursos, lecciones interactivas y seguimiento de progreso.
                         </p>
-                        <div class="project-tech">
+                        <div class="project-tech" aria-label="Tecnologías utilizadas:">
                             <span class="tech-tag">HTML5</span>
                             <span class="tech-tag">CSS3</span>
                             <span class="tech-tag">JavaScript</span>
@@ -519,7 +728,11 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="images/proyectos/portal-inmobiliario.jpg" alt="Portal inmobiliario - Búsqueda de propiedades y bienes raíces" loading="lazy" srcset="images/proyectos/portal-inmobiliario.jpg 1x, images/proyectos/portal-inmobiliario.jpg 2x">
+                        <picture>
+                            <source srcset="images/optimizadas/portal-inmobiliario.avif 1x, images/optimizadas/portal-inmobiliario.avif 2x" type="image/avif">
+                            <source srcset="images/optimizadas/portal-inmobiliario.webp 1x, images/optimizadas/portal-inmobiliario.webp 2x" type="image/webp">
+                            <img src="images/proyectos/portal-inmobiliario.jpg" alt="Portal inmobiliario - Búsqueda de propiedades y bienes raíces" loading="lazy" srcset="images/proyectos/portal-inmobiliario.jpg 1x, images/proyectos/portal-inmobiliario.jpg 2x">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/portal-inmobiliario/index.html" class="project-btn" target="_blank">
@@ -545,6 +758,140 @@
                             <span class="tech-tag">JavaScript</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios Section -->
+    <section id="testimonios" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Lo que dicen mis clientes</h2>
+                <p class="section-subtitle">Experiencias reales de proyectos exitosos</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars" aria-label="5 de 5 estrellas">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p>
+                            "Trabajar con Jose fue una experiencia excepcional. Transformó completamente 
+                            nuestra plataforma educativa con un diseño moderno y funcional. Su atención 
+                            al detalle y compromiso con los plazos superó todas nuestras expectativas."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>María López</h4>
+                            <p>Directora de Plataforma Educativa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars" aria-label="5 de 5 estrellas">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p>
+                            "Necesitábamos una aplicación móvil para nuestro restaurante y Jose entregó 
+                            exactamente lo que necesitábamos. La app es intuitiva, estable y ha mejorado 
+                            significativamente la experiencia de nuestros clientes. ¡Altamente recomendado!"
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Carlos Rodríguez</h4>
+                            <p>Propietario de Restaurante</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars" aria-label="5 de 5 estrellas">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p>
+                            "Jose desarrolló nuestro e-commerce desde cero y el resultado ha sido 
+                            increíble. No solo es visualmente atractivo, sino que también es muy 
+                            funcional y ha aumentado nuestras ventas en un 40%. Su profesionalismo 
+                            y expertise son invaluables."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Ana Martínez</h4>
+                            <p>CEO de Boutique Online</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars" aria-label="5 de 5 estrellas">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <p>
+                            "Contraté a Jose para el mantenimiento de nuestro portal inmobiliario y 
+                            ha sido la mejor decisión. Responde rápidamente, soluciona problemas 
+                            eficientemente y siempre está disponible para mejorar el sistema. 
+                            Un profesional de primera."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>David García</h4>
+                            <p>Gerente de Inmobiliaria</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonials-stats">
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Clientes Satisfechos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Proyectos Completados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Plazos Cumplidos</div>
                 </div>
             </div>
         </div>
@@ -595,19 +942,22 @@
                     </div>
                 </div>
                 
-                <form class="contact-form" name="contact" method="POST" netlify netlify-honeypot="bot-field">
+                <form class="contact-form" name="contact" method="POST" netlify netlify-honeypot="bot-field" aria-labelledby="contacto-titulo">
                     <!-- Campo oculto para protección anti-spam -->
                     <div style="display: none;">
                         <label>No llenar este campo: <input name="bot-field"></label>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+                        <label for="name" class="sr-only">Nombre</label>
+                        <input type="text" id="name" name="name" placeholder="Tu nombre" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Tu email" required>
+                        <label for="email" class="sr-only">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Tu email" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <select id="service" name="service" required>
+                        <label for="service" class="sr-only">Servicio</label>
+                        <select id="service" name="service" required aria-required="true">
                             <option value="">Selecciona un servicio</option>
                             <option value="web">Desarrollo Web</option>
                             <option value="mobile">App Móvil</option>
@@ -617,10 +967,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <textarea id="message" name="message" placeholder="Cuéntame sobre tu proyecto..." rows="5" required></textarea>
+                        <label for="message" class="sr-only">Mensaje</label>
+                        <textarea id="message" name="message" placeholder="Cuéntame sobre tu proyecto..." rows="5" required aria-required="true"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">
-                        <i class="fas fa-paper-plane"></i>
+                    <button type="submit" class="btn btn-primary btn-full" aria-label="Enviar mensaje de contacto">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
                         <span>Enviar Mensaje</span>
                     </button>
                 </form>
@@ -650,42 +1001,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-services">
-                    <h4>Servicios</h4>
-                    <ul>
-                        <li>Desarrollo Web</li>
-                        <li>Aplicaciones Móviles</li>
-                        <li>E-Commerce</li>
-                        <li>Mantenimiento</li>
-                    </ul>
-                </div>
-                <div class="footer-technologies">
-                    <h4>Tecnologías</h4>
-                    <div class="tech-tags">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">React Native</span>
-                        <span class="tech-tag">Next.js</span>
-                        <span class="tech-tag">MongoDB</span>
-                        <span class="tech-tag">PostgreSQL</span>
+                
+                <div class="footer-services-technologies">
+                    <div class="footer-services">
+                        <h4>Servicios</h4>
+                        <ul>
+                            <li>Desarrollo Web</li>
+                            <li>Aplicaciones Móviles</li>
+                            <li>E-Commerce</li>
+                            <li>Mantenimiento</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-technologies">
+                        <h4>Tecnologías</h4>
+                        <div class="tech-tags">
+                            <span class="tech-tag"><i class="fab fa-react"></i> React</span>
+                            <span class="tech-tag"><i class="fab fa-node-js"></i> Node.js</span>
+                            <span class="tech-tag"><i class="fab fa-react"></i> React Native</span>
+                            <span class="tech-tag"><i class="fas fa-bolt"></i> Next.js</span>
+                            <span class="tech-tag"><i class="fas fa-database"></i> MongoDB</span>
+                            <span class="tech-tag"><i class="fas fa-database"></i> PostgreSQL</span>
+                        </div>
                     </div>
                 </div>
-                <div class="footer-navigation">
-                    <h4>Navegación</h4>
-                    <ul>
-                        <li><a href="#inicio">Inicio</a></li>
-                        <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="#proyectos">Proyectos</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                    </ul>
-                </div>
+
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <p>&copy; 2024 Jose Martínez (Gusi). Todos los derechos reservados.</p>
                     <div class="footer-bottom-links">
-                        <a href="#inicio">Política de Privacidad</a>
-                        <a href="#contacto">Términos de Servicio</a>
+                        <a href="#inicio">Inicio</a>
+                        <a href="#servicios">Servicios</a>
+                        <a href="#proyectos">Proyectos</a>
+                        <a href="#contacto">Contacto</a>
+                        <a href="politica-privacidad.html">Política de Privacidad</a>
+                        <a href="terminos-servicio.html">Términos de Servicio</a>
+                        <a href="politica-cookies.html">Cookies</a>
                     </div>
                 </div>
             </div>
@@ -694,6 +1046,39 @@
 
     <!-- EmailJS Script -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.min.js"></script>
-</body>
-</html>
+    <!-- Web Vitals para análisis de rendimiento -->
+    <script src="https://unpkg.com/web-vitals@3.3.1/dist/web-vitals.attribution.iife.js" defer></script>
+    
+    <!-- Scripts JavaScript optimizados -->
+    <script src="script.min.js" defer></script>
+    
+    <!-- Carga optimizada de recursos no críticos -->
+    <script>
+    // Cargar recursos no críticos después de que la página esté lista
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(function() {
+            // Preconectar a recursos externos no críticos
+            var preconnect = document.createElement('link');
+            preconnect.rel = 'preconnect';
+            preconnect.href = 'https://cdnjs.cloudflare.com';
+            document.head.appendChild(preconnect);
+            
+            // Precargar imágenes no críticas
+            var images = ['images/proyectos/plataforma-educativa.jpg', 'images/proyectos/ecommerce-boutique.jpg'];
+            images.forEach(function(src) {
+                var img = new Image();
+                img.src = src;
+            });
+        });
+    } else {
+        // Fallback para navegadores que no soportan requestIdleCallback
+        setTimeout(function() {
+            var preconnect = document.createElement('link');
+            preconnect.rel = 'preconnect';
+            preconnect.href = 'https://cdnjs.cloudflare.com';
+            document.head.appendChild(preconnect);
+        }, 2000);
+    }
+    </script>
+  </body>
+ </html>

@@ -22,8 +22,19 @@ function initNavigation() {
     // Toggle del menú móvil
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
+            const isExpanded = navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
+            // Actualizar atributos ARIA
+            navToggle.setAttribute('aria-expanded', isExpanded);
+            navMenu.setAttribute('aria-hidden', !isExpanded);
+        });
+
+        // Soporte para navegación por teclado
+        navToggle.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navToggle.click();
+            }
         });
     }
 
@@ -32,8 +43,35 @@ function initNavigation() {
         link.addEventListener('click', function() {
             navMenu.classList.remove('active');
             navToggle.classList.remove('active');
+            // Restaurar atributos ARIA
+            navToggle.setAttribute('aria-expanded', 'false');
+            navMenu.setAttribute('aria-hidden', 'true');
         });
     });
+
+    // Navegación por teclado en el menú
+    if (navMenu) {
+        navMenu.addEventListener('keydown', function(e) {
+            const links = Array.from(navMenu.querySelectorAll('.nav-link'));
+            const currentIndex = links.indexOf(document.activeElement);
+            
+            if (e.key === 'Escape') {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navMenu.setAttribute('aria-hidden', 'true');
+                navToggle.focus();
+            } else if (e.key === 'Tab') {
+                if (currentIndex === links.length - 1 && !e.shiftKey) {
+                    e.preventDefault();
+                    links[0].focus();
+                } else if (currentIndex === 0 && e.shiftKey) {
+                    e.preventDefault();
+                    links[links.length - 1].focus();
+                }
+            }
+        });
+    }
 
     // Cerrar menú al hacer click fuera
     document.addEventListener('click', function(e) {
@@ -375,33 +413,348 @@ initParallaxEffect();
 
 // ===== OPTIMIZACIONES DE RENDIMIENTO =====
 
-// Lazy loading para imágenes
+// Lazy loading avanzado para imágenes con priorización
 function initLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
     
-    if ('IntersectionObserver' in window) {
+    if ('IntersectionObserver' in window && 'requestIdleCallback' in window) {
         const imageObserver = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
+                    
+                    // Cargar imágenes críticas inmediatamente, otras en idle time
+                    if (img.classList.contains('critical-image')) {
+                        loadImage(img);
+                    } else {
+                        requestIdleCallback(() => loadImage(img));
+                    }
+                    
                     imageObserver.unobserve(img);
                 }
             });
+        }, {
+            rootMargin: '200px 0px', // Cargar 200px antes de entrar en viewport
+            threshold: 0.01
         });
         
         images.forEach(img => imageObserver.observe(img));
     } else {
-        // Fallback para navegadores que no soportan IntersectionObserver
+        // Fallback para navegadores que no soportan APIs modernas
         images.forEach(img => {
             img.src = img.dataset.src;
         });
     }
 }
 
+function loadImage(img) {
+    // Precargar imagen antes de asignar al src
+    const tempImg = new Image();
+    tempImg.onload = function() {
+        img.src = img.dataset.src;
+        img.classList.remove('lazy');
+        img.classList.add('loaded');
+    };
+    tempImg.src = img.dataset.src;
+}
+
 // Inicializar lazy loading
-initLazyLoading();
+requestIdleCallback(() => initLazyLoading());
+
+// ===== CORE WEB VITALS OPTIMIZATIONS =====
+
+// Monitoreo completo de Core Web Vitals con métricas detalladas
+function initWebVitalsMonitoring() {
+    if ('webVitals' in window) {
+        // Configurar opciones de monitoreo
+        const webVitalsOptions = {
+            reportAllChanges: true,
+            durationThreshold: 1000
+        };
+
+        // Monitorear Largest Contentful Paint (LCP)
+        webVitals.getLCP(function(metric) {
+            console.log('LCP:', metric.value, 'ms');
+            console.log('LCP Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics (si está configurado)
+            sendToAnalytics('LCP', metric);
+        }, webVitalsOptions);
+
+        // Monitorear First Input Delay (FID)
+        webVitals.getFID(function(metric) {
+            console.log('FID:', metric.value, 'ms');
+            console.log('FID Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('FID', metric);
+        }, webVitalsOptions);
+
+        // Monitorear Cumulative Layout Shift (CLS)
+        webVitals.getCLS(function(metric) {
+            console.log('CLS:', metric.value);
+            console.log('CLS Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('CLS', metric);
+        }, webVitalsOptions);
+
+        // Monitorear First Contentful Paint (FCP)
+        webVitals.getFCP(function(metric) {
+            console.log('FCP:', metric.value, 'ms');
+            console.log('FCP Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('FCP', metric);
+        }, webVitalsOptions);
+
+        // Monitorear Time to First Byte (TTFB)
+        webVitals.getTTFB(function(metric) {
+            console.log('TTFB:', metric.value, 'ms');
+            console.log('TTFB Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('TTFB', metric);
+        }, webVitalsOptions);
+
+        console.log('Web Vitals monitoring iniciado');
+    } else {
+        console.log('Web Vitals no disponible');
+    }
+}
+
+// Función para enviar métricas a analytics (puede ser extendida)
+function sendToAnalytics(metricName, metric) {
+    // Aquí puedes integrar con Google Analytics, Google Tag Manager, o tu sistema de tracking
+    const data = {
+        event: 'web_vitals',
+        metric_name: metricName,
+        value: metric.value,
+        rating: metric.rating,
+        timestamp: Date.now(),
+        page_url: window.location.href,
+        user_agent: navigator.userAgent
+    };
+
+    // Integración con Google Analytics 4 (GA4)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'web_vitals', {
+            metric_name: metricName,
+            value: metric.value,
+            rating: metric.rating,
+            // Información adicional para análisis
+            page_path: window.location.pathname,
+            page_title: document.title,
+            // Dimensiones personalizadas para segmentación
+            metric_id: metric.id,
+            navigation_type: performance.getEntriesByType('navigation')[0]?.type || 'navigate'
+        });
+    }
+
+    // Enviar a endpoint personalizado para backup
+    if (typeof navigator.sendBeacon !== 'undefined') {
+        const analyticsEndpoint = 'https://your-analytics-endpoint.com/api/web-vitals';
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        navigator.sendBeacon(analyticsEndpoint, blob);
+    }
+
+    console.log('Metrica enviada a analytics:', data);
+}
+
+// Configuración avanzada de Web Vitals con thresholds personalizados
+function getWebVitalsConfig() {
+    return {
+        reportAllChanges: true,
+        durationThreshold: 1000,
+        // Thresholds específicos para tu aplicación
+        thresholds: {
+            LCP: 2500,    // 2.5 segundos
+            FID: 100,     // 100 milisegundos  
+            CLS: 0.1,     // 0.1
+            FCP: 1800,    // 1.8 segundos
+            TTFB: 600     // 600 milisegundos
+        }
+    };
+}
+
+// Monitoreo completo de Core Web Vitals con métricas detalladas
+function initWebVitalsMonitoring() {
+    if ('webVitals' in window) {
+        const config = getWebVitalsConfig();
+
+        // Monitorear Largest Contentful Paint (LCP)
+        webVitals.getLCP(function(metric) {
+            console.log('LCP:', metric.value, 'ms');
+            console.log('LCP Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('LCP', metric);
+            
+            // Alertar si está fuera de los objetivos
+            if (metric.value > config.thresholds.LCP) {
+                console.warn('⚠️ LCP necesita mejora:', metric.value, 'ms');
+            }
+        }, config);
+
+        // Monitorear First Input Delay (FID)
+        webVitals.getFID(function(metric) {
+            console.log('FID:', metric.value, 'ms');
+            console.log('FID Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('FID', metric);
+            
+            if (metric.value > config.thresholds.FID) {
+                console.warn('⚠️ FID necesita mejora:', metric.value, 'ms');
+            }
+        }, config);
+
+        // Monitorear Cumulative Layout Shift (CLS)
+        webVitals.getCLS(function(metric) {
+            console.log('CLS:', metric.value);
+            console.log('CLS Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('CLS', metric);
+            
+            if (metric.value > config.thresholds.CLS) {
+                console.warn('⚠️ CLS necesita mejora:', metric.value);
+            }
+        }, config);
+
+        // Monitorear First Contentful Paint (FCP)
+        webVitals.getFCP(function(metric) {
+            console.log('FCP:', metric.value, 'ms');
+            console.log('FCP Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('FCP', metric);
+            
+            if (metric.value > config.thresholds.FCP) {
+                console.warn('⚠️ FCP necesita mejora:', metric.value, 'ms');
+            }
+        }, config);
+
+        // Monitorear Time to First Byte (TTFB)
+        webVitals.getTTFB(function(metric) {
+            console.log('TTFB:', metric.value, 'ms');
+            console.log('TTFB Details:', {
+                id: metric.id,
+                name: metric.name,
+                rating: metric.rating,
+                entries: metric.entries
+            });
+            
+            // Enviar a analytics
+            sendToAnalytics('TTFB', metric);
+            
+            if (metric.value > config.thresholds.TTFB) {
+                console.warn('⚠️ TTFB necesita mejora:', metric.value, 'ms');
+            }
+        }, config);
+
+        console.log('Web Vitals monitoring iniciado con configuración:', config);
+    } else {
+        console.log('Web Vitals no disponible');
+    }
+}
+
+// Iniciar monitoreo cuando la página esté completamente cargada
+if (document.readyState === 'complete') {
+    initWebVitalsMonitoring();
+} else {
+    window.addEventListener('load', initWebVitalsMonitoring);
+}
+
+// Prevenir Cumulative Layout Shift (CLS)
+function preventLayoutShift() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        if (!img.complete) {
+            img.style.aspectRatio = img.width / img.height;
+        }
+    });
+    
+    // Reservar espacio para elementos dinámicos
+    const dynamicElements = document.querySelectorAll('.hero-image, .project-image');
+    dynamicElements.forEach(el => {
+        el.style.minHeight = el.offsetHeight + 'px';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', preventLayoutShift);
+window.addEventListener('load', preventLayoutShift);
+
+// ===== SERVICE WORKER REGISTRATION =====
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('Service Worker registrado con éxito:', registration);
+                
+                // Verificar actualizaciones periódicamente
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    console.log('Nueva versión de Service Worker encontrada:', newWorker);
+                });
+            })
+            .catch(error => {
+                console.log('Error registrando Service Worker:', error);
+            });
+    }
+}
+
+// Registrar Service Worker cuando la página esté cargada
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', registerServiceWorker);
+} else {
+    registerServiceWorker();
+}
 
 // ===== MANEJO DE ERRORES =====
 window.addEventListener('error', function(e) {
