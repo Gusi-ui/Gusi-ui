@@ -169,6 +169,15 @@ function initProjectFilters() {
 
             const filter = this.getAttribute('data-filter');
 
+            // Evento de Google Analytics: Filtro de proyectos
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'project_filter', {
+                    'event_category': 'Portfolio',
+                    'event_label': filter,
+                    'custom_parameter_1': 'filter_button'
+                });
+            }
+
             // Filtrar proyectos con animación
             projectCards.forEach((card, index) => {
                 const projectType = card.getAttribute('data-project-type');
@@ -184,6 +193,23 @@ function initProjectFilters() {
                     card.style.display = 'none';
                 }
             });
+        });
+    });
+    
+    // Agregar eventos para clics en tarjetas de proyectos
+    projectCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const projectTitle = this.querySelector('h3')?.textContent || 'Unknown Project';
+            const projectCategory = this.getAttribute('data-project-type') || 'unknown';
+            
+            // Evento de Google Analytics: Clic en proyecto
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'project_click', {
+                    'event_category': 'Portfolio',
+                    'event_label': projectTitle,
+                    'custom_parameter_1': projectCategory
+                });
+            }
         });
     });
 }
@@ -221,6 +247,15 @@ function initContactForm() {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Enviando...</span>';
         submitBtn.disabled = true;
 
+        // Evento de Google Analytics: Inicio de envío de formulario
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submit_start', {
+                'event_category': 'Contact',
+                'event_label': service,
+                'custom_parameter_1': 'contact_form'
+            });
+        }
+
         // Enviar formulario a Netlify Forms
         fetch('/', {
             method: 'POST',
@@ -229,6 +264,23 @@ function initContactForm() {
         })
         .then(function(response) {
             if (response.ok) {
+                // Evento de Google Analytics: Formulario enviado exitosamente
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit_success', {
+                        'event_category': 'Contact',
+                        'event_label': service,
+                        'value': 1,
+                        'custom_parameter_1': 'contact_form'
+                    });
+                    
+                    // Evento de conversión
+                    gtag('event', 'conversion', {
+                        'send_to': 'G-165E9VQDD8',
+                        'event_category': 'Lead',
+                        'event_label': 'Contact Form Submission'
+                    });
+                }
+                
                 showNotification('Mensaje enviado correctamente. Te contactaré pronto.', 'success');
                 
                 // Limpiar formulario
@@ -237,6 +289,15 @@ function initContactForm() {
                 // Redirigir a WhatsApp con el mensaje
                 const whatsappMessage = `Hola! Me llamo ${name} y estoy interesado en el servicio de ${service}. ${message}`;
                 const whatsappUrl = `https://wa.me/34619027645?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                // Evento de Google Analytics: Redirección a WhatsApp
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'whatsapp_redirect', {
+                        'event_category': 'Engagement',
+                        'event_label': 'Contact Form to WhatsApp',
+                        'custom_parameter_1': service
+                    });
+                }
                 
                 // Abrir WhatsApp después de un breve delay
                 setTimeout(() => {
@@ -248,6 +309,17 @@ function initContactForm() {
         })
         .catch(function(error) {
             console.error('Error al enviar formulario:', error);
+            
+            // Evento de Google Analytics: Error en el envío del formulario
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit_error', {
+                    'event_category': 'Contact',
+                    'event_label': service,
+                    'custom_parameter_1': 'contact_form',
+                    'custom_parameter_2': error.message
+                });
+            }
+            
             showNotification('Error al enviar el mensaje. Por favor, inténtalo de nuevo o contáctame por WhatsApp.', 'error');
         })
         .finally(function() {
@@ -268,6 +340,15 @@ function initSmoothScrolling() {
             
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
+            
+            // Evento de Google Analytics: Navegación interna
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'internal_navigation', {
+                    'event_category': 'Navigation',
+                    'event_label': targetId,
+                    'custom_parameter_1': 'smooth_scroll'
+                });
+            }
             
             if (targetElement) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
