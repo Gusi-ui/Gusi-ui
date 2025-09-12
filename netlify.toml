@@ -34,3 +34,22 @@
   for = "/*.xml"
   [headers.values]
     Content-Encoding = "gzip"
+
+# Redirecciones y configuración de dominio
+[[redirects]]
+  from = "http://gusi.dev/*"
+  to = "https://gusi.dev/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.gusi.dev/*"
+  to = "https://gusi.dev/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.gusi.dev/*"
+  to = "https://gusi.dev/:splat"
+  status = 301
+  force = true
