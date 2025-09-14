@@ -9,31 +9,31 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Configuración de compresión
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Content-Encoding = "gzip"
+# Configuración de compresión - Comentada temporalmente para debug
+# [[headers]]
+#   for = "/*.js"
+#   [headers.values]
+#     Content-Encoding = "gzip"
 
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Content-Encoding = "gzip"
+# [[headers]]
+#   for = "/*.css"
+#   [headers.values]
+#     Content-Encoding = "gzip"
 
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Content-Encoding = "gzip"
+# [[headers]]
+#   for = "/*.html"
+#   [headers.values]
+#     Content-Encoding = "gzip"
 
-[[headers]]
-  for = "/*.json"
-  [headers.values]
-    Content-Encoding = "gzip"
+# [[headers]]
+#   for = "/*.json"
+#   [headers.values]
+#     Content-Encoding = "gzip"
 
-[[headers]]
-  for = "/*.xml"
-  [headers.values]
-    Content-Encoding = "gzip"
+# [[headers]]
+#   for = "/*.xml"
+#   [headers.values]
+#     Content-Encoding = "gzip"
 
 # Redirecciones y configuración de dominio
 [[redirects]]
