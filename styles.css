@@ -1804,26 +1804,33 @@ select:focus {
 
 /* Small Mobile (320px - 480px) */
 @media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
     :root {
-        --font-size-5xl: 2rem;
-        --font-size-4xl: 1.75rem;
-        --font-size-3xl: 1.5rem;
-        --font-size-2xl: 1.25rem;
+        --font-size-5xl: 1.5rem;
+        --font-size-4xl: 1.25rem;
+        --font-size-3xl: 1.1rem;
+        --font-size-2xl: 1rem;
     }
-    
     .container {
-        padding: 0 var(--spacing-sm);
+        max-width: 100vw;
+        padding: 0 8px;
+        box-sizing: border-box;
     }
-    
+    img, video, svg {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
     .nav {
         padding: var(--spacing-sm) var(--spacing-md);
     }
-    
     .nav-menu {
         position: fixed;
         top: 70px;
         left: -100%;
-        width: 100%;
+        width: 100vw;
         height: calc(100vh - 70px);
         background: var(--bg-primary);
         flex-direction: column;
@@ -1833,156 +1840,130 @@ select:focus {
         transition: left var(--transition-normal);
         box-shadow: var(--shadow-lg);
     }
-    
     .nav-menu.active {
         left: 0;
     }
-    
     .nav-toggle {
         display: flex;
     }
-    
     .nav-toggle.active .bar:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
     }
-    
     .nav-toggle.active .bar:nth-child(2) {
         opacity: 0;
     }
-    
     .nav-toggle.active .bar:nth-child(3) {
         transform: rotate(-45deg) translate(7px, -6px);
     }
-    
     .hero {
         padding-top: 100px;
         min-height: 100vh;
     }
-    
     .hero-content {
         grid-template-columns: 1fr;
         gap: var(--spacing-xl);
         text-align: center;
     }
-    
     .hero-image-wrapper {
-        width: 250px;
-        height: 320px;
+        width: 90vw;
+        max-width: 250px;
+        height: auto;
         margin: 0 auto;
     }
-    
     .hero-visual {
-        height: 400px;
+        height: auto;
+        min-height: 220px;
     }
-    
     .shape-1 {
-        width: 120px;
-        height: 120px;
+        width: 80px;
+        height: 80px;
         top: 5%;
         right: 5%;
     }
-    
     .shape-2 {
-        width: 100px;
-        height: 100px;
+        width: 60px;
+        height: 60px;
         bottom: 10%;
         left: 2%;
     }
-    
     .shape-3 {
-        width: 80px;
-        height: 80px;
+        width: 40px;
+        height: 40px;
         top: 40%;
         left: -2%;
     }
-    
     .floating-icon {
-        width: 45px;
-        height: 45px;
+        width: 32px;
+        height: 32px;
     }
-    
     .floating-icon i {
         font-size: var(--font-size-lg);
     }
-    
     .project-btn {
-        min-width: 100px;
+        min-width: 80px;
         padding: var(--spacing-xs) var(--spacing-sm);
         font-size: var(--font-size-xs);
     }
-    
     .project-actions {
         flex-direction: column;
         gap: var(--spacing-sm);
     }
-    
     .hero-stats {
         justify-content: center;
         gap: var(--spacing-lg);
     }
-    
     .hero-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
     .btn {
         width: 100%;
-        max-width: 280px;
+        max-width: 220px;
         justify-content: center;
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
     }
-    
     .services-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
     }
-    
     .projects-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
     }
-    
     .projects-filter {
         gap: var(--spacing-sm);
     }
-    
     .filter-btn {
         padding: var(--spacing-xs) var(--spacing-md);
-        font-size: var(--font-size-sm);
+        font-size: var(--font-size-xs);
     }
-    
     .contact-content {
         grid-template-columns: 1fr;
         gap: var(--spacing-xl);
     }
-    
     .footer-content {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
         text-align: center;
     }
-    
     .footer-bottom-content {
         flex-direction: column;
         text-align: center;
         gap: var(--spacing-sm);
     }
-    
     .footer-bottom-links {
         justify-content: center;
     }
-    
     .whatsapp-float {
         bottom: var(--spacing-md);
         right: var(--spacing-md);
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
     }
-    
     .whatsapp-float i {
-        font-size: var(--font-size-lg);
+        font-size: var(--font-size-base);
     }
-    
     .whatsapp-text {
         display: none;
     }
