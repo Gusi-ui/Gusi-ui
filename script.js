@@ -544,90 +544,7 @@ requestIdleCallback(() => initLazyLoading());
 
 // ===== CORE WEB VITALS OPTIMIZATIONS =====
 
-// Monitoreo completo de Core Web Vitals con métricas detalladas
-function initWebVitalsMonitoring() {
-    if ('webVitals' in window) {
-        // Configurar opciones de monitoreo
-        const webVitalsOptions = {
-            reportAllChanges: true,
-            durationThreshold: 1000
-        };
-
-        // Monitorear Largest Contentful Paint (LCP)
-        webVitals.getLCP(function(metric) {
-            console.log('LCP:', metric.value, 'ms');
-            console.log('LCP Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics (si está configurado)
-            sendToAnalytics('LCP', metric);
-        }, webVitalsOptions);
-
-        // Monitorear First Input Delay (FID)
-        webVitals.getFID(function(metric) {
-            console.log('FID:', metric.value, 'ms');
-            console.log('FID Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('FID', metric);
-        }, webVitalsOptions);
-
-        // Monitorear Cumulative Layout Shift (CLS)
-        webVitals.getCLS(function(metric) {
-            console.log('CLS:', metric.value);
-            console.log('CLS Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('CLS', metric);
-        }, webVitalsOptions);
-
-        // Monitorear First Contentful Paint (FCP)
-        webVitals.getFCP(function(metric) {
-            console.log('FCP:', metric.value, 'ms');
-            console.log('FCP Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('FCP', metric);
-        }, webVitalsOptions);
-
-        // Monitorear Time to First Byte (TTFB)
-        webVitals.getTTFB(function(metric) {
-            console.log('TTFB:', metric.value, 'ms');
-            console.log('TTFB Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('TTFB', metric);
-        }, webVitalsOptions);
-
-        console.log('Web Vitals monitoring iniciado');
-    } else {
-        console.log('Web Vitals no disponible');
-    }
-}
+// Esta función se ha movido más abajo en el archivo con mejoras
 
 // Función para enviar métricas a analytics (puede ser extendida)
 function sendToAnalytics(metricName, metric) {
@@ -685,101 +602,135 @@ function getWebVitalsConfig() {
 
 // Monitoreo completo de Core Web Vitals con métricas detalladas
 function initWebVitalsMonitoring() {
-    if ('webVitals' in window) {
+    // Verificar que la librería Web Vitals esté disponible
+    if (typeof window.webVitals === 'undefined') {
+        console.log('Web Vitals library no está disponible aún. Reintentando...');
+        // Reintentar después de un breve delay
+        setTimeout(initWebVitalsMonitoring, 100);
+        return;
+    }
+
+    if ('webVitals' in window && window.webVitals) {
         const config = getWebVitalsConfig();
 
-        // Monitorear Largest Contentful Paint (LCP)
-        webVitals.getLCP(function(metric) {
-            console.log('LCP:', metric.value, 'ms');
-            console.log('LCP Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('LCP', metric);
-            
-            // Alertar si está fuera de los objetivos
-            if (metric.value > config.thresholds.LCP) {
-                console.warn('⚠️ LCP necesita mejora:', metric.value, 'ms');
-            }
-        }, config);
+        try {
+            // Monitorear Largest Contentful Paint (LCP)
+            window.webVitals.onLCP(function(metric) {
+                console.log('LCP:', metric.value, 'ms');
+                console.log('LCP Details:', {
+                    id: metric.id,
+                    name: metric.name,
+                    rating: metric.rating,
+                    entries: metric.entries
+                });
+                
+                // Enviar a analytics
+                sendToAnalytics('LCP', metric);
+                
+                // Alertar si está fuera de los objetivos
+                if (metric.value > config.thresholds.LCP) {
+                    console.warn('⚠️ LCP necesita mejora:', metric.value, 'ms');
+                }
+            }, config);
 
-        // Monitorear First Input Delay (FID)
-        webVitals.getFID(function(metric) {
-            console.log('FID:', metric.value, 'ms');
-            console.log('FID Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('FID', metric);
-            
-            if (metric.value > config.thresholds.FID) {
-                console.warn('⚠️ FID necesita mejora:', metric.value, 'ms');
+            // Monitorear Interaction to Next Paint (INP) - reemplaza a FID en versiones recientes
+            if (window.webVitals.onINP) {
+                window.webVitals.onINP(function(metric) {
+                    console.log('INP:', metric.value, 'ms');
+                    console.log('INP Details:', {
+                        id: metric.id,
+                        name: metric.name,
+                        rating: metric.rating,
+                        entries: metric.entries
+                    });
+                    
+                    // Enviar a analytics
+                    sendToAnalytics('INP', metric);
+                    
+                    if (metric.value > 200) { // INP threshold is 200ms
+                        console.warn('⚠️ INP necesita mejora:', metric.value, 'ms');
+                    }
+                }, config);
             }
-        }, config);
 
-        // Monitorear Cumulative Layout Shift (CLS)
-        webVitals.getCLS(function(metric) {
-            console.log('CLS:', metric.value);
-            console.log('CLS Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('CLS', metric);
-            
-            if (metric.value > config.thresholds.CLS) {
-                console.warn('⚠️ CLS necesita mejora:', metric.value);
+            // Monitorear First Input Delay (FID) - para compatibilidad con versiones anteriores
+            if (window.webVitals.onFID) {
+                window.webVitals.onFID(function(metric) {
+                    console.log('FID:', metric.value, 'ms');
+                    console.log('FID Details:', {
+                        id: metric.id,
+                        name: metric.name,
+                        rating: metric.rating,
+                        entries: metric.entries
+                    });
+                    
+                    // Enviar a analytics
+                    sendToAnalytics('FID', metric);
+                    
+                    if (metric.value > config.thresholds.FID) {
+                        console.warn('⚠️ FID necesita mejora:', metric.value, 'ms');
+                    }
+                }, config);
             }
-        }, config);
 
-        // Monitorear First Contentful Paint (FCP)
-        webVitals.getFCP(function(metric) {
-            console.log('FCP:', metric.value, 'ms');
-            console.log('FCP Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('FCP', metric);
-            
-            if (metric.value > config.thresholds.FCP) {
-                console.warn('⚠️ FCP necesita mejora:', metric.value, 'ms');
-            }
-        }, config);
+            // Monitorear Cumulative Layout Shift (CLS)
+            window.webVitals.onCLS(function(metric) {
+                console.log('CLS:', metric.value);
+                console.log('CLS Details:', {
+                    id: metric.id,
+                    name: metric.name,
+                    rating: metric.rating,
+                    entries: metric.entries
+                });
+                
+                // Enviar a analytics
+                sendToAnalytics('CLS', metric);
+                
+                if (metric.value > config.thresholds.CLS) {
+                    console.warn('⚠️ CLS necesita mejora:', metric.value);
+                }
+            }, config);
 
-        // Monitorear Time to First Byte (TTFB)
-        webVitals.getTTFB(function(metric) {
-            console.log('TTFB:', metric.value, 'ms');
-            console.log('TTFB Details:', {
-                id: metric.id,
-                name: metric.name,
-                rating: metric.rating,
-                entries: metric.entries
-            });
-            
-            // Enviar a analytics
-            sendToAnalytics('TTFB', metric);
-            
-            if (metric.value > config.thresholds.TTFB) {
-                console.warn('⚠️ TTFB necesita mejora:', metric.value, 'ms');
-            }
-        }, config);
+            // Monitorear First Contentful Paint (FCP)
+            window.webVitals.onFCP(function(metric) {
+                console.log('FCP:', metric.value, 'ms');
+                console.log('FCP Details:', {
+                    id: metric.id,
+                    name: metric.name,
+                    rating: metric.rating,
+                    entries: metric.entries
+                });
+                
+                // Enviar a analytics
+                sendToAnalytics('FCP', metric);
+                
+                if (metric.value > config.thresholds.FCP) {
+                    console.warn('⚠️ FCP necesita mejora:', metric.value, 'ms');
+                }
+            }, config);
 
-        console.log('Web Vitals monitoring iniciado con configuración:', config);
+            // Monitorear Time to First Byte (TTFB)
+            window.webVitals.onTTFB(function(metric) {
+                console.log('TTFB:', metric.value, 'ms');
+                console.log('TTFB Details:', {
+                    id: metric.id,
+                    name: metric.name,
+                    rating: metric.rating,
+                    entries: metric.entries
+                });
+                
+                // Enviar a analytics
+                sendToAnalytics('TTFB', metric);
+                
+                if (metric.value > config.thresholds.TTFB) {
+                    console.warn('⚠️ TTFB necesita mejora:', metric.value, 'ms');
+                }
+            }, config);
+
+            console.log('Web Vitals monitoring iniciado con configuración:', config);
+        } catch (error) {
+            console.error('Error al inicializar Web Vitals:', error);
+        }
     } else {
         console.log('Web Vitals no disponible');
     }

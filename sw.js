@@ -1,6 +1,7 @@
-const CACHE_NAME = 'gusi-dev-v2.0.0';
-const STATIC_CACHE = 'static-v2';
-const DYNAMIC_CACHE = 'dynamic-v2';
+// Bump versions to force SW refresh
+const CACHE_NAME = 'gusi-dev-v2.0.1';
+const STATIC_CACHE = 'static-v2.0.1';
+const DYNAMIC_CACHE = 'dynamic-v2.0.1';
 
 // Recursos críticos para instalación inmediata
 const urlsToCache = [
@@ -56,33 +57,45 @@ self.addEventListener('activate', event => {
 // Estrategia de caching avanzada - Stale While Revalidate
 self.addEventListener('fetch', event => {
   // No cachear requests de analytics ni formularios
-  if (event.request.url.includes('/analytics') || 
-      event.request.method !== 'GET') {
+  if (event.request.url.includes('/analytics') || event.request.method !== 'GET') {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request)
-      .then(cachedResponse => {
-        // Siempre hacer fetch para actualizar cache
-        const fetchPromise = fetch(event.request)
-          .then(networkResponse => {
-            // Cachear respuesta válida para futuras requests
-            if (networkResponse.status === 200) {
-              caches.open(DYNAMIC_CACHE)
-                .then(cache => {
-                  cache.put(event.request, networkResponse.clone());
-                });
-            }
-            return networkResponse;
-          })
-          .catch(error => {
-            console.log('Fetch failed; returning offline page instead.', error);
-          });
+  const isLocalhost = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
 
-        // Return cached response if available, otherwise wait for network
-        return cachedResponse || fetchPromise;
-      })
+  // En desarrollo (localhost), usar estrategia Network-First para evitar caché obsoleta
+  if (isLocalhost) {
+    event.respondWith(
+      fetch(event.request)
+        .then(resp => {
+          // Opcional: actualizar cache dinámica también en local
+          if (resp && resp.status === 200) {
+            const copy = resp.clone();
+            caches.open(DYNAMIC_CACHE).then(c => c.put(event.request, copy));
+          }
+          return resp;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Producción: Stale-While-Revalidate simplificado
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      const fetchPromise = fetch(event.request)
+        .then(networkResponse => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(DYNAMIC_CACHE).then(cache => cache.put(event.request, responseToCache));
+          }
+          return networkResponse.clone();
+        })
+        .catch(() => cachedResponse);
+
+      // Devuelve cache si existe rápidamente, y sino espera a la red
+      return cachedResponse || fetchPromise;
+    })
   );
 });
 

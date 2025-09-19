@@ -72,6 +72,22 @@
     }
     </script>
     
+    <!-- Desactivar SW y limpiar cachés en localhost para evitar estilos obsoletos durante el preview -->
+    <script>
+    (function(){
+      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      if (isLocal && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs){
+          regs.forEach(function(r){ r.unregister(); });
+        }).catch(function(){});
+        if (window.caches && caches.keys) {
+          caches.keys().then(function(keys){ keys.forEach(function(k){ caches.delete(k); }); });
+        }
+        console.log('[Preview] Service Workers desregistrados y cachés limpiadas en localhost.');
+      }
+    })();
+    </script>
+    
     <!-- Canonical URL -->
     <link rel="canonical" href="https://gusi.dev/">
     
@@ -81,7 +97,7 @@
     <link rel="apple-touch-icon" href="freelancer-icon.png">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="styles.css?v=dev-20250917-1144" as="style">
     <link rel="preload" href="tu-foto-perfil-optimizada.jpg" as="image" imagesrcset="tu-foto-perfil-optimizada.jpg 1x" imagesizes="50vw">
     <link rel="preload" href="freelancer-icon-optimizado.png" as="image">
     <link rel="preload" href="script.js" as="script">
@@ -121,6 +137,12 @@
         
         // Cargar el script de Google Analytics de forma segura
         function loadGoogleAnalytics() {
+            // No cargar Google Analytics en localhost para evitar errores en desarrollo
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log('Google Analytics deshabilitado en desarrollo local');
+                return;
+            }
+            
             try {
                 var script = document.createElement('script');
                 script.async = true;
@@ -177,7 +199,7 @@
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-size: 16px; }
+    html { font-size: 16px; overflow-x: hidden; }
     body { 
         font-family: var(--font-family); 
         font-size: 1rem; 
@@ -186,7 +208,6 @@
         background-color: var(--bg-primary); 
         overflow-x: hidden; 
     }
-    
     /* Header crítico */
     .header { 
         position: fixed; 
@@ -198,7 +219,6 @@
         z-index: 1000; 
         transition: all 0.3s ease; 
     }
-    
     /* Hero section crítico */
     .hero { 
         min-height: 100vh; 
@@ -207,15 +227,15 @@
         padding: 80px 0; 
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    
     .hero-content { 
-        max-width: 1200px; 
+        width: 100%;
+        max-width: 100%;
         margin: 0 auto; 
-        padding: 0 1rem; 
+        padding: 0 8px; 
+        box-sizing: border-box;
     }
-    
     /* Utilidades críticas */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .container { width: 100%; max-width: 100%; margin: 0 auto; padding: 0 8px; box-sizing: border-box; }
     .sr-only { 
         position: absolute; 
         width: 1px; 
@@ -227,14 +247,15 @@
         white-space: nowrap; 
         border: 0; 
     }
-    
     /* Mejoras de foco */
     *:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+    @media (min-width: 1025px) {
+      .container, .hero-content { max-width: 1200px; width: 100%; padding: 0 1rem; }
+    }
     </style>
     
-    <!-- Estilos CSS completos (cargados de forma asíncrona) -->
-    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    <!-- Estilos CSS completos (carga con cache-busting en local) -->
+    <link rel="stylesheet" href="styles.css?v=dev-20250917-1144">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Structured Data -->
@@ -664,7 +685,11 @@
 
                 <div class="project-card" data-project-type="web">
                     <div class="project-image">
-                        <img src="imagen-gestion-citas.svg" alt="Sistema de gestión de citas - Calendario y agenda online" loading="lazy">
+                        <picture>
+                            <source srcset="imagen-gestion-citas.avif" type="image/avif">
+                            <source srcset="imagen-gestion-citas.webp" type="image/webp">
+                            <img src="images/proyectos/gestion-citas.jpg" alt="Sistema de gestión de citas - Calendario y agenda online" loading="lazy">
+                        </picture>
                         <div class="project-overlay">
                             <div class="project-actions">
                                 <a href="proyectos-ejemplo/gestion-citas/index.html" class="project-btn" target="_blank">
@@ -1050,7 +1075,7 @@
     <script src="https://unpkg.com/web-vitals@3.3.1/dist/web-vitals.attribution.iife.js" defer></script>
     
     <!-- Scripts JavaScript optimizados -->
-    <script src="script.min.js" defer></script>
+    <script src="script.js" defer></script>
     
     <!-- Carga optimizada de recursos no críticos -->
     <script>
