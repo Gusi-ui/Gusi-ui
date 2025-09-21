@@ -29,9 +29,17 @@ const urlsToCache = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then(cache => {
-        console.log('Service Worker: Cacheando recursos estáticos');
-        return cache.addAll(urlsToCache);
+      .then(async cache => {
+        console.log('Service Worker: Cacheando recursos estáticos (tolerante a fallos)');
+        for (const url of urlsToCache) {
+          try {
+            // Intentar añadir cada recurso individualmente
+            await cache.add(url);
+          } catch (err) {
+            console.warn('Service Worker: No se pudo cachear', url, err && err.message);
+            // Continuar con el siguiente recurso
+          }
+        }
       })
       .then(() => self.skipWaiting())
   );

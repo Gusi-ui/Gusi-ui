@@ -203,18 +203,18 @@ function renderAllCourses() {
     
     // console.log('Cursos filtrados:', filteredCourses.length);
     
-    if (filteredCourses.length === 0) {
-        container.innerHTML = `
-            <div class="no-results">
-                <i class="fas fa-search"></i>
-                <h3>No se encontraron cursos</h3>
-                <p>Intenta ajustar los filtros o buscar con otros términos.</p>
-                <button class="btn btn-primary" onclick="clearFilters()">
-                    <i class="fas fa-refresh"></i>
-                    Limpiar filtros
-                </button>
-            </div>
-        `;
+        if (filteredCourses.length === 0) {
+            container.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search"></i>
+                    <h3>No se encontraron cursos</h3>
+                    <p>Intenta ajustar los filtros o buscar con otros términos.</p>
+                    <button class="btn btn-primary" onclick="clearFilters()">
+                        <i class="fas fa-refresh"></i>
+                        Limpiar filtros
+                    </button>
+                </div>
+            `;
         return;
     }
     
@@ -313,77 +313,77 @@ function openCourseModal(courseId) {
     
     if (modalContent) {
         modalContent.innerHTML = `
-            <div class="course-detail">
-                <div class="course-header">
-                    <div class="course-image-large">
-                        <i class="${course.image}"></i>
-                    </div>
-                    <div class="course-info">
-                        <h2>${course.title}</h2>
-                        <p class="course-description">${course.description}</p>
-                        <div class="course-meta-large">
-                            <div class="meta-item">
-                                <i class="fas fa-signal"></i>
-                                <span>Nivel: ${course.level}</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-clock"></i>
-                                <span>Duración: ${course.duration}</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-play-circle"></i>
-                                <span>${course.lessons} lecciones</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-users"></i>
-                                <span>${course.students} estudiantes</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-star"></i>
-                                <span>${course.rating} (${Math.floor(Math.random() * 500 + 100)} reseñas)</span>
-                            </div>
-                            ${course.certificate ? '<div class="meta-item"><i class="fas fa-certificate"></i><span>Certificado incluido</span></div>' : ''}
-                        </div>
-                        <div class="instructor-info">
-                            <div class="instructor-avatar-large">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div>
-                                <h4>Instructor: ${course.instructor}</h4>
-                                <p>Experto en ${course.category} con más de 5 años de experiencia</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="course-detail">
+            <div class="course-header">
+                <div class="course-image-large">
+                    <i class="${course.image}"></i>
                 </div>
-                <div class="course-content-detail">
-                    <h3>¿Qué aprenderás?</h3>
-                    <ul class="learning-objectives">
-                        <li><i class="fas fa-check"></i> Conceptos fundamentales y avanzados</li>
-                        <li><i class="fas fa-check"></i> Proyectos prácticos del mundo real</li>
-                        <li><i class="fas fa-check"></i> Mejores prácticas de la industria</li>
-                        <li><i class="fas fa-check"></i> Herramientas y tecnologías actuales</li>
-                    </ul>
-                    <div class="course-actions">
-                        <div class="price-section">
-                            <span class="price-label">Precio:</span>
-                            <span class="price-value ${course.price === 0 ? 'free' : ''}">
-                                ${course.price === 0 ? 'Gratis' : `€${course.price}`}
-                            </span>
+                <div class="course-info">
+                    <h2>${course.title}</h2>
+                    <p class="course-description">${course.description}</p>
+                    <div class="course-meta-large">
+                        <div class="meta-item">
+                            <i class="fas fa-signal"></i>
+                            <span>Nivel: ${course.level}</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary btn-lg" onclick="enrollCourse(${course.id})">
-                                <i class="fas fa-play"></i>
-                                ${course.price === 0 ? 'Comenzar Gratis' : 'Inscribirse Ahora'}
-                            </button>
-                            <button class="btn btn-secondary" onclick="toggleFavorite(${course.id})">
-                                <i class="fas fa-heart"></i>
-                                Favorito
-                            </button>
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Duración: ${course.duration}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-play-circle"></i>
+                            <span>${course.lessons} lecciones</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>${course.students} estudiantes</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>${course.rating} (${Math.floor(Math.random() * 500 + 100)} reseñas)</span>
+                        </div>
+                        ${course.certificate ? '<div class="meta-item"><i class="fas fa-certificate"></i><span>Certificado incluido</span></div>' : ''}
+                    </div>
+                    <div class="instructor-info">
+                        <div class="instructor-avatar-large">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h4>Instructor: ${course.instructor}</h4>
+                            <p>Experto en ${course.category} con más de 5 años de experiencia</p>
                         </div>
                     </div>
                 </div>
             </div>
-        `;
+            <div class="course-content-detail">
+                <h3>¿Qué aprenderás?</h3>
+                <ul class="learning-objectives">
+                    <li><i class="fas fa-check"></i> Conceptos fundamentales y avanzados</li>
+                    <li><i class="fas fa-check"></i> Proyectos prácticos del mundo real</li>
+                    <li><i class="fas fa-check"></i> Mejores prácticas de la industria</li>
+                    <li><i class="fas fa-check"></i> Herramientas y tecnologías actuales</li>
+                </ul>
+                <div class="course-actions">
+                    <div class="price-section">
+                        <span class="price-label">Precio:</span>
+                        <span class="price-value ${course.price === 0 ? 'free' : ''}">
+                            ${course.price === 0 ? 'Gratis' : `€${course.price}`}
+                        </span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-lg" onclick="enrollCourse(${course.id})">
+                            <i class="fas fa-play"></i>
+                            ${course.price === 0 ? 'Comenzar Gratis' : 'Inscribirse Ahora'}
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleFavorite(${course.id})">
+                            <i class="fas fa-heart"></i>
+                            Favorito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
     }
     
     openModal('courseModal');
@@ -440,13 +440,13 @@ function pauseDemoVideo() {
 function enrollCourse(courseId) {
     const course = coursesData.find(c => c.id === courseId);
     if (!course) return;
-    
-    showNotification(
-        `¡Te has inscrito exitosamente en "${course.title}"!`,
-        'success'
-    );
-    
-    closeModal('courseModal');
+        
+        showNotification(
+            `¡Te has inscrito exitosamente en "${course.title}"!`,
+            'success'
+        );
+        
+        closeModal('courseModal');
 }
 
 // Función para agregar a favoritos
@@ -454,7 +454,7 @@ function toggleFavorite(courseId) {
     const course = coursesData.find(c => c.id === courseId);
     if (!course) return;
     
-    showNotification(`"${course.title}" agregado a favoritos`, 'success');
+        showNotification(`"${course.title}" agregado a favoritos`, 'success');
 }
 
 // Función para mostrar notificaciones

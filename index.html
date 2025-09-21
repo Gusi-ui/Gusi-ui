@@ -72,20 +72,12 @@
     }
     </script>
     
-    <!-- Desactivar SW y limpiar cachés en localhost para evitar estilos obsoletos durante el preview -->
+    <!-- Optimización para desarrollo local -->
     <script>
-    (function(){
-      var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-      if (isLocal && 'serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(regs){
-          regs.forEach(function(r){ r.unregister(); });
-        }).catch(function(){});
-        if (window.caches && caches.keys) {
-          caches.keys().then(function(keys){ keys.forEach(function(k){ caches.delete(k); }); });
-        }
-        console.log('[Preview] Service Workers desregistrados y cachés limpiadas en localhost.');
-      }
-    })();
+    if(location.hostname==='localhost'||location.hostname==='127.0.0.1'){
+      if('serviceWorker'in navigator)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()));
+      if(window.caches&&caches.keys)caches.keys().then(k=>k.forEach(c=>caches.delete(c)));
+    }
     </script>
     
     <!-- Canonical URL -->
@@ -95,6 +87,10 @@
     <link rel="icon" href="freelancer-icon.png" type="image/png">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="freelancer-icon.png">
+    
+    <!-- Theme Color for mobile browsers -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     
     <!-- Preload critical resources -->
     <link rel="preload" href="styles.css?v=dev-20250917-1144" as="style">
@@ -129,134 +125,33 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
     
-    <!-- Google Analytics 4 (GA4) - Carga asíncrona optimizada con manejo de errores -->
+    <!-- Google Analytics 4 - Optimizado -->
     <script>
-        // Configuración robusta de Google Analytics con manejo de errores
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        
-        // Cargar el script de Google Analytics de forma segura
-        function loadGoogleAnalytics() {
-            // No cargar Google Analytics en localhost para evitar errores en desarrollo
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                console.log('Google Analytics deshabilitado en desarrollo local');
-                return;
-            }
-            
-            try {
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = 'https://www.googletagmanager.com/gtag/js?id=G-165E9VQDD8';
-                script.onerror = function() {
-                    console.warn('Google Analytics no pudo cargarse. Puede estar bloqueado por un adblocker.');
-                };
-                document.head.appendChild(script);
-                
-                // Configuración básica
-                gtag('js', new Date());
-                gtag('config', 'G-165E9VQDD8', {
-                    'transport_type': 'beacon',
-                    'anonymize_ip': true,
-                    'page_title': document.title,
-                    'page_location': window.location.href,
-                    'page_path': window.location.pathname,
-                    'send_page_view': true
-                });
-                
-                // Configuración específica para Web Vitals
-                gtag('config', 'G-165E9VQDD8', {
-                    'custom_map': {
-                        'dimension1': 'metric_name',
-                        'dimension2': 'metric_value',
-                        'dimension3': 'metric_rating',
-                        'dimension4': 'metric_id',
-                        'dimension5': 'navigation_type'
-                    }
-                });
-                
-            } catch (error) {
-                console.warn('Error en la configuración de Google Analytics:', error);
-            }
-        }
-        
-        // Cargar Google Analytics después de que la página esté lista
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadGoogleAnalytics);
-        } else {
-            loadGoogleAnalytics();
-        }
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+    if(location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
+      const s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-165E9VQDD8';
+      s.onerror=()=>console.warn('GA bloqueado');document.head.appendChild(s);
+      gtag('js',new Date());gtag('config','G-165E9VQDD8',{transport_type:'beacon',anonymize_ip:1});
+    }
     </script>
     
-    <!-- Critical CSS (Estilos críticos inlinados) -->
+    <!-- Critical CSS - Optimizado -->
     <style>
-    /* Critical CSS - Estilos necesarios para el renderizado inicial */
-    :root {
-        --primary-color: #2563eb;
-        --primary-dark: #1d4ed8;
-        --bg-primary: #ffffff;
-        --text-primary: #1e293b;
-        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-    
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-size: 16px; overflow-x: hidden; }
-    body { 
-        font-family: var(--font-family); 
-        font-size: 1rem; 
-        line-height: 1.6; 
-        color: var(--text-primary); 
-        background-color: var(--bg-primary); 
-        overflow-x: hidden; 
-    }
-    /* Header crítico */
-    .header { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        background: rgba(255, 255, 255, 0.95); 
-        backdrop-filter: blur(10px); 
-        z-index: 1000; 
-        transition: all 0.3s ease; 
-    }
-    /* Hero section crítico */
-    .hero { 
-        min-height: 100vh; 
-        display: flex; 
-        align-items: center; 
-        padding: 80px 0; 
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-    .hero-content { 
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto; 
-        padding: 0 8px; 
-        box-sizing: border-box;
-    }
-    /* Utilidades críticas */
-    .container { width: 100%; max-width: 100%; margin: 0 auto; padding: 0 8px; box-sizing: border-box; }
-    .sr-only { 
-        position: absolute; 
-        width: 1px; 
-        height: 1px; 
-        padding: 0; 
-        margin: -1px; 
-        overflow: hidden; 
-        clip: rect(0, 0, 0, 0); 
-        white-space: nowrap; 
-        border: 0; 
-    }
-    /* Mejoras de foco */
-    *:focus { outline: 2px solid var(--primary-color); outline-offset: 2px; }
-    @media (min-width: 1025px) {
-      .container, .hero-content { max-width: 1200px; width: 100%; padding: 0 1rem; }
-    }
+    :root{--primary-color:#2563eb;--bg-primary:#fff;--text-primary:#1e293b;--font-family:'Inter',system-ui,sans-serif}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{font-size:16px;overflow-x:hidden}
+    body{font-family:var(--font-family);font-size:1rem;line-height:1.6;color:var(--text-primary);background:var(--bg-primary);overflow-x:hidden}
+    .header{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);z-index:1000;transition:all .3s ease}
+    .hero{min-height:100vh;display:flex;align-items:center;padding:80px 0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+    .container{width:100%;max-width:100%;margin:0 auto;padding:0 8px;box-sizing:border-box}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    *:focus{outline:2px solid var(--primary-color);outline-offset:2px}
+    @media (min-width:1025px){.container{max-width:1200px;padding:0 1rem}}
     </style>
     
     <!-- Estilos CSS completos (carga con cache-busting en local) -->
-    <link rel="stylesheet" href="styles.css?v=dev-20250917-1144">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css?v=20250114-optimized">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -295,6 +190,10 @@
             <div class="nav-brand">
                 <img src="freelancer-icon-optimizado.png" alt="Gusi.dev - Desarrollador Freelance" class="brand-logo">
                 <span class="brand-text">Gusi.dev</span>
+                <!-- Theme toggle -->
+                <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema oscuro" title="Alternar tema oscuro">
+                    <span id="theme-icon" aria-hidden="true">🌙</span>
+                </button>
             </div>
             <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal">
                 <a href="#inicio" class="nav-link" role="menuitem">Inicio</a>
@@ -1028,27 +927,27 @@
                 </div>
                 
                 <div class="footer-services-technologies">
-                    <div class="footer-services">
-                        <h4>Servicios</h4>
-                        <ul>
-                            <li>Desarrollo Web</li>
-                            <li>Aplicaciones Móviles</li>
-                            <li>E-Commerce</li>
-                            <li>Mantenimiento</li>
-                        </ul>
-                    </div>
+                <div class="footer-services">
+                    <h4>Servicios</h4>
+                    <ul>
+                        <li>Desarrollo Web</li>
+                        <li>Aplicaciones Móviles</li>
+                        <li>E-Commerce</li>
+                        <li>Mantenimiento</li>
+                    </ul>
+                </div>
                     
-                    <div class="footer-technologies">
-                        <h4>Tecnologías</h4>
-                        <div class="tech-tags">
+                <div class="footer-technologies">
+                    <h4>Tecnologías</h4>
+                    <div class="tech-tags">
                             <span class="tech-tag"><i class="fab fa-react"></i> React</span>
                             <span class="tech-tag"><i class="fab fa-node-js"></i> Node.js</span>
                             <span class="tech-tag"><i class="fab fa-react"></i> React Native</span>
                             <span class="tech-tag"><i class="fas fa-bolt"></i> Next.js</span>
                             <span class="tech-tag"><i class="fas fa-database"></i> MongoDB</span>
                             <span class="tech-tag"><i class="fas fa-database"></i> PostgreSQL</span>
-                        </div>
                     </div>
+                </div>
                 </div>
 
             </div>
@@ -1079,31 +978,14 @@
     
     <!-- Carga optimizada de recursos no críticos -->
     <script>
-    // Cargar recursos no críticos después de que la página esté lista
-    if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(function() {
-            // Preconectar a recursos externos no críticos
-            var preconnect = document.createElement('link');
-            preconnect.rel = 'preconnect';
-            preconnect.href = 'https://cdnjs.cloudflare.com';
-            document.head.appendChild(preconnect);
-            
-            // Precargar imágenes no críticas
-            var images = ['images/proyectos/plataforma-educativa.jpg', 'images/proyectos/ecommerce-boutique.jpg'];
-            images.forEach(function(src) {
-                var img = new Image();
-                img.src = src;
-            });
-        });
-    } else {
-        // Fallback para navegadores que no soportan requestIdleCallback
-        setTimeout(function() {
-            var preconnect = document.createElement('link');
-            preconnect.rel = 'preconnect';
-            preconnect.href = 'https://cdnjs.cloudflare.com';
-            document.head.appendChild(preconnect);
-        }, 2000);
+    if('requestIdleCallback'in window){
+      requestIdleCallback(()=>{
+        const p=document.createElement('link');p.rel='preconnect';p.href='https://cdnjs.cloudflare.com';document.head.appendChild(p);
+        ['images/proyectos/plataforma-educativa.jpg','images/proyectos/ecommerce-boutique.jpg'].forEach(s=>{const i=new Image();i.src=s});
+      });
+    }else{
+      setTimeout(()=>{const p=document.createElement('link');p.rel='preconnect';p.href='https://cdnjs.cloudflare.com';document.head.appendChild(p)},2000);
     }
     </script>
-  </body>
- </html>
+</body>
+</html>

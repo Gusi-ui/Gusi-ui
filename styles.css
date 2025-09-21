@@ -1,65 +1,77 @@
-/* ===== VARIABLES CSS ===== */
-/* CSS File Recreation - 2025-01-14 13:08 */
+/* ===== GRADIENTES Y SOMBRAS ===== */
 :root {
-    /* Colores de fondo */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-dark: #0f172a;
-    --bg-card: #ffffff;
-    /* Colores de texto */
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-light: #94a3b8;
-    --text-white: #ffffff;
-    /* Colores de marca */
-    --primary-color: #2563eb;
-    --primary-dark: #1d4ed8;
-    --accent-color: #f59e0b;
-    /* Gradientes */
     --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    /* Sombras */
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
     --shadow-lg: 0 10px 15px rgba(0,0,0,0.15), 0 4px 6px rgba(0,0,0,0.1);
     --shadow-xl: 0 20px 25px rgba(0,0,0,0.2), 0 10px 10px rgba(0,0,0,0.12);
-    /* WhatsApp */
-    --whatsapp-color: #25D366;
-    --whatsapp-dark: #1ebe57;
-    /* Espaciados */
-    --spacing-xs: 0.375rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    --spacing-3xl: 4rem;
-    /* Border radius */
-    --radius-sm: 0.375rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-2xl: 1.5rem;
-    /* Tipografía base */
-    --font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    --font-size-base: 1rem;
-    --font-size-sm: 0.875rem;
-    --font-size-xs: 0.75rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 2rem;
-    --font-size-4xl: 2.5rem;
-    --font-size-5xl: 3rem;
-    /* Transiciones */
-    --transition-fast: 0.15s ease-in-out;
-    --transition-normal: 0.3s ease-in-out;
-    --transition-slow: 0.5s ease-in-out;
 }
 
-/* ===== RESET Y BASE ===== */
-* {
+/* Dark mode variables (defaults are light; overridden in prefers-color-scheme or .dark) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-dark: #020617;
+        --bg-card: #1e293b;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-light: #94a3b8;
+        --text-white: #ffffff;
+        --primary-color: #60a5fa;
+        --primary-dark: #3b82f6;
+        --accent-color: #fbbf24;
+        --accent-light: #fcd34d;
+        --whatsapp-color: #25D366;
+        --whatsapp-dark: #1ebe57;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+        --shadow-lg: 0 10px 15px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.3);
+        --shadow-xl: 0 20px 25px rgba(0,0,0,0.5), 0 10px 10px rgba(0,0,0,0.4);
+    }
+}
+
+/* Class-based dark mode override (for explicit toggle) */
+.dark {
+    --bg-primary: #0f172a !important;
+    --bg-secondary: #1e293b !important;
+    --bg-dark: #020617 !important;
+    --bg-card: #1e293b !important;
+    --text-primary: #f1f5f9 !important;
+    --text-secondary: #cbd5e1 !important;
+    --text-light: #94a3b8 !important;
+    --text-white: #ffffff !important;
+    --primary-color: #60a5fa !important;
+    --primary-dark: #3b82f6 !important;
+    --accent-color: #fbbf24 !important;
+    --accent-light: #fcd34d !important;
+    --whatsapp-color: #25D366 !important;
+    --whatsapp-dark: #1ebe57 !important;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2) !important;
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2) !important;
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.3) !important;
+    --shadow-xl: 0 20px 25px rgba(0,0,0,0.5), 0 10px 10px rgba(0,0,0,0.4) !important;
+}
+
+/* ===== RESET Y BASE OPTIMIZADO ===== */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Optimización de rendering */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mejora de scroll en iOS */
+* {
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Animación slide-in-right */
@@ -305,6 +317,88 @@ select:focus {
     box-shadow: var(--shadow-md);
 }
 
+/* Dark mode header styles */
+.dark .header {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .header.scrolled {
+    background: rgba(15, 23, 42, 0.98);
+    box-shadow: var(--shadow-md);
+}
+
+/* Dark mode body and global styles */
+.dark body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Dark mode sections */
+.dark .services {
+    background: var(--bg-secondary);
+}
+
+.dark .projects {
+    background: var(--bg-primary);
+}
+
+.dark .testimonials {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.dark .contact {
+    background: var(--bg-secondary);
+}
+
+/* Dark mode cards */
+.dark .service-card,
+.dark .project-card,
+.dark .testimonial-card,
+.dark .contact-form {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode form elements */
+.dark .form-group input,
+.dark .form-group select,
+.dark .form-group textarea {
+    background: var(--bg-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.dark .form-group input:focus,
+.dark .form-group select:focus,
+.dark .form-group textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* Dark mode footer */
+.dark .footer {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+}
+
+/* Dark mode hero section */
+.dark .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+/* Dark mode navigation links */
+.dark .nav-link {
+    color: var(--text-primary);
+}
+
+.dark .nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Dark mode brand text */
+.dark .nav-brand .brand-text {
+    color: var(--primary-color);
+}
+
 .nav {
     display: flex;
     align-items: center;
@@ -331,6 +425,62 @@ select:focus {
     font-size: var(--font-size-xl);
     font-weight: 700;
     color: var(--primary-color);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--bg-card);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    margin-left: var(--spacing-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    background: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle #theme-icon {
+    font-size: var(--font-size-lg);
+    transition: all var(--transition-normal);
+    z-index: 2;
+    position: relative;
+}
+
+.theme-toggle:hover #theme-icon {
+    color: var(--text-white);
+}
+
+/* Dark mode specific styles for theme toggle */
+.dark .theme-toggle {
+    background: var(--bg-card);
+    border-color: var(--accent-color);
+}
+
+.dark .theme-toggle:hover {
+    background: var(--accent-color);
+}
+
+.dark .theme-toggle #theme-icon {
+    color: var(--accent-color);
+}
+
+.dark .theme-toggle:hover #theme-icon {
+    color: var(--text-white);
 }
 
 .nav-menu {
@@ -1587,8 +1737,7 @@ select:focus {
     min-height: 120px;
 }
 
-/* ===== VARIABLES CSS ===== */
-/* CSS File Recreation - 2025-01-14 13:08 */
+/* ===== VARIABLES CSS OPTIMIZADAS ===== */
 :root {
     /* Colores principales */
     --primary-color: #2563eb;
@@ -1607,7 +1756,11 @@ select:focus {
     --text-secondary: #64748b;
     --text-light: #94a3b8;
     --text-white: #ffffff;
+    /* WhatsApp */
+    --whatsapp-color: #25D366;
+    --whatsapp-dark: #1ebe57;
     /* Espaciado */
+    --spacing-xs: 0.375rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
@@ -1624,6 +1777,17 @@ select:focus {
     --transition-fast: 0.15s ease-in-out;
     --transition-normal: 0.3s ease-in-out;
     --transition-slow: 0.5s ease-in-out;
+    /* Tipografía base */
+    --font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.875rem;
+    --font-size-xs: 0.75rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 2.5rem;
+    --font-size-5xl: 3rem;
 }
 
 .footer-brand p {

@@ -281,14 +281,14 @@ function initContactForm() {
                     });
                 }
                 
-                showNotification('Mensaje enviado correctamente. Te contactaré pronto.', 'success');
-                
-                // Limpiar formulario
+        showNotification('Mensaje enviado correctamente. Te contactaré pronto.', 'success');
+        
+        // Limpiar formulario
                 contactForm.reset();
-                
-                // Redirigir a WhatsApp con el mensaje
-                const whatsappMessage = `Hola! Me llamo ${name} y estoy interesado en el servicio de ${service}. ${message}`;
-                const whatsappUrl = `https://wa.me/34619027645?text=${encodeURIComponent(whatsappMessage)}`;
+        
+        // Redirigir a WhatsApp con el mensaje
+        const whatsappMessage = `Hola! Me llamo ${name} y estoy interesado en el servicio de ${service}. ${message}`;
+        const whatsappUrl = `https://wa.me/34619027645?text=${encodeURIComponent(whatsappMessage)}`;
                 
                 // Evento de Google Analytics: Redirección a WhatsApp
                 if (typeof gtag !== 'undefined') {
@@ -298,11 +298,11 @@ function initContactForm() {
                         'custom_parameter_1': service
                     });
                 }
-                
-                // Abrir WhatsApp después de un breve delay
-                setTimeout(() => {
-                    window.open(whatsappUrl, '_blank');
-                }, 2000);
+        
+        // Abrir WhatsApp después de un breve delay
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+        }, 2000);
             } else {
                 throw new Error('Error en el envío');
             }
@@ -782,13 +782,151 @@ function registerServiceWorker() {
 }
 
 // Registrar Service Worker cuando la página esté cargada
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', registerServiceWorker);
+function shouldRegisterServiceWorker() {
+    try {
+        const host = location.hostname;
+        // No registrar el SW en entorno local o en previews sin dominio
+        if (host === 'localhost' || host === '127.0.0.1' || host === '') return false;
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+if (shouldRegisterServiceWorker()) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', registerServiceWorker);
+    } else {
+        registerServiceWorker();
+    }
 } else {
-    registerServiceWorker();
+    console.log('[Service Worker] Registro omitido en entorno local');
 }
 
 // ===== MANEJO DE ERRORES =====
 window.addEventListener('error', function(e) {
     console.error('Error en la aplicación:', e.error);
 });
+
+// ===== DARK MODE (tema oscuro) =====
+function applyTheme(isDark) {
+    const root = document.documentElement;
+    const icon = document.getElementById('theme-icon');
+    
+    if (isDark) {
+        root.classList.add('dark');
+        if (icon) icon.textContent = '☀️';
+        
+        // Evento de Google Analytics: Dark mode activado
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'dark_mode_enabled', {
+                'event_category': 'Theme',
+                'event_label': 'Dark Mode',
+                'custom_parameter_1': 'theme_toggle'
+            });
+        }
+    } else {
+        root.classList.remove('dark');
+        if (icon) icon.textContent = '🌙';
+        
+        // Evento de Google Analytics: Light mode activado
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'light_mode_enabled', {
+                'event_category': 'Theme',
+                'event_label': 'Light Mode',
+                'custom_parameter_1': 'theme_toggle'
+            });
+        }
+    }
+
+    // Actualizar meta theme-color para navegadores móviles
+    updateMetaThemeColor(isDark);
+    
+    // Añadir transición suave
+    root.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+    
+    // Forzar re-render para asegurar que los cambios se apliquen
+    setTimeout(() => {
+        root.style.display = 'none';
+        root.offsetHeight; // Trigger reflow
+        root.style.display = '';
+    }, 10);
+}
+
+function updateMetaThemeColor(isDark) {
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta');
+        metaThemeColor.name = 'theme-color';
+        document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.content = isDark ? '#0f172a' : '#ffffff';
+}
+
+function getInitialTheme() {
+    const stored = localStorage.getItem('site-theme');
+    if (stored === 'dark') return true;
+    if (stored === 'light') return false;
+
+    // Si no hay preferencia guardada, usar prefers-color-scheme
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return true;
+    return false;
+}
+
+function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const next = !isDark;
+    applyTheme(next);
+    
+    try { 
+        localStorage.setItem('site-theme', next ? 'dark' : 'light'); 
+    } catch (e) { 
+        console.warn('No se pudo guardar la preferencia del tema:', e);
+    }
+    
+    // Mostrar notificación del cambio
+    showNotification(
+        `Modo ${next ? 'oscuro' : 'claro'} activado`, 
+        'success'
+    );
+}
+
+// Escuchar cambios en prefers-color-scheme
+function watchSystemTheme() {
+    if (window.matchMedia) {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', function(e) {
+            // Solo aplicar si no hay preferencia guardada
+            const stored = localStorage.getItem('site-theme');
+            if (!stored) {
+                applyTheme(e.matches);
+            }
+        });
+    }
+}
+
+// Inicializar tema al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    const initialDark = getInitialTheme();
+    applyTheme(initialDark);
+    watchSystemTheme();
+
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleTheme();
+        });
+        
+        // Soporte para navegación por teclado
+        toggleBtn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleTheme();
+            }
+        });
+    }
+});
+
+// Exportar función por si se quiere usar desde consola
+window.toggleTheme = toggleTheme;
