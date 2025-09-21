@@ -7,11 +7,11 @@
     <meta name="description" content="Política de Privacidad de Gusi.dev. Conoce cómo protegemos y gestionamos tus datos personales.">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="styles.min.css" as="style">
+    <link rel="preload" href="styles.css?v=20250114-footer-separated" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     
     <!-- CSS -->
-    <link rel="stylesheet" href="styles.min.css">
+    <link rel="stylesheet" href="styles.css?v=20250114-footer-separated">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Favicon -->
@@ -34,29 +34,27 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <div class="nav-brand">
-                    <a href="index.html" class="logo">
-                        <img src="freelancer-icon-optimizado.png" alt="Gusi.dev Logo" width="40" height="40">
-                        <span>Gusi.dev</span>
-                    </a>
-                </div>
-                
-                <ul class="nav-menu">
-                    <li><a href="index.html#inicio">Inicio</a></li>
-                    <li><a href="index.html#servicios">Servicios</a></li>
-                    <li><a href="index.html#proyectos">Proyectos</a></li>
-                    <li><a href="index.html#contacto">Contacto</a></li>
-                </ul>
-                
-                <div class="nav-toggle" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </nav>
-        </div>
+        <nav class="nav">
+            <div class="nav-brand">
+                <img src="freelancer-icon-optimizado.png" alt="Gusi.dev - Desarrollador Freelance" class="brand-logo">
+                <span class="brand-text">Gusi.dev</span>
+                <!-- Theme toggle -->
+                <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema oscuro" title="Alternar tema oscuro">
+                    <span id="theme-icon" aria-hidden="true">🌙</span>
+                </button>
+            </div>
+            <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal">
+                <a href="index.html#inicio" class="nav-link" role="menuitem">Inicio</a>
+                <a href="index.html#servicios" class="nav-link" role="menuitem">Servicios</a>
+                <a href="index.html#proyectos" class="nav-link" role="menuitem">Proyectos</a>
+                <a href="index.html#contacto" class="nav-link" role="menuitem">Contacto</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle" aria-label="Menú de navegación" aria-expanded="false" aria-controls="nav-menu" role="button" tabindex="0">
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
+            </div>
+        </nav>
     </header>
 
     <!-- Main Content -->
@@ -171,7 +169,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <h3>Gusi.dev</h3>
-                    <p>Desarrollador Freelance especializado en soluciones digitales modernas.</p>
+                    <p>Desarrollador Freelance especializado en soluciones digitales modernas. Transformo ideas en experiencias digitales excepcionales.</p>
                     <div class="footer-contact">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
@@ -181,33 +179,53 @@
                             <i class="fab fa-whatsapp"></i>
                             <span>+34 619 027 645</span>
                         </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Mataró, Barcelona</span>
+                        </div>
                     </div>
                 </div>
+                
+                <div class="footer-services-technologies">
                 <div class="footer-services">
-                    <h4>Enlaces Rápidos</h4>
+                    <h4>Servicios</h4>
                     <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="index.html#servicios">Servicios</a></li>
-                        <li><a href="index.html#proyectos">Proyectos</a></li>
-                        <li><a href="index.html#contacto">Contacto</a></li>
+                        <li>Desarrollo Web</li>
+                        <li>Aplicaciones Móviles</li>
+                        <li>E-Commerce</li>
+                        <li>Mantenimiento</li>
                     </ul>
                 </div>
+                    
                 <div class="footer-technologies">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="politica-privacidad.html">Política de Privacidad</a></li>
-                        <li><a href="terminos-servicio.html">Términos de Servicio</a></li>
-                        <li><a href="politica-cookies.html">Política de Cookies</a></li>
-                    </ul>
+                    <h4>Tecnologías</h4>
+                    <div class="tech-tags">
+                            <span class="tech-tag"><i class="fab fa-react"></i> React</span>
+                            <span class="tech-tag"><i class="fab fa-node-js"></i> Node.js</span>
+                            <span class="tech-tag"><i class="fab fa-react"></i> React Native</span>
+                            <span class="tech-tag"><i class="fas fa-bolt"></i> Next.js</span>
+                            <span class="tech-tag"><i class="fas fa-database"></i> MongoDB</span>
+                            <span class="tech-tag"><i class="fas fa-database"></i> PostgreSQL</span>
+                    </div>
                 </div>
+                </div>
+
             </div>
             <div class="footer-bottom">
                 <div class="footer-bottom-content">
                     <p>&copy; 2024 Jose Martínez (Gusi). Todos los derechos reservados.</p>
                     <div class="footer-bottom-links">
-                        <a href="politica-privacidad.html">Privacidad</a>
-                        <a href="terminos-servicio.html">Términos</a>
-                        <a href="politica-cookies.html">Cookies</a>
+                        <div class="nav-links">
+                            <a href="index.html#inicio">Inicio</a>
+                            <a href="index.html#servicios">Servicios</a>
+                            <a href="index.html#proyectos">Proyectos</a>
+                            <a href="index.html#contacto">Contacto</a>
+                        </div>
+                        <div class="legal-links">
+                            <a href="politica-privacidad.html">Política de Privacidad</a>
+                            <a href="terminos-servicio.html">Términos de Servicio</a>
+                            <a href="politica-cookies.html">Cookies</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,6 +233,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="script.min.js" defer></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
