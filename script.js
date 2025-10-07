@@ -304,9 +304,6 @@ function initContactForm() {
             body: jsonString
         })
         .then(function(response) {
-            console.log('Respuesta del servidor:', response.status, response.statusText);
-            console.log('Headers:', response.headers);
-
             if (response.ok) {
                 // Evento de Google Analytics: Formulario enviado exitosamente
                 if (typeof gtag !== 'undefined') {
@@ -364,27 +361,11 @@ function initContactForm() {
             } else {
                 // Intentar obtener el mensaje de error del servidor
                 return response.text().then(function(errorText) {
-                    console.error('Error response body:', errorText);
                     throw new Error(`Error del servidor (${response.status}): ${response.statusText}. Detalles: ${errorText}`);
                 });
             }
         })
         .catch(function(error) {
-            console.error('Error completo al enviar formulario:', error);
-            console.error('Tipo de error:', error.constructor.name);
-            console.error('Mensaje de error:', error.message);
-            console.error('Stack trace:', error.stack);
-
-            // Mostrar información detallada en consola para debugging
-            console.log('=== DEBUGGING INFO ===');
-            console.log('URL del formulario:', 'https://formspree.io/f/xeorlovl');
-            console.log('Datos originales:', {
-                name: name,
-                email: email,
-                service: service,
-                message: message
-            });
-            console.log('Datos sanitizados enviados:', formDataObj);
 
             // Evento de Google Analytics: Error en el envío del formulario
             if (typeof gtag !== 'undefined') {
@@ -643,197 +624,77 @@ requestIdleCallback(() => initLazyLoading());
 
 // Esta función se ha movido más abajo en el archivo con mejoras
 
-// Función para enviar métricas a analytics (puede ser extendida)
+// Función para enviar métricas a analytics (optimizada)
 function sendToAnalytics(metricName, metric) {
-    // Aquí puedes integrar con Google Analytics, Google Tag Manager, o tu sistema de tracking
-    const data = {
-        event: 'web_vitals',
-        metric_name: metricName,
-        value: metric.value,
-        rating: metric.rating,
-        timestamp: Date.now(),
-        page_url: window.location.href,
-        user_agent: navigator.userAgent
-    };
-
-    // Integración con Google Analytics 4 (GA4)
+    // Solo enviar a Google Analytics si está disponible
     if (typeof gtag !== 'undefined') {
         gtag('event', 'web_vitals', {
             metric_name: metricName,
             value: metric.value,
             rating: metric.rating,
-            // Información adicional para análisis
             page_path: window.location.pathname,
             page_title: document.title,
-            // Dimensiones personalizadas para segmentación
             metric_id: metric.id,
             navigation_type: performance.getEntriesByType('navigation')[0]?.type || 'navigate'
         });
     }
-
-    // Enviar a endpoint personalizado para backup
-    if (typeof navigator.sendBeacon !== 'undefined') {
-        const analyticsEndpoint = 'https://your-analytics-endpoint.com/api/web-vitals';
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        navigator.sendBeacon(analyticsEndpoint, blob);
-    }
-
-    console.log('Metrica enviada a analytics:', data);
 }
 
-// Configuración avanzada de Web Vitals con thresholds personalizados
-function getWebVitalsConfig() {
-    return {
-        reportAllChanges: true,
-        durationThreshold: 1000,
-        // Thresholds específicos para tu aplicación
-        thresholds: {
-            LCP: 2500,    // 2.5 segundos
-            FID: 100,     // 100 milisegundos  
-            CLS: 0.1,     // 0.1
-            FCP: 1800,    // 1.8 segundos
-            TTFB: 600     // 600 milisegundos
-        }
-    };
-}
-
-// Monitoreo completo de Core Web Vitals con métricas detalladas
+// Configuración simplificada y optimizada de Web Vitals
 function initWebVitalsMonitoring() {
-    // Verificar que la librería Web Vitals esté disponible
-    if (typeof window.webVitals === 'undefined') {
-        console.log('Web Vitals library no está disponible aún. Reintentando...');
-        // Reintentar después de un breve delay
+    // Verificar que la librería esté disponible
+    if (typeof webVitals === 'undefined') {
         setTimeout(initWebVitalsMonitoring, 100);
         return;
     }
 
-    if ('webVitals' in window && window.webVitals) {
-        const config = getWebVitalsConfig();
+    try {
+        // Configuración básica optimizada
+        const config = {
+            reportAllChanges: false,
+            durationThreshold: 1000
+        };
 
-        try {
-            // Monitorear Largest Contentful Paint (LCP)
-            window.webVitals.onLCP(function(metric) {
-                console.log('LCP:', metric.value, 'ms');
-                console.log('LCP Details:', {
-                    id: metric.id,
-                    name: metric.name,
-                    rating: metric.rating,
-                    entries: metric.entries
-                });
-                
-                // Enviar a analytics
-                sendToAnalytics('LCP', metric);
-                
-                // Alertar si está fuera de los objetivos
-                if (metric.value > config.thresholds.LCP) {
-                    console.warn('⚠️ LCP necesita mejora:', metric.value, 'ms');
-                }
+        // LCP - Largest Contentful Paint
+        webVitals.onLCP(function(metric) {
+            sendToAnalytics('LCP', metric);
+        }, config);
+
+        // INP - Interaction to Next Paint (métricas modernas)
+        if (webVitals.onINP) {
+            webVitals.onINP(function(metric) {
+                sendToAnalytics('INP', metric);
             }, config);
-
-            // Monitorear Interaction to Next Paint (INP) - reemplaza a FID en versiones recientes
-            if (window.webVitals.onINP) {
-                window.webVitals.onINP(function(metric) {
-                    console.log('INP:', metric.value, 'ms');
-                    console.log('INP Details:', {
-                        id: metric.id,
-                        name: metric.name,
-                        rating: metric.rating,
-                        entries: metric.entries
-                    });
-                    
-                    // Enviar a analytics
-                    sendToAnalytics('INP', metric);
-                    
-                    if (metric.value > 200) { // INP threshold is 200ms
-                        console.warn('⚠️ INP necesita mejora:', metric.value, 'ms');
-                    }
-                }, config);
-            }
-
-            // Monitorear First Input Delay (FID) - para compatibilidad con versiones anteriores
-            if (window.webVitals.onFID) {
-                window.webVitals.onFID(function(metric) {
-                    console.log('FID:', metric.value, 'ms');
-                    console.log('FID Details:', {
-                        id: metric.id,
-                        name: metric.name,
-                        rating: metric.rating,
-                        entries: metric.entries
-                    });
-                    
-                    // Enviar a analytics
-                    sendToAnalytics('FID', metric);
-                    
-                    if (metric.value > config.thresholds.FID) {
-                        console.warn('⚠️ FID necesita mejora:', metric.value, 'ms');
-                    }
-                }, config);
-            }
-
-            // Monitorear Cumulative Layout Shift (CLS)
-            window.webVitals.onCLS(function(metric) {
-                console.log('CLS:', metric.value);
-                console.log('CLS Details:', {
-                    id: metric.id,
-                    name: metric.name,
-                    rating: metric.rating,
-                    entries: metric.entries
-                });
-                
-                // Enviar a analytics
-                sendToAnalytics('CLS', metric);
-                
-                if (metric.value > config.thresholds.CLS) {
-                    console.warn('⚠️ CLS necesita mejora:', metric.value);
-                }
-            }, config);
-
-            // Monitorear First Contentful Paint (FCP)
-            window.webVitals.onFCP(function(metric) {
-                console.log('FCP:', metric.value, 'ms');
-                console.log('FCP Details:', {
-                    id: metric.id,
-                    name: metric.name,
-                    rating: metric.rating,
-                    entries: metric.entries
-                });
-                
-                // Enviar a analytics
-                sendToAnalytics('FCP', metric);
-                
-                if (metric.value > config.thresholds.FCP) {
-                    console.warn('⚠️ FCP necesita mejora:', metric.value, 'ms');
-                }
-            }, config);
-
-            // Monitorear Time to First Byte (TTFB)
-            window.webVitals.onTTFB(function(metric) {
-                console.log('TTFB:', metric.value, 'ms');
-                console.log('TTFB Details:', {
-                    id: metric.id,
-                    name: metric.name,
-                    rating: metric.rating,
-                    entries: metric.entries
-                });
-                
-                // Enviar a analytics
-                sendToAnalytics('TTFB', metric);
-                
-                if (metric.value > config.thresholds.TTFB) {
-                    console.warn('⚠️ TTFB necesita mejora:', metric.value, 'ms');
-                }
-            }, config);
-
-            console.log('Web Vitals monitoring iniciado con configuración:', config);
-        } catch (error) {
-            console.error('Error al inicializar Web Vitals:', error);
         }
-    } else {
-        console.log('Web Vitals no disponible');
+
+        // FID - First Input Delay (compatibilidad)
+        if (webVitals.onFID) {
+            webVitals.onFID(function(metric) {
+                sendToAnalytics('FID', metric);
+            }, config);
+        }
+
+        // CLS - Cumulative Layout Shift
+        webVitals.onCLS(function(metric) {
+            sendToAnalytics('CLS', metric);
+        }, config);
+
+        // FCP - First Contentful Paint
+        webVitals.onFCP(function(metric) {
+            sendToAnalytics('FCP', metric);
+        }, config);
+
+        // TTFB - Time to First Byte
+        webVitals.onTTFB(function(metric) {
+            sendToAnalytics('TTFB', metric);
+        }, config);
+
+    } catch (error) {
+        // Error silencioso en producción
     }
 }
 
-// Iniciar monitoreo cuando la página esté completamente cargada
+// Iniciar monitoreo optimizado
 if (document.readyState === 'complete') {
     initWebVitalsMonitoring();
 } else {
@@ -864,16 +725,13 @@ function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
             .then(registration => {
-                console.log('Service Worker registrado con éxito:', registration);
-                
                 // Verificar actualizaciones periódicamente
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
-                    console.log('Nueva versión de Service Worker encontrada:', newWorker);
                 });
             })
             .catch(error => {
-                console.log('Error registrando Service Worker:', error);
+                // Error silencioso en producción
             });
     }
 }
@@ -897,12 +755,12 @@ if (shouldRegisterServiceWorker()) {
         registerServiceWorker();
     }
 } else {
-    console.log('[Service Worker] Registro omitido en entorno local');
+    // Registro omitido en entorno local
 }
 
 // ===== MANEJO DE ERRORES =====
 window.addEventListener('error', function(e) {
-    console.error('Error en la aplicación:', e.error);
+    // Error manejado silenciosamente en producción
 });
 
 // ===== DARK MODE (tema oscuro) =====
@@ -975,10 +833,10 @@ function toggleTheme() {
     const next = !isDark;
     applyTheme(next);
     
-    try { 
-        localStorage.setItem('site-theme', next ? 'dark' : 'light'); 
-    } catch (e) { 
-        console.warn('No se pudo guardar la preferencia del tema:', e);
+    try {
+        localStorage.setItem('site-theme', next ? 'dark' : 'light');
+    } catch (e) {
+        // Error silencioso en producción
     }
     
     // Mostrar notificación del cambio
