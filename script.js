@@ -256,11 +256,18 @@ function initContactForm() {
             });
         }
 
-        // Enviar formulario a Netlify Forms
-        fetch('/', {
+        // Enviar formulario a Formspree (compatible con GitHub Pages)
+        fetch('https://formspree.io/f/xeqypkwd', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                service: service,
+                message: message,
+                _subject: `Nuevo mensaje de contacto desde Gusi.dev - ${service}`,
+                _replyto: email
+            })
         })
         .then(function(response) {
             if (response.ok) {

@@ -1766,6 +1766,7 @@ select:focus {
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
     --primary-light: #3b82f6;
+    --gradient-modern: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --secondary-color: #1e293b;
     --accent-color: #f59e0b;
     --accent-light: #fbbf24;
