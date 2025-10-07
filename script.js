@@ -15,72 +15,30 @@ window.addEventListener('load', function() {
 
 // ===== UTILIDADES DE ACCESIBILIDAD =====
 
-// Polyfill para atributo inert con manejo avanzado de accesibilidad
+// Polyfill simplificado para atributo inert
 function setInert(element, inert) {
     if (inert) {
         element.setAttribute('inert', '');
-        // Para navegadores que no soportan inert, añadir estilos y prevenir eventos
+        // Para navegadores que no soportan inert, prevenir eventos básicos
         if (!HTMLElement.prototype.hasOwnProperty('inert')) {
             element.style.pointerEvents = 'none';
-            element.style.userSelect = 'none';
-            element.style.cursor = 'default';
-            element.style.opacity = '0';
-            element.style.visibility = 'hidden';
-            element.style.display = 'none';
 
-            // Prevenir eventos de teclado y ratón completamente
-            element.addEventListener('keydown', preventDefault, true);
-            element.addEventListener('keypress', preventDefault, true);
-            element.addEventListener('keyup', preventDefault, true);
+            // Prevenir eventos básicos de interacción
             element.addEventListener('click', preventDefault, true);
             element.addEventListener('mousedown', preventDefault, true);
-            element.addEventListener('mouseup', preventDefault, true);
             element.addEventListener('focus', preventDefault, true);
-            element.addEventListener('focusin', preventDefault, true);
-            element.addEventListener('focusout', preventDefault, true);
-            element.addEventListener('blur', preventDefault, true);
-
-            // Prevenir eventos táctiles en móviles
             element.addEventListener('touchstart', preventDefault, true);
-            element.addEventListener('touchend', preventDefault, true);
-            element.addEventListener('touchmove', preventDefault, true);
-            element.addEventListener('touchcancel', preventDefault, true);
-
-            // Prevenir eventos del mouse
-            element.addEventListener('mouseenter', preventDefault, true);
-            element.addEventListener('mouseleave', preventDefault, true);
-            element.addEventListener('mouseover', preventDefault, true);
-            element.addEventListener('mouseout', preventDefault, true);
         }
     } else {
         element.removeAttribute('inert');
         if (!HTMLElement.prototype.hasOwnProperty('inert')) {
             element.style.pointerEvents = '';
-            element.style.userSelect = '';
-            element.style.cursor = '';
-            element.style.opacity = '';
-            element.style.visibility = '';
-            element.style.display = '';
 
-            // Remover event listeners
-            element.removeEventListener('keydown', preventDefault, true);
-            element.removeEventListener('keypress', preventDefault, true);
-            element.removeEventListener('keyup', preventDefault, true);
+            // Remover event listeners básicos
             element.removeEventListener('click', preventDefault, true);
             element.removeEventListener('mousedown', preventDefault, true);
-            element.removeEventListener('mouseup', preventDefault, true);
             element.removeEventListener('focus', preventDefault, true);
-            element.removeEventListener('focusin', preventDefault, true);
-            element.removeEventListener('focusout', preventDefault, true);
-            element.removeEventListener('blur', preventDefault, true);
             element.removeEventListener('touchstart', preventDefault, true);
-            element.removeEventListener('touchend', preventDefault, true);
-            element.removeEventListener('touchmove', preventDefault, true);
-            element.removeEventListener('touchcancel', preventDefault, true);
-            element.removeEventListener('mouseenter', preventDefault, true);
-            element.removeEventListener('mouseleave', preventDefault, true);
-            element.removeEventListener('mouseover', preventDefault, true);
-            element.removeEventListener('mouseout', preventDefault, true);
         }
     }
 }
@@ -169,29 +127,39 @@ function initNavigation() {
         }
     });
 
-    // Prevenir navegación secuencial por teclado hacia elementos inert
+    // Prevenir navegación secuencial por teclado hacia elementos inert (simplificado)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Tab' && !navMenu.classList.contains('active')) {
-            // Si el menú está cerrado y el foco está en el toggle, permitir navegación normal
-            if (document.activeElement === navToggle) {
-                return;
-            }
-
-            // Prevenir que el foco entre en elementos del menú cerrado
-            const focusableElements = navMenu.querySelectorAll('a, button, input, select, textarea, [tabindex]');
-            const isTryingToFocusMenu = Array.from(focusableElements).some(el => el === e.target);
-
-            if (isTryingToFocusMenu) {
+            // Si el foco intenta entrar en elementos del menú cerrado, redirigirlo
+            if (navMenu.contains(e.target)) {
                 e.preventDefault();
                 navToggle.focus();
             }
         }
     });
 
-    // Asegurar que elementos dentro del menú cerrado no sean enfocables
-    function ensureMenuElementsUnfocusable() {
-        if (!navMenu.classList.contains('active')) {
-            const focusableElements = navMenu.querySelectorAll('a, button, input, select, textarea, [tabindex]');
+    // Función helper para actualizar estado del menú con manejo simplificado de accesibilidad
+    function updateMenuState(isOpen) {
+        navToggle.classList.toggle('active', isOpen);
+        navMenu.classList.toggle('active', isOpen);
+
+        // Usar atributos ARIA apropiados
+        navToggle.setAttribute('aria-expanded', isOpen);
+
+        if (isOpen) {
+            // Menú abierto: remover inert completamente
+            setInert(navMenu, false);
+            navMenu.removeAttribute('aria-hidden');
+        } else {
+            // Menú cerrado: añadir inert para prevenir interacción completa
+            setInert(navMenu, true);
+            navMenu.removeAttribute('aria-hidden');
+        }
+
+        // Solo aplicar tabindex cuando sea necesario para accesibilidad
+        if (!isOpen) {
+            // Solo establecer tabindex en elementos específicos cuando esté cerrado
+            const focusableElements = navMenu.querySelectorAll('a.nav-link');
             focusableElements.forEach(el => {
                 if (!el.hasAttribute('data-original-tabindex')) {
                     el.setAttribute('data-original-tabindex', el.getAttribute('tabindex') || '0');
@@ -199,7 +167,7 @@ function initNavigation() {
                 el.setAttribute('tabindex', '-1');
             });
         } else {
-            // Restaurar tabindex cuando el menú se abre
+            // Restaurar tabindex cuando se abra
             const focusableElements = navMenu.querySelectorAll('[data-original-tabindex]');
             focusableElements.forEach(el => {
                 const originalTabindex = el.getAttribute('data-original-tabindex');
@@ -213,88 +181,15 @@ function initNavigation() {
         }
     }
 
-    // Función helper para actualizar estado del menú con manejo completo de accesibilidad
-    function updateMenuState(isOpen) {
-        navToggle.classList.toggle('active', isOpen);
-        navMenu.classList.toggle('active', isOpen);
-
-        // Usar atributos ARIA apropiados
-        navToggle.setAttribute('aria-expanded', isOpen);
-
-        if (isOpen) {
-            // Menú abierto: remover inert completamente y restaurar funcionalidad
-            setInert(navMenu, false);
-            navMenu.removeAttribute('aria-hidden');
-            navMenu.style.display = '';
-
-            // Remover estilos adicionales de ocultación
-            navMenu.style.visibility = 'visible';
-            navMenu.style.opacity = '1';
-
-        } else {
-            // Menú cerrado: añadir inert para prevenir interacción completa
-            setInert(navMenu, true);
-            navMenu.removeAttribute('aria-hidden');
-
-            // Añadir estilos adicionales para reforzar el estado cerrado
-            navMenu.style.display = 'none';
-            navMenu.style.visibility = 'hidden';
-            navMenu.style.opacity = '0';
-
-            // Prevenir cualquier interacción residual
-            navMenu.addEventListener('focusin', function(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                navToggle.focus();
-            }, true);
-        }
-
-        // Asegurar que los elementos del menú no sean enfocables cuando esté cerrado
-        ensureMenuElementsUnfocusable();
-    }
-
-    // Función adicional para manejar completamente el foco
+    // Función simplificada para manejar el foco
     function handleMenuFocus() {
-        // Crear un observer para monitorear cambios en el menú
-        const menuObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    const isActive = navMenu.classList.contains('active');
-                    if (!isActive) {
-                        // Si el menú se cierra por cualquier medio, asegurar que esté completamente inert
-                        setTimeout(() => {
-                            setInert(navMenu, true);
-                            ensureMenuElementsUnfocusable();
-                        }, 10);
-                    }
-                }
-            });
-        });
-
-        // Observar cambios en el menú
-        menuObserver.observe(navMenu, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-
-        // También observar el toggle
-        const toggleObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    const isToggleActive = navToggle.classList.contains('active');
-                    if (!isToggleActive && navMenu.classList.contains('active')) {
-                        // Si el toggle se cierra pero el menú sigue abierto, cerrarlo también
-                        setTimeout(() => {
-                            updateMenuState(false);
-                        }, 10);
-                    }
-                }
-            });
-        });
-
-        toggleObserver.observe(navToggle, {
-            attributes: true,
-            attributeFilter: ['class']
+        // Solo añadir event listener básico para manejar foco cuando el menú esté cerrado
+        navMenu.addEventListener('focusin', function(e) {
+            if (!navMenu.classList.contains('active')) {
+                e.preventDefault();
+                e.stopPropagation();
+                navToggle.focus();
+            }
         });
     }
 
