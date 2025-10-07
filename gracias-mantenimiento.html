@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Consulta Mantenimiento Recibida! | Gracias por tu Interés - Gusi.dev</title>
+    <meta name="description" content="Gracias por tu consulta de mantenimiento web. Especialista en soporte técnico, actualizaciones y hosting.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="¡Consulta de Mantenimiento Recibida!">
+    <meta property="og:description" content="Gracias por tu consulta de mantenimiento. Te contactaré pronto.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="freelancer-icon.png" type="image/png">
+    
+    <!-- Styles -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --accent-color: #059669;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .success-container {
+            background: var(--bg-primary);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .success-header {
+            background: linear-gradient(135deg, var(--accent-color), #047857);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 6s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .success-content {
+            padding: 3rem 2rem;
+        }
+        
+        .service-badge {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .success-message h2 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        .service-benefits {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .benefits-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        
+        .benefit {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .benefit:last-child {
+            margin-bottom: 0;
+        }
+        
+        .benefit-icon {
+            color: var(--accent-color);
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+            flex-shrink: 0;
+        }
+        
+        .benefit-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .benefit-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .contact-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-option {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .contact-option:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-option-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .whatsapp-btn {
+            background: #25d366 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .support-btn {
+            background: var(--accent-color) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+        
+        .back-btn:hover {
+            background: var(--border-color);
+            transform: translateY(-1px);
+        }
+        
+        .footer-note {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .success-header,
+            .success-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <!-- Header de Éxito -->
+        <div class="success-header">
+            <div class="success-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h1 class="success-title">¡Consulta Mantenimiento Recibida!</h1>
+            <p class="success-subtitle">Gracias por tu interés en soporte técnico</p>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="success-content">
+            <div class="service-badge">
+                <i class="fas fa-tools"></i>
+                Mantenimiento Web
+            </div>
+            
+            <div class="success-message">
+                <h2>¡Perfecto! Tu consulta de mantenimiento ha sido recibida</h2>
+                <p>Ofrezco servicios completos de mantenimiento web incluyendo soporte técnico 24/7, actualizaciones de seguridad, optimización de rendimiento y hosting con dominio incluido. Tu sitio web estará siempre seguro y actualizado.</p>
+            </div>
+            
+            <!-- Beneficios del Servicio -->
+            <div class="service-benefits">
+                <h3 class="benefits-title">¿Por qué elegir mi servicio de mantenimiento?</h3>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h4>Soporte 24/7</h4>
+                        <p>Estoy disponible cuando me necesitas, sin horarios limitados.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h4>Actualizaciones de seguridad</h4>
+                        <p>Mantengo tu sitio protegido contra vulnerabilidades y ataques.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h4>Optimización de velocidad</h4>
+                        <p>Mejoro constantemente el rendimiento de carga de tu web.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h4>Backups automáticos</h4>
+                        <p>Copias de seguridad diarias para proteger tu contenido.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Opciones de Contacto -->
+            <div class="contact-options">
+                <a href="https://wa.me/34619027645?text=Hola!%20Estoy%20interesado%20en%20el%20servicio%20de%20mantenimiento%20web.%20Acabo%20de%20enviar%20mi%20consulta%20desde%20tu%20web%20y%20me%20gustaría%20discutir%20mi%20proyecto." 
+                   class="contact-option whatsapp-btn" 
+                   target="_blank" 
+                   rel="noopener">
+                    <div class="contact-option-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-option-title">WhatsApp</div>
+                    <div class="contact-option-description">Hablemos sobre el mantenimiento de tu web</div>
+                </a>
+                
+                <a href="mailto:info@alamia.es?subject=Consulta%20sobre%20mantenimiento%20web" class="contact-option support-btn">
+                    <div class="contact-option-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="contact-option-title">Soporte Técnico</div>
+                    <div class="contact-option-description">Contacto directo para temas técnicos</div>
+                </a>
+            </div>
+            
+            <!-- Botón de Volver -->
+            <div style="text-align: center;">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Inicio</span>
+                </a>
+            </div>
+            
+            <!-- Nota del Footer -->
+            <div class="footer-note">
+                <p>¿Necesitas soporte urgente? También puedes contactarme directamente por WhatsApp para atención inmediata.</p>
+                <p style="margin-top: 0.5rem;"><strong>Jose Martínez</strong> - Especialista en Mantenimiento Web</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script para animaciones adicionales -->
+    <script>
+        // Añadir animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.success-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+        
+        // Auto-redirect después de 30 segundos (opcional)
+        setTimeout(() => {
+            if (confirm('¿Te gustaría volver a la página principal?')) {
+                window.location.href = 'index.html';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico del Formulario | Solución de Problemas - Gusi.dev</title>
+    <meta name="description" content="Guía de diagnóstico y solución de problemas del formulario de contacto.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" href="freelancer-icon.png" type="image/png">
+
+    <!-- Styles -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .diagnostic-container {
+            background: var(--bg-primary);
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .diagnostic-header {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .diagnostic-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .diagnostic-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .diagnostic-content {
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .step {
+            margin-bottom: 1.5rem;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            margin: 0.5rem 0;
+            overflow-x: auto;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .button-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .diagnostic-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <!-- Header -->
+        <div class="diagnostic-header">
+            <h1 class="diagnostic-title">🔧 Diagnóstico del Formulario</h1>
+            <p class="diagnostic-subtitle">Guía para solucionar problemas de envío de emails</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="diagnostic-content">
+            <!-- Sección 1: Verificación de Formspree -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i>
+                    1. Verificación de Formspree
+                </h2>
+
+                <div class="step">
+                    <div class="step-title">✅ Estado actual: Configurado</div>
+                    <div class="step-description">
+                        Tu formulario está configurado para usar Formspree con el ID: <strong>xeqypkwd</strong>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">🔧 Acción requerida: Verificar dominio</div>
+                    <div class="step-description">
+                        <strong>Para cuentas GRATUITAS:</strong> Solo necesitas configurar el email de destino en Formspree (sin verificación de dominio).
+                    </div>
+                    <div class="step-description">
+                        <strong>Pasos:</strong>
+                        <ol style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Ve a <a href="https://formspree.io" target="_blank">formspree.io</a></li>
+                            <li>Inicia sesión en tu cuenta</li>
+                            <li>Busca el formulario con ID <strong>xeorlovl</strong></li>
+                            <li>Configura el email de destino <strong>info@alamia.es</strong></li>
+                            <li>Si no está verificado, agrega y confirma el dominio</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: Configuración de Ionos -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-server"></i>
+                    2. Configuración de Correo en Ionos
+                </h2>
+
+                <div class="step">
+                    <div class="step-title">📧 Crear cuenta de correo</div>
+                    <div class="step-description">
+                        Debes crear la cuenta <strong>info@alamia.es</strong> en tu panel de Ionos.
+                    </div>
+                    <div class="step-description">
+                        <strong>Pasos:</strong>
+                        <ol style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>Accede al panel de control de Ionos</li>
+                            <li>Ve a la sección de correos electrónicos</li>
+                            <li>Crea una nueva cuenta con el nombre <strong>info</strong></li>
+                            <li>El dominio debe ser <strong>alamia.es</strong></li>
+                            <li>Configura una contraseña segura</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">🔍 Verificar recepción de emails</div>
+                    <div class="step-description">
+                        Una vez creada la cuenta, Formspree debería poder enviar emails automáticamente.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 3: Configuración alternativa -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-lightbulb"></i>
+                    3. Solución Alternativa: EmailJS
+                </h2>
+
+                <div class="step">
+                    <div class="step-title">⚡ Configuración de respaldo</div>
+                    <div class="step-description">
+                        Si Formspree sigue sin funcionar, puedes configurar EmailJS como alternativa más confiable.
+                    </div>
+                    <div class="step-description">
+                        <strong>Ventajas de EmailJS:</strong>
+                        <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                            <li>No requiere verificación de dominio</li>
+                            <li>Funciona inmediatamente después de configurar</li>
+                            <li>Más control sobre el envío de emails</li>
+                            <li>Compatible con Gmail, Outlook, etc.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 4: Testing -->
+            <div class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-vial"></i>
+                    4. Pruebas y Debugging
+                </h2>
+
+                <div class="step">
+                    <div class="step-title">🧪 Probar el formulario</div>
+                    <div class="step-description">
+                        Después de realizar los cambios, prueba el formulario para verificar que funciona correctamente.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-title">🐛 Información de debugging</div>
+                    <div class="step-description">
+                        Si hay errores, se mostrarán detalles técnicos en la consola del navegador (F12) y en la página de error.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="buttons">
+                <a href="index.html#contacto" class="button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Formulario</span>
+                </a>
+
+                <a href="https://formspree.io" target="_blank" class="button button-secondary">
+                    <i class="fas fa-external-link-alt"></i>
+                    <span>Ir a Formspree</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Añadir animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.diagnostic-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

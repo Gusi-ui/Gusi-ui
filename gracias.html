@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Mensaje Enviado! | Gracias por Contactar - Gusi.dev</title>
+    <meta name="description" content="Gracias por tu mensaje. He recibido tu consulta y me pondré en contacto contigo pronto para discutir tu proyecto.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="¡Mensaje Enviado! | Gracias por Contactar">
+    <meta property="og:description" content="Gracias por tu mensaje. Me pondré en contacto contigo pronto.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="freelancer-icon.png" type="image/png">
+    
+    <!-- Styles -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .success-container {
+            background: var(--bg-primary);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .success-header {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 6s linear infinite;
+        }
+        
+        .success-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.03)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.03)"/><circle cx="90" cy="30" r="0.5" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .success-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .success-content {
+            padding: 3rem 2rem;
+        }
+        
+        .success-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .success-message h2 {
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+        
+        .success-steps {
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .steps-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .step-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .contact-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-option {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .contact-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-option-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .whatsapp-btn {
+            background: #25d366 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .email-btn {
+            background: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 auto;
+        }
+        
+        .back-btn:hover {
+            background: var(--border-color);
+            transform: translateY(-1px);
+        }
+        
+        /* Efectos de hover mejorados */
+        .contact-option {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .contact-option:hover::before {
+            left: 100%;
+        }
+        
+        .footer-note {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .success-header,
+            .success-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .success-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <!-- Header de Éxito -->
+        <div class="success-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="success-title">¡Mensaje Enviado!</h1>
+            <p class="success-subtitle">Gracias por contactar conmigo</p>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="success-content">
+            <div class="success-message">
+                <h2>Tu mensaje ha sido recibido correctamente</h2>
+                <p>He recibido toda la información sobre tu proyecto y me pondré en contacto contigo en las próximas 24 horas para discutir los detalles.</p>
+            </div>
+            
+            <!-- Próximos Pasos -->
+            <div class="success-steps">
+                <h3 class="steps-title">¿Qué pasa ahora?</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Reviso tu mensaje</h4>
+                        <p>Analizo los detalles de tu proyecto y requisitos específicos.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Te contacto pronto</h4>
+                        <p>Me pondré en contacto contigo en las próximas 24 horas.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Planificamos juntos</h4>
+                        <p>Discutimos el proyecto y definimos el plan de desarrollo.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Opciones de Contacto -->
+            <div class="contact-options">
+                <a href="https://wa.me/34619027645?text=Hola!%20Acabo%20de%20enviar%20un%20mensaje%20desde%20tu%20web%20y%20me%20gustaría%20discutir%20mi%20proyecto%20contigo." 
+                   class="contact-option whatsapp-btn" 
+                   target="_blank" 
+                   rel="noopener">
+                    <div class="contact-option-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-option-title">WhatsApp</div>
+                    <div class="contact-option-description">¿Prefieres hablar ahora? ¡Estoy disponible!</div>
+                </a>
+                
+                <a href="mailto:info@alamia.es?subject=Seguimiento%20de%20mi%20consulta%20desde%20la%20web" 
+                   class="contact-option email-btn">
+                    <div class="contact-option-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-option-title">Email</div>
+                    <div class="contact-option-description">Envíame más detalles si lo necesitas</div>
+                </a>
+            </div>
+            
+            <!-- Botón de Volver -->
+            <div style="text-align: center;">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Inicio</span>
+                </a>
+            </div>
+            
+            <!-- Nota del Footer -->
+            <div class="footer-note">
+                <p>¿Tienes alguna pregunta mientras tanto? No dudes en contactarme por cualquiera de los medios anteriores.</p>
+                <p style="margin-top: 0.5rem;"><strong>Jose Martínez</strong> - Desarrollador Freelance</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script para animaciones adicionales -->
+    <script>
+        // Añadir animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.success-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+            
+            // Crear partículas flotantes
+            createFloatingParticles();
+            
+            // Crear confeti después de un breve delay
+            setTimeout(() => {
+                createConfetti();
+            }, 500);
+        });
+        
+        function createFloatingParticles() {
+            const header = document.querySelector('.success-header');
+            const particlesContainer = document.createElement('div');
+            particlesContainer.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                pointer-events: none;
+                overflow: hidden;
+            `;
+            
+            header.appendChild(particlesContainer);
+            
+            // Crear 15 partículas
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.style.cssText = `
+                        position: absolute;
+                        width: 4px;
+                        height: 4px;
+                        background: rgba(255, 255, 255, 0.6);
+                        border-radius: 50%;
+                        left: ${Math.random() * 100}%;
+                        top: ${Math.random() * 100}%;
+                        animation: float 8s linear infinite;
+                        animation-delay: ${Math.random() * 8}s;
+                    `;
+                    
+                    // Añadir keyframes para la animación
+                    if (!document.querySelector('#float-keyframes')) {
+                        const style = document.createElement('style');
+                        style.id = 'float-keyframes';
+                        style.textContent = `
+                            @keyframes float {
+                                0% { transform: translateY(100px) scale(0); opacity: 0; }
+                                10% { opacity: 1; transform: translateY(50px) scale(1); }
+                                90% { opacity: 1; transform: translateY(-50px) scale(1); }
+                                100% { transform: translateY(-100px) scale(0); opacity: 0; }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                    
+                    particlesContainer.appendChild(particle);
+                }, i * 200);
+            }
+        }
+        
+        function createConfetti() {
+            const container = document.querySelector('.success-container');
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                pointer-events: none;
+                z-index: 9999;
+                overflow: hidden;
+            `;
+            
+            document.body.appendChild(confettiContainer);
+            
+            const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4'];
+            const shapes = ['circle', 'square'];
+            
+            // Crear 50 piezas de confeti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    const size = Math.random() * 8 + 4;
+                    
+                    confetti.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${color};
+                        border-radius: ${shape === 'circle' ? '50%' : '2px'};
+                        left: ${Math.random() * 100}%;
+                        top: -10px;
+                        animation: confettiFall 3s linear forwards;
+                        animation-delay: ${Math.random() * 2}s;
+                    `;
+                    
+                    confettiContainer.appendChild(confetti);
+                }, i * 50);
+            }
+            
+            // Añadir keyframes para el confeti
+            if (!document.querySelector('#confetti-keyframes')) {
+                const style = document.createElement('style');
+                style.id = 'confetti-keyframes';
+                style.textContent = `
+                    @keyframes confettiFall {
+                        0% {
+                            transform: translateY(-100px) rotate(0deg) scale(1);
+                            opacity: 1;
+                        }
+                        70% {
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translateY(${window.innerHeight + 100}px) rotate(720deg) scale(0.8);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Remover el contenedor después de la animación
+            setTimeout(() => {
+                if (confettiContainer.parentNode) {
+                    confettiContainer.parentNode.removeChild(confettiContainer);
+                }
+            }, 5000);
+        }
+        
+        // Auto-redirect después de 30 segundos (opcional)
+        setTimeout(() => {
+            if (confirm('¿Te gustaría volver a la página principal?')) {
+                window.location.href = 'index.html';
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

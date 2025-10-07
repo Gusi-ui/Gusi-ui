@@ -230,6 +230,16 @@ function initContactForm() {
         const service = formData.get('service');
         const message = formData.get('message');
 
+        // Función para sanitizar texto y evitar problemas con caracteres Unicode
+        function sanitizeText(text) {
+            if (!text) return '';
+            // Convertir a string y limpiar caracteres problemáticos
+            return String(text)
+                .replace(/[\uD800-\uDFFF]/g, '') // Eliminar surrogates sueltos
+                .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '') // Eliminar caracteres de control
+                .trim();
+        }
+
         // Validación básica
         if (!name || !email || !service || !message) {
             showNotification('Por favor, completa todos los campos', 'error');
@@ -256,20 +266,47 @@ function initContactForm() {
             });
         }
 
+        // Sanitizar datos antes de enviar
+        const sanitizedName = sanitizeText(name);
+        const sanitizedEmail = sanitizeText(email);
+        const sanitizedService = sanitizeText(service);
+        const sanitizedMessage = sanitizeText(message);
+
+        // Crear objeto de datos sanitizado
+        const formDataObj = {
+            name: sanitizedName,
+            email: sanitizedEmail,
+            service: sanitizedService,
+            message: sanitizedMessage,
+            _subject: `Nuevo mensaje de contacto desde Gusi.dev - ${sanitizedService}`,
+            _replyto: sanitizedEmail
+        };
+
+        // Verificar que los datos sean válidos antes de enviar
+        if (!sanitizedName || !sanitizedEmail || !sanitizedService || !sanitizedMessage) {
+            showNotification('Por favor, completa todos los campos correctamente', 'error');
+            return;
+        }
+
         // Enviar formulario a Formspree (compatible con GitHub Pages)
-        fetch('https://formspree.io/f/xeqypkwd', {
+        let jsonString;
+        try {
+            jsonString = JSON.stringify(formDataObj);
+        } catch (jsonError) {
+            console.error('Error al convertir datos a JSON:', jsonError);
+            showNotification('Error al procesar los datos del formulario. Por favor, inténtalo de nuevo.', 'error');
+            return;
+        }
+
+        fetch('https://formspree.io/f/xeorlovl', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                service: service,
-                message: message,
-                _subject: `Nuevo mensaje de contacto desde Gusi.dev - ${service}`,
-                _replyto: email
-            })
+            body: jsonString
         })
         .then(function(response) {
+            console.log('Respuesta del servidor:', response.status, response.statusText);
+            console.log('Headers:', response.headers);
+
             if (response.ok) {
                 // Evento de Google Analytics: Formulario enviado exitosamente
                 if (typeof gtag !== 'undefined') {
@@ -279,7 +316,7 @@ function initContactForm() {
                         'value': 1,
                         'custom_parameter_1': 'contact_form'
                     });
-                    
+
                     // Evento de conversión
                     gtag('event', 'conversion', {
                         'send_to': 'G-165E9VQDD8',
@@ -287,36 +324,68 @@ function initContactForm() {
                         'event_label': 'Contact Form Submission'
                     });
                 }
-                
-        showNotification('Mensaje enviado correctamente. Te contactaré pronto.', 'success');
-        
-        // Limpiar formulario
+
+                // Limpiar formulario
                 contactForm.reset();
-        
-        // Redirigir a WhatsApp con el mensaje
-        const whatsappMessage = `Hola! Me llamo ${name} y estoy interesado en el servicio de ${service}. ${message}`;
-        const whatsappUrl = `https://wa.me/34619027645?text=${encodeURIComponent(whatsappMessage)}`;
-                
-                // Evento de Google Analytics: Redirección a WhatsApp
+
+                // Redirigir a página específica según el servicio
+                let redirectUrl = '';
+                switch(service) {
+                    case 'web':
+                        redirectUrl = 'gracias-web.html';
+                        break;
+                    case 'mobile':
+                        redirectUrl = 'gracias-mobile.html';
+                        break;
+                    case 'ecommerce':
+                        redirectUrl = 'gracias-ecommerce.html';
+                        break;
+                    case 'maintenance':
+                        redirectUrl = 'gracias-mantenimiento.html';
+                        break;
+                    case 'other':
+                        redirectUrl = 'gracias-otros.html';
+                        break;
+                    default:
+                        redirectUrl = 'gracias.html';
+                }
+
+                // Evento de Google Analytics: Redirección a página de éxito
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'whatsapp_redirect', {
+                    gtag('event', 'success_page_redirect', {
                         'event_category': 'Engagement',
-                        'event_label': 'Contact Form to WhatsApp',
-                        'custom_parameter_1': service
+                        'event_label': service,
+                        'custom_parameter_1': redirectUrl
                     });
                 }
-        
-        // Abrir WhatsApp después de un breve delay
-        setTimeout(() => {
-            window.open(whatsappUrl, '_blank');
-        }, 2000);
+
+                // Redirigir a la página de éxito
+                window.location.href = redirectUrl;
             } else {
-                throw new Error('Error en el envío');
+                // Intentar obtener el mensaje de error del servidor
+                return response.text().then(function(errorText) {
+                    console.error('Error response body:', errorText);
+                    throw new Error(`Error del servidor (${response.status}): ${response.statusText}. Detalles: ${errorText}`);
+                });
             }
         })
         .catch(function(error) {
-            console.error('Error al enviar formulario:', error);
-            
+            console.error('Error completo al enviar formulario:', error);
+            console.error('Tipo de error:', error.constructor.name);
+            console.error('Mensaje de error:', error.message);
+            console.error('Stack trace:', error.stack);
+
+            // Mostrar información detallada en consola para debugging
+            console.log('=== DEBUGGING INFO ===');
+            console.log('URL del formulario:', 'https://formspree.io/f/xeorlovl');
+            console.log('Datos originales:', {
+                name: name,
+                email: email,
+                service: service,
+                message: message
+            });
+            console.log('Datos sanitizados enviados:', formDataObj);
+
             // Evento de Google Analytics: Error en el envío del formulario
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'form_submit_error', {
@@ -326,8 +395,29 @@ function initContactForm() {
                     'custom_parameter_2': error.message
                 });
             }
-            
-            showNotification('Error al enviar el mensaje. Por favor, inténtalo de nuevo o contáctame por WhatsApp.', 'error');
+
+            // Crear página de error con información detallada
+            const errorInfo = {
+                message: error.message,
+                service: service,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                url: window.location.href
+            };
+
+            // Guardar información del error para mostrar en la página de error
+            sessionStorage.setItem('formError', JSON.stringify(errorInfo));
+
+            // Redirigir a página de error
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'error_page_redirect', {
+                    'event_category': 'Error',
+                    'event_label': 'Form Submission Failed',
+                    'custom_parameter_1': service
+                });
+            }
+
+            window.location.href = 'error.html';
         })
         .finally(function() {
             // Restaurar botón

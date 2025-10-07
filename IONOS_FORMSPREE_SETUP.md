@@ -4,10 +4,14 @@
 
 El formulario ya está configurado para usar Formspree, que es compatible con GitHub Pages y puede enviar emails a cuentas de Ionos.
 
-## 🚀 **Pasos Realizados**
+## 🚨 **PROBLEMA IDENTIFICADO**
+
+**El formulario estaba configurado para el dominio antiguo `gusi.dev` pero el dominio actual es `alamia.es`**
+
+## � **Pasos Realizados**
 
 ### **1. Configuración del Formulario**
-- ✅ **Formspree integrado** con ID: `xeqypkwd`
+- ✅ **Formspree integrado** con ID: `xeorlovl`
 - ✅ **Método POST** configurado correctamente
 - ✅ **Protección anti-spam** con honeypot
 - ✅ **Integración con WhatsApp** mantenida
@@ -16,19 +20,41 @@ El formulario ya está configurado para usar Formspree, que es compatible con Gi
 Para recibir emails del formulario en tu cuenta de Ionos:
 
 1. **Crear cuenta de email en Ionos:**
-   - Ve al panel de control de Ionos
-   - Crea la cuenta `info@alamia.es`
-   - Configura una contraseña segura
+    - Ve al panel de control de Ionos
+    - Crea la cuenta `info@alamia.es`
+    - Configura una contraseña segura
 
 2. **Verificar recepción de emails:**
-   - Formspree enviará emails automáticamente a `info@alamia.es`
-   - Los emails incluirán todos los datos del formulario
+    - Formspree enviará emails automáticamente a `info@alamia.es`
+    - Los emails incluirán todos los datos del formulario
 
 ### **3. Configuración de DNS (Ya tienes Cloudflare)**
 Tu configuración actual con Cloudflare es perfecta para:
 - ✅ **GitHub Pages** funcionando correctamente
 - ✅ **SSL automático** con Let's Encrypt
 - ✅ **CDN global** para mejor velocidad
+
+## ⚠️ **ACCIÓN REQUERIDA**
+
+**Necesitas verificar el dominio `alamia.es` en Formspree:**
+
+### **Pasos para solucionar el problema:**
+
+1. **Ve a Formspree** (https://formspree.io)
+2. **Inicia sesión** en tu cuenta
+3. **Busca el formulario** con ID `xeqypkwd`
+4. **Ve a la configuración del formulario**
+5. **En la sección "Authorized Domains"** agrega `alamia.es`
+6. **Verifica el dominio** siguiendo las instrucciones de Formspree
+7. **Una vez verificado**, el formulario funcionará correctamente
+
+### **¿Por qué ocurre este problema?**
+
+- El formulario fue configurado originalmente para `gusi.dev`
+- Cuando cambiaste a `alamia.es`, Formspree no reconoce automáticamente el nuevo dominio
+- Formspree requiere verificación explícita de cada dominio para evitar spam
+
+### **Tiempo estimado:** 5-10 minutos
 
 ## 🔧 **Características Implementadas**
 

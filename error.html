@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error al Enviar | Problema Técnico - Gusi.dev</title>
+    <meta name="description" content="Ha ocurrido un error al enviar tu mensaje. Por favor, inténtalo de nuevo o contacta directamente.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Error al Enviar Mensaje">
+    <meta property="og:description" content="Ha ocurrido un error técnico. Por favor, contacta directamente.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="freelancer-icon.png" type="image/png">
+    
+    <!-- Styles -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #fef2f2;
+            --border-color: #fecaca;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-container {
+            background: var(--bg-primary);
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .error-header {
+            background: linear-gradient(135deg, var(--error-color), #dc2626);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .error-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 6s linear infinite;
+        }
+        
+        .error-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="warning-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23warning-pattern)"/></svg>');
+            opacity: 0.2;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: shake 2s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .error-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .error-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .error-content {
+            padding: 3rem 2rem;
+        }
+        
+        .error-message {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .error-message h2 {
+            color: var(--error-color);
+            margin-bottom: 1rem;
+        }
+        
+        .error-explanation {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .explanation-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .explanation-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .explanation-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .error-details {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .error-details-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .error-details-content {
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+        
+        .contact-options {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-option {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .contact-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-option-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-option-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .whatsapp-btn {
+            background: #25d366 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .email-btn {
+            background: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .retry-btn {
+            background: var(--warning-color) !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-back {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .footer-note {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .error-container {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+            }
+            
+            .error-header,
+            .error-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .error-title {
+                font-size: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <!-- Header de Error -->
+        <div class="error-header">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h1 class="error-title">Error al Enviar</h1>
+            <p class="error-subtitle">Ha ocurrido un problema técnico</p>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="error-content">
+            <div class="error-message">
+                <h2>Lo siento, ha ocurrido un error</h2>
+                <p>No se ha podido enviar tu mensaje correctamente. Esto puede deberse a problemas de conexión o un error temporal del servidor.</p>
+            </div>
+            
+            <!-- Explicación del Error -->
+            <div class="error-explanation">
+                <h3 class="explanation-title">¿Qué puedes hacer?</h3>
+
+                <p class="explanation-text">
+                    <strong>No te preocupes,</strong> tu información está segura. El error puede deberse a:
+                </p>
+
+                <p class="explanation-text">
+                    • Problemas temporales de conexión a internet<br>
+                    • Mantenimiento del servidor de correo<br>
+                    • Límite temporal de envíos alcanzado<br>
+                    • Configuración del dominio de correo pendiente<br>
+                    • Problemas con la verificación del dominio en Formspree
+                </p>
+
+                <p class="explanation-text">
+                    <strong>Soluciones técnicas:</strong>
+                </p>
+
+                <div style="background: #fefbff; border: 1px solid #e0c3fc; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0;">
+                    <h4 style="color: #7c3aed; margin-bottom: 0.5rem;">🔧 Posibles soluciones:</h4>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        1. <strong>Configurar Formspree:</strong> El email info@alamia.es debe estar configurado en Formspree
+                    </p>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        2. <strong>Configurar Ionos:</strong> Crear la cuenta info@alamia.es en Ionos
+                    </p>
+                    <p style="margin-bottom: 0.5rem; font-size: 0.9rem;">
+                        3. <strong>Revisar DNS:</strong> Verificar registros MX en Cloudflare
+                    </p>
+                    <p style="font-size: 0.9rem;">
+                        4. <strong>Contacto directo:</strong> Mientras tanto, usa WhatsApp o teléfono
+                    </p>
+                </div>
+
+                <p class="explanation-text">
+                    <strong>Solución inmediata:</strong> Puedes intentar enviarlo de nuevo o contactarme directamente por otros medios.
+                </p>
+
+                <!-- Información de debugging (solo visible si hay error) -->
+                <div id="error-details" class="error-details" style="display: none;">
+                    <div class="error-details-title">Detalles técnicos del error:</div>
+                    <div class="error-details-content" id="error-content"></div>
+                </div>
+            </div>
+            
+            <!-- Opciones de Contacto Rápido -->
+            <div class="contact-options">
+                <a href="https://wa.me/34619027645?text=Hola!%20He%20tenido%20un%20error%20al%20enviar%20el%20formulario%20desde%20tu%20web.%20¿Podríamos%20hablar%20sobre%20mi%20proyecto%20directamente?" 
+                   class="contact-option whatsapp-btn" 
+                   target="_blank" 
+                   rel="noopener">
+                    <div class="contact-option-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-option-title">WhatsApp</div>
+                    <div class="contact-option-description">Contacto inmediato y directo</div>
+                </a>
+                
+                <a href="mailto:info@alamia.es?subject=Error%20en%20formulario%20-%20Consulta%20proyecto" 
+                   class="contact-option email-btn">
+                    <div class="contact-option-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-option-title">Email Directo</div>
+                    <div class="contact-option-description">Envíame tu consulta por correo</div>
+                </a>
+            </div>
+            
+            <!-- Botones de Acción -->
+            <div class="action-buttons">
+                <a href="index.html#contacto" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Intentar de Nuevo</span>
+                </a>
+
+                <a href="FORMSPREE_ALAMIA_SETUP.md" class="btn retry-btn">
+                    <i class="fas fa-tools"></i>
+                    <span>Solución Técnica</span>
+                </a>
+
+                <a href="tel:+34619027645" class="btn whatsapp-btn">
+                    <i class="fas fa-phone"></i>
+                    <span>Llamar Directo</span>
+                </a>
+            </div>
+            
+            <!-- Nota del Footer -->
+            <div class="footer-note">
+                <p>¿Necesitas ayuda inmediata? Contacta conmigo directamente por WhatsApp o teléfono.</p>
+                <p>También puedes intentar enviar el formulario de nuevo en unos minutos.</p>
+                <p style="margin-top: 0.5rem;"><strong>Jose Martínez</strong> - Siempre disponible para ayudarte</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script para animaciones adicionales -->
+    <script>
+        // Añadir animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.error-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Mostrar detalles del error si existen
+            showErrorDetails();
+        });
+
+        function showErrorDetails() {
+            try {
+                const errorData = sessionStorage.getItem('formError');
+                if (errorData) {
+                    const errorInfo = JSON.parse(errorData);
+                    const errorDetails = document.getElementById('error-details');
+                    const errorContent = document.getElementById('error-content');
+
+                    if (errorDetails && errorContent) {
+                        errorDetails.style.display = 'block';
+                        errorContent.innerHTML = `
+                            <strong>Error:</strong> ${errorInfo.message}<br>
+                            <strong>Servicio:</strong> ${errorInfo.service}<br>
+                            <strong>Fecha:</strong> ${new Date(errorInfo.timestamp).toLocaleString()}<br>
+                            <strong>Navegador:</strong> ${errorInfo.userAgent.substring(0, 100)}...<br>
+                            <strong>Página:</strong> ${errorInfo.url}
+                        `;
+                    }
+
+                    // Limpiar el sessionStorage después de mostrar
+                    sessionStorage.removeItem('formError');
+                }
+            } catch (e) {
+                console.warn('Error al mostrar detalles del error:', e);
+            }
+        }
+
+        // Auto-redirect después de 45 segundos
+        setTimeout(() => {
+            if (confirm('¿Te gustaría volver al formulario para intentarlo de nuevo?')) {
+                window.location.href = 'index.html#contacto';
+            }
+        }, 45000);
+    </script>
+</body>
+</html>
