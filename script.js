@@ -13,20 +13,77 @@ window.addEventListener('load', function() {
     addLoadAnimations();
 });
 
+// ===== UTILIDADES DE ACCESIBILIDAD =====
+
+// Polyfill para atributo inert
+function setInert(element, inert) {
+    if (inert) {
+        element.setAttribute('inert', '');
+        // Para navegadores que no soportan inert, añadir estilos y prevenir eventos
+        if (!HTMLElement.prototype.hasOwnProperty('inert')) {
+            element.style.pointerEvents = 'none';
+            element.style.userSelect = 'none';
+            element.style.cursor = 'default';
+
+            // Prevenir eventos de teclado
+            element.addEventListener('keydown', preventDefault, true);
+            element.addEventListener('keypress', preventDefault, true);
+            element.addEventListener('keyup', preventDefault, true);
+            element.addEventListener('click', preventDefault, true);
+            element.addEventListener('focus', preventDefault, true);
+        }
+    } else {
+        element.removeAttribute('inert');
+        if (!HTMLElement.prototype.hasOwnProperty('inert')) {
+            element.style.pointerEvents = '';
+            element.style.userSelect = '';
+            element.style.cursor = '';
+
+            // Remover event listeners
+            element.removeEventListener('keydown', preventDefault, true);
+            element.removeEventListener('keypress', preventDefault, true);
+            element.removeEventListener('keyup', preventDefault, true);
+            element.removeEventListener('click', preventDefault, true);
+            element.removeEventListener('focus', preventDefault, true);
+        }
+    }
+}
+
+function preventDefault(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
 // ===== NAVEGACIÓN =====
 function initNavigation() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
 
+    // Función helper para actualizar estado del menú
+    function updateMenuState(isOpen) {
+        navToggle.classList.toggle('active', isOpen);
+        navMenu.classList.toggle('active', isOpen);
+
+        // Usar atributos ARIA apropiados
+        navToggle.setAttribute('aria-expanded', isOpen);
+
+        if (isOpen) {
+            // Menú abierto: remover inert y establecer aria-hidden apropiado
+            setInert(navMenu, false);
+            navMenu.setAttribute('aria-hidden', 'false');
+        } else {
+            // Menú cerrado: añadir inert para prevenir interacción completa
+            setInert(navMenu, true);
+            navMenu.setAttribute('aria-hidden', 'true');
+        }
+    }
+
     // Toggle del menú móvil
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
-            const isExpanded = navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active');
-            // Actualizar atributos ARIA
-            navToggle.setAttribute('aria-expanded', isExpanded);
-            navMenu.setAttribute('aria-hidden', !isExpanded);
+            const isCurrentlyOpen = navMenu.classList.contains('active');
+            updateMenuState(!isCurrentlyOpen);
         });
 
         // Soporte para navegación por teclado
@@ -41,11 +98,7 @@ function initNavigation() {
     // Cerrar menú al hacer click en un enlace
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            // Restaurar atributos ARIA
-            navToggle.setAttribute('aria-expanded', 'false');
-            navMenu.setAttribute('aria-hidden', 'true');
+            updateMenuState(false);
         });
     });
 
@@ -54,20 +107,23 @@ function initNavigation() {
         navMenu.addEventListener('keydown', function(e) {
             const links = Array.from(navMenu.querySelectorAll('.nav-link'));
             const currentIndex = links.indexOf(document.activeElement);
-            
+
             if (e.key === 'Escape') {
-                navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-                navMenu.setAttribute('aria-hidden', 'true');
+                updateMenuState(false);
                 navToggle.focus();
             } else if (e.key === 'Tab') {
-                if (currentIndex === links.length - 1 && !e.shiftKey) {
+                // Solo permitir navegación por teclado cuando el menú esté abierto
+                if (navMenu.classList.contains('active')) {
+                    if (currentIndex === links.length - 1 && !e.shiftKey) {
+                        e.preventDefault();
+                        links[0].focus();
+                    } else if (currentIndex === 0 && e.shiftKey) {
+                        e.preventDefault();
+                        links[links.length - 1].focus();
+                    }
+                } else {
+                    // Prevenir navegación por teclado cuando el menú está cerrado
                     e.preventDefault();
-                    links[0].focus();
-                } else if (currentIndex === 0 && e.shiftKey) {
-                    e.preventDefault();
-                    links[links.length - 1].focus();
                 }
             }
         });
@@ -76,10 +132,27 @@ function initNavigation() {
     // Cerrar menú al hacer click fuera
     document.addEventListener('click', function(e) {
         if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
+            updateMenuState(false);
         }
     });
+
+    // Prevenir que el foco entre en el menú cuando está cerrado
+    document.addEventListener('focusin', function(e) {
+        if (navMenu.classList.contains('active')) {
+            // Menú abierto, permitir foco normal
+            return;
+        }
+
+        // Si el foco intenta entrar en el menú cerrado, redirigirlo
+        if (navMenu.contains(e.target)) {
+            e.preventDefault();
+            e.stopPropagation();
+            navToggle.focus();
+        }
+    });
+
+    // Inicializar estado del menú (cerrado por defecto)
+    updateMenuState(false);
 }
 
 // ===== EFECTOS DE SCROLL =====
