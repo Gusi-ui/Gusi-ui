@@ -71,10 +71,13 @@ function initNavigation() {
         });
     }
 
-    // Cerrar menú al hacer click en un enlace
+    // Cerrar menú al hacer click en un enlace - optimizado
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            updateMenuState(false);
+            // Usar setTimeout para asegurar que el click se procese antes de cerrar
+            setTimeout(() => {
+                updateMenuState(false);
+            }, 10);
         });
     });
 
@@ -112,8 +115,11 @@ function initNavigation() {
         }
     });
 
-    // Prevenir que el foco entre en el menú cuando está cerrado
+    // Prevenir que el foco entre en el menú cuando está cerrado (solo en móvil)
     document.addEventListener('focusin', function(e) {
+        // Solo aplicar restricciones en móvil
+        if (window.innerWidth > 768) return;
+
         if (navMenu.classList.contains('active')) {
             // Menú abierto, permitir foco normal
             return;
@@ -127,8 +133,11 @@ function initNavigation() {
         }
     });
 
-    // Prevenir navegación secuencial por teclado hacia elementos inert (simplificado)
+    // Prevenir navegación secuencial por teclado hacia elementos inert (solo en móvil)
     document.addEventListener('keydown', function(e) {
+        // Solo aplicar restricciones en móvil
+        if (window.innerWidth > 768) return;
+
         if (e.key === 'Tab' && !navMenu.classList.contains('active')) {
             // Si el foco intenta entrar en elementos del menú cerrado, redirigirlo
             if (navMenu.contains(e.target)) {
@@ -138,47 +147,64 @@ function initNavigation() {
         }
     });
 
-    // Función helper para actualizar estado del menú con manejo simplificado de accesibilidad
+    // Función helper para actualizar estado del menú con manejo simplificado de accesibilidad - optimizada
     function updateMenuState(isOpen) {
-        navToggle.classList.toggle('active', isOpen);
-        navMenu.classList.toggle('active', isOpen);
+        // Usar requestAnimationFrame para evitar forced reflow
+        requestAnimationFrame(() => {
+            navToggle.classList.toggle('active', isOpen);
+            navMenu.classList.toggle('active', isOpen);
 
-        // Usar atributos ARIA apropiados
-        navToggle.setAttribute('aria-expanded', isOpen);
+            // Usar atributos ARIA apropiados
+            navToggle.setAttribute('aria-expanded', isOpen);
 
-        if (isOpen) {
-            // Menú abierto: remover inert completamente
-            setInert(navMenu, false);
-            navMenu.removeAttribute('aria-hidden');
-        } else {
-            // Menú cerrado: añadir inert para prevenir interacción completa
-            setInert(navMenu, true);
-            navMenu.removeAttribute('aria-hidden');
-        }
-
-        // Solo aplicar tabindex cuando sea necesario para accesibilidad
-        if (!isOpen) {
-            // Solo establecer tabindex en elementos específicos cuando esté cerrado
-            const focusableElements = navMenu.querySelectorAll('a.nav-link');
-            focusableElements.forEach(el => {
-                if (!el.hasAttribute('data-original-tabindex')) {
-                    el.setAttribute('data-original-tabindex', el.getAttribute('tabindex') || '0');
-                }
-                el.setAttribute('tabindex', '-1');
-            });
-        } else {
-            // Restaurar tabindex cuando se abra
-            const focusableElements = navMenu.querySelectorAll('[data-original-tabindex]');
-            focusableElements.forEach(el => {
-                const originalTabindex = el.getAttribute('data-original-tabindex');
-                if (originalTabindex === '0') {
-                    el.removeAttribute('tabindex');
+            // Solo aplicar restricciones de accesibilidad en móvil
+            if (window.innerWidth <= 768) {
+                if (isOpen) {
+                    // Menú abierto: remover inert completamente
+                    setInert(navMenu, false);
+                    navMenu.removeAttribute('aria-hidden');
                 } else {
-                    el.setAttribute('tabindex', originalTabindex);
+                    // Menú cerrado: añadir inert para prevenir interacción completa
+                    setInert(navMenu, true);
+                    navMenu.removeAttribute('aria-hidden');
                 }
-                el.removeAttribute('data-original-tabindex');
-            });
-        }
+
+                // Solo aplicar tabindex cuando sea necesario para accesibilidad
+                if (!isOpen) {
+                    // Solo establecer tabindex en elementos específicos cuando esté cerrado
+                    const focusableElements = navMenu.querySelectorAll('a.nav-link');
+                    focusableElements.forEach(el => {
+                        if (!el.hasAttribute('data-original-tabindex')) {
+                            el.setAttribute('data-original-tabindex', el.getAttribute('tabindex') || '0');
+                        }
+                        el.setAttribute('tabindex', '-1');
+                    });
+                } else {
+                    // Restaurar tabindex cuando se abra
+                    const focusableElements = navMenu.querySelectorAll('[data-original-tabindex]');
+                    focusableElements.forEach(el => {
+                        const originalTabindex = el.getAttribute('data-original-tabindex');
+                        if (originalTabindex === '0') {
+                            el.removeAttribute('tabindex');
+                        } else {
+                            el.setAttribute('tabindex', originalTabindex);
+                        }
+                        el.removeAttribute('data-original-tabindex');
+                    });
+                }
+            } else {
+                // En escritorio, no aplicar restricciones de accesibilidad
+                setInert(navMenu, false);
+                navMenu.removeAttribute('aria-hidden');
+
+                // Asegurar que todos los enlaces sean interactivos en escritorio
+                const focusableElements = navMenu.querySelectorAll('a.nav-link');
+                focusableElements.forEach(el => {
+                    el.removeAttribute('tabindex');
+                    el.removeAttribute('data-original-tabindex');
+                });
+            }
+        });
     }
 
     // Función simplificada para manejar el foco
@@ -196,29 +222,63 @@ function initNavigation() {
     // Inicializar manejo de foco
     handleMenuFocus();
 
+    // Función para manejar cambios de tamaño de ventana - optimizada para evitar reflow
+    function handleResize() {
+        // Usar requestAnimationFrame para evitar forced reflow
+        requestAnimationFrame(() => {
+            // Forzar actualización del estado del menú cuando cambie el tamaño
+            updateMenuState(false);
+
+            // En escritorio, asegurar que el menú esté siempre visible
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                setInert(navMenu, false);
+
+                // Restaurar interactividad completa en escritorio
+                const focusableElements = navMenu.querySelectorAll('a.nav-link');
+                focusableElements.forEach(el => {
+                    el.removeAttribute('tabindex');
+                    el.removeAttribute('data-original-tabindex');
+                    el.style.pointerEvents = 'auto';
+                });
+            }
+        });
+    }
+
+    // Escuchar cambios de tamaño de ventana
+    window.addEventListener('resize', handleResize);
+
     // Inicializar estado del menú (cerrado por defecto)
     updateMenuState(false);
+
+    // Ejecutar handleResize inicial para asegurar comportamiento correcto
+    handleResize();
 }
 
-// ===== EFECTOS DE SCROLL =====
+// ===== EFECTOS DE SCROLL ===== - optimizado para evitar reflow
 function initHeaderScroll() {
     const header = document.querySelector('.header');
-    let lastScrollY = window.scrollY;
+    if (!header) return;
+
+    let lastScrollY = 0;
+    let ticking = false;
 
     function updateHeader() {
         const currentScrollY = window.scrollY;
-        
+
+        // Usar clase CSS para manejar el estado en lugar de acceder al DOM repetidamente
         if (currentScrollY > 100) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-        
+
         lastScrollY = currentScrollY;
+        ticking = false;
     }
 
-    // Debounce para mejor rendimiento
-    let ticking = false;
+    // Función optimizada con requestAnimationFrame
     function requestTick() {
         if (!ticking) {
             requestAnimationFrame(updateHeader);
@@ -226,10 +286,8 @@ function initHeaderScroll() {
         }
     }
 
-    window.addEventListener('scroll', function() {
-        ticking = false;
-        requestTick();
-    });
+    // Throttled scroll listener
+    window.addEventListener('scroll', requestTick, { passive: true });
 }
 
 // ===== ANIMACIONES AL SCROLL =====
@@ -526,17 +584,26 @@ function initContactForm() {
     });
 }
 
-// ===== SCROLL SUAVE =====
+// ===== SCROLL SUAVE ===== - optimizado para evitar reflow
 function initSmoothScrolling() {
     const links = document.querySelectorAll('a[href^="#"]');
-    
+    let headerHeight = 80; // Valor por defecto optimizado
+
+    // Calcular header height una sola vez y cachearlo
+    requestAnimationFrame(() => {
+        const header = document.querySelector('.header');
+        if (header) {
+            headerHeight = header.offsetHeight;
+        }
+    });
+
     links.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             // Evento de Google Analytics: Navegación interna
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'internal_navigation', {
@@ -545,14 +612,16 @@ function initSmoothScrolling() {
                     'custom_parameter_1': 'smooth_scroll'
                 });
             }
-            
+
             if (targetElement) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
+                // Usar requestAnimationFrame para evitar reflow durante scroll
+                requestAnimationFrame(() => {
+                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
                 });
             }
         });
