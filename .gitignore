@@ -37,3 +37,6 @@ yarn-error.log*
 
 # Node modules (si se agregan en el futuro)
 node_modules/
+
+# Archivos de prueba
+test-menu*.html

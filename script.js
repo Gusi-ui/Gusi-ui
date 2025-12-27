@@ -448,14 +448,12 @@ function initContactForm() {
         const sanitizedService = sanitizeText(service);
         const sanitizedMessage = sanitizeText(message);
 
-        // Crear objeto de datos sanitizado
+        // Crear objeto de datos para Cloudflare Worker
         const formDataObj = {
             name: sanitizedName,
             email: sanitizedEmail,
             service: sanitizedService,
-            message: sanitizedMessage,
-            _subject: `Nuevo mensaje de contacto desde Gusi.dev - ${sanitizedService}`,
-            _replyto: sanitizedEmail
+            message: sanitizedMessage
         };
 
         // Verificar que los datos sean válidos antes de enviar
@@ -464,7 +462,7 @@ function initContactForm() {
             return;
         }
 
-        // Enviar formulario a Formspree (compatible con GitHub Pages)
+        // Enviar formulario a Cloudflare Worker (tu propio código)
         let jsonString;
         try {
             jsonString = JSON.stringify(formDataObj);
@@ -474,9 +472,15 @@ function initContactForm() {
             return;
         }
 
-        fetch('https://formspree.io/f/xeorlovl', {
+        // Cloudflare Worker endpoint (tu infraestructura, sin terceros)
+        const formEndpoint = 'https://alamia.es/api/contacto';
+
+        fetch(formEndpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: jsonString
         })
         .then(function(response) {
