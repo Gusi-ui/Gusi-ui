@@ -1,34 +1,23 @@
 /**
- * CLOUDFLARE WORKER - Formulario con MailChannels
+ * CLOUDFLARE WORKER - Formulario de Contacto con Resend
  *
- * MailChannels es un servicio GRATUITO específico para Cloudflare Workers
- * que permite enviar emails directamente desde tu dominio SIN terceros adicionales.
- *
- * VENTAJAS:
- * - 100% gratuito
- * - Sin límites de envíos
- * - Emails desde tu dominio (no-reply@alamia.es)
- * - Control total del código
- * - Integrado con Cloudflare que ya usas
- *
- * INSTALACIÓN:
- * 1. Crear Worker en Cloudflare Dashboard
- * 2. Pegar este código
- * 3. Configurar ruta: alamia.es/api/contacto
- * 4. Configurar registros DNS (ver documentación)
- * 5. ¡Listo! Sin dependencias externas
+ * Solución con Cloudflare Workers + Resend:
+ * - Cloudflare Workers (infraestructura)
+ * - Resend (servicio de email recomendado por Cloudflare)
+ * - 3,000 emails/mes gratis
+ * - Integración oficial y simple
  */
 
-// ===== CONFIGURACIÓN =====
+import { Resend } from 'resend';
+
 const CONFIG = {
   emailDestino: 'info@alamia.es',
-  emailRemitente: 'no-reply@alamia.es',
+  emailRemitente: 'info@alamia.es',
   nombreRemitente: 'Formulario Gusi.dev',
   dominio: 'alamia.es',
   maxEnviosPorHora: 10
 };
 
-// ===== HANDLER PRINCIPAL =====
 export default {
   async fetch(request, env, ctx) {
     // CORS Preflight
@@ -42,8 +31,11 @@ export default {
     }
 
     try {
+      console.log('✅ Request recibido');
+
       // Validar origen
       if (!validarOrigen(request)) {
+        console.log('❌ Origen no autorizado');
         return jsonError('Origen no autorizado', 403);
       }
 
@@ -58,6 +50,7 @@ export default {
 
       // Leer datos
       const datos = await request.json();
+      console.log('✅ Datos recibidos');
 
       // Validar
       const validacion = validarFormulario(datos);
@@ -67,7 +60,7 @@ export default {
 
       // Honeypot anti-spam
       if (datos._gotcha || datos.botcheck) {
-        // Bot detectado, responder con éxito falso
+        console.log('🤖 Bot detectado');
         return jsonSuccess({ message: 'Mensaje enviado' });
       }
 
@@ -77,13 +70,19 @@ export default {
       const servicio = sanitizar(datos.service);
       const mensaje = sanitizar(datos.message);
 
-      // Enviar email con MailChannels
-      const enviado = await enviarEmailMailChannels(
-        CONFIG.emailDestino,
-        CONFIG.emailRemitente,
-        CONFIG.nombreRemitente,
-        email,
+      console.log('✅ Validación completada');
+
+      // Verificar API key de Resend
+      if (!env.RESEND_API_KEY) {
+        console.error('❌ API key de Resend no configurada');
+        return jsonError('Servicio de email no disponible', 500);
+      }
+
+      // Enviar email con Resend
+      const enviado = await enviarEmailResend(
+        env.RESEND_API_KEY,
         nombre,
+        email,
         servicio,
         mensaje,
         ip
@@ -98,38 +97,70 @@ export default {
         await registrarEnvio(ip, env.RATE_LIMIT);
       }
 
-      // Responder con éxito
+      console.log('✅ Email enviado exitosamente');
+
       return jsonSuccess({
         message: 'Mensaje enviado correctamente',
         service: servicio
       });
 
     } catch (error) {
-      console.error('Error:', error);
+      console.error('❌ Error:', error.message);
+      console.error('Stack:', error.stack);
       return jsonError('Error al procesar el formulario', 500);
     }
   }
 };
 
-// ===== ENVÍO CON MAILCHANNELS =====
-async function enviarEmailMailChannels(destinatario, remitente, nombreRemitente, replyTo, nombreUsuario, servicio, mensaje, ip) {
-  const nombreServicio = {
-    'web': 'Desarrollo Web',
-    'mobile': 'App Móvil',
-    'ecommerce': 'E-Commerce',
-    'maintenance': 'Mantenimiento',
-    'other': 'Otro Servicio'
-  }[servicio] || servicio;
+// ===== ENVÍO CON RESEND =====
+async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
+  try {
+    const resend = new Resend(apiKey);
 
-  const fecha = new Date().toLocaleString('es-ES', {
-    timeZone: 'Europe/Madrid',
-    dateStyle: 'full',
-    timeStyle: 'short'
-  });
+    const nombreServicio = {
+      'web': 'Desarrollo Web',
+      'mobile': 'App Móvil',
+      'ecommerce': 'E-Commerce',
+      'maintenance': 'Mantenimiento',
+      'other': 'Otro Servicio'
+    }[servicio] || servicio;
 
-  const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
+    const fecha = new Date().toLocaleString('es-ES', {
+      timeZone: 'Europe/Madrid',
+      dateStyle: 'full',
+      timeStyle: 'short'
+    });
 
-  const htmlContent = `
+    const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
+
+    console.log('📧 Enviando email con Resend...');
+
+    const { data, error } = await resend.emails.send({
+      from: `${CONFIG.nombreRemitente} <${CONFIG.emailRemitente}>`,
+      to: [CONFIG.emailDestino],
+      reply_to: `${nombreUsuario} <${emailUsuario}>`,
+      subject: asunto,
+      html: generarEmailHTML(nombreUsuario, emailUsuario, nombreServicio, mensaje, fecha, ip)
+    });
+
+    if (error) {
+      console.error('❌ Error de Resend:', error);
+      return false;
+    }
+
+    console.log('✅ Email enviado:', data.id);
+    return true;
+
+  } catch (error) {
+    console.error('❌ Error al enviar email:', error.message);
+    console.error('Stack:', error.stack);
+    return false;
+  }
+}
+
+// ===== GENERAR HTML DEL EMAIL =====
+function generarEmailHTML(nombre, email, servicio, mensaje, fecha, ip) {
+  return `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -158,15 +189,15 @@ async function enviarEmailMailChannels(destinatario, remitente, nombreRemitente,
         <div class="content">
             <div class="field">
                 <span class="label">👤 Nombre</span>
-                <div class="value"><strong>${nombreUsuario}</strong></div>
+                <div class="value"><strong>${nombre}</strong></div>
             </div>
             <div class="field">
                 <span class="label">📧 Email</span>
-                <div class="value"><a href="mailto:${replyTo}">${replyTo}</a></div>
+                <div class="value"><a href="mailto:${email}">${email}</a></div>
             </div>
             <div class="field">
                 <span class="label">🎯 Servicio Solicitado</span>
-                <div class="value"><span class="badge">${nombreServicio}</span></div>
+                <div class="value"><span class="badge">${servicio}</span></div>
             </div>
             <div class="field">
                 <span class="label">💬 Mensaje</span>
@@ -184,68 +215,6 @@ async function enviarEmailMailChannels(destinatario, remitente, nombreRemitente,
 </body>
 </html>
   `.trim();
-
-  const textContent = `
-NUEVO MENSAJE DE CONTACTO
-=========================
-
-Nombre: ${nombreUsuario}
-Email: ${replyTo}
-Servicio: ${nombreServicio}
-
-Mensaje:
-${mensaje}
-
----
-Fecha: ${fecha}
-IP: ${ip}
-  `.trim();
-
-  // Enviar con MailChannels API
-  try {
-    const response = await fetch('https://api.mailchannels.net/tx/v1/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        personalizations: [{
-          to: [{ email: destinatario, name: 'Gusi.dev' }],
-          reply_to: { email: replyTo, name: nombreUsuario },
-          dkim_domain: CONFIG.dominio,
-          dkim_selector: 'mailchannels',
-          dkim_private_key: env.DKIM_PRIVATE_KEY || ''
-        }],
-        from: {
-          email: remitente,
-          name: nombreRemitente
-        },
-        subject: asunto,
-        content: [
-          {
-            type: 'text/plain',
-            value: textContent
-          },
-          {
-            type: 'text/html',
-            value: htmlContent
-          }
-        ]
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('Error MailChannels:', error);
-      return false;
-    }
-
-    return true;
-
-  } catch (error) {
-    console.error('Error al enviar email:', error);
-    return false;
-  }
 }
 
 // ===== FUNCIONES DE VALIDACIÓN =====

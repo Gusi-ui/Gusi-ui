@@ -1,0 +1,17 @@
+name = "formulario-contacto"
+main = "cloudflare-worker.js"
+compatibility_date = "2024-12-29"
+
+# La API key de Resend se configura como secret (variable secreta)
+# Se configura con: wrangler secret put RESEND_API_KEY
+
+# Rate limiting con KV (opcional)
+# Descomenta si quieres activar el rate limiting
+# kv_namespaces = [
+#   { binding = "RATE_LIMIT", id = "TU_KV_NAMESPACE_ID" }
+# ]
+
+# Rutas del Worker
+routes = [
+  { pattern = "alamia.es/api/contacto", zone_name = "alamia.es" }
+]
