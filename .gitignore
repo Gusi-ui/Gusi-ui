@@ -46,9 +46,7 @@ test-*.html
 TOKEN_ADMIN.txt
 *.token
 *.secret
-test-*.html
 
-# Archivos sensibles de seguridad
-TOKEN_ADMIN.txt
-*.token
-*.secret
+# Archivos de desarrollo local
+.wrangler/
+*.log
