@@ -1,5 +1,14 @@
 # 🚨 INSTRUCCIONES INMEDIATAS - Resolver Timeout GitHub Pages
 
+## ⚠️ IMPORTANTE
+
+Si ya tienes configurado **"Deploy from a branch"** y el problema persiste, ve directamente a:
+👉 **[SOLUCION_TIMEOUT_AVANZADA.md](./SOLUCION_TIMEOUT_AVANZADA.md)**
+
+El problema probablemente está relacionado con el dominio personalizado (`alamia.es`).
+
+---
+
 ## ⚡ Solución Rápida (5 minutos)
 
 El timeout en `deployment_queued` se resuelve cambiando la configuración de GitHub Pages.
