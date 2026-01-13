@@ -148,7 +148,7 @@
     window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
     if(location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
       const s=document.createElement('script');s.async=1;s.src='https://www.googletagmanager.com/gtag/js?id=G-165E9VQDD8';
-      s.onerror=()=>console.warn('GA bloqueado');document.head.appendChild(s);
+      s.onerror=()=>{};document.head.appendChild(s);
       gtag('js',new Date());gtag('config','G-165E9VQDD8',{transport_type:'beacon',anonymize_ip:1});
     }
     </script>
@@ -714,130 +714,132 @@
                 <div class="section-divider"></div>
             </div>
             
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="stars" aria-label="5 de 5 estrellas">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <p>
-                            "Trabajar con Jose fue una experiencia excepcional. Transformó completamente 
-                            nuestra plataforma educativa con un diseño moderno y funcional. Su atención 
-                            al detalle y compromiso con los plazos superó todas nuestras expectativas."
-                        </p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user" aria-hidden="true"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>María López</h4>
-                            <p>Directora de Plataforma Educativa</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="stars" aria-label="5 de 5 estrellas">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <p>
-                            "Necesitábamos una aplicación móvil para nuestro restaurante y Jose entregó 
-                            exactamente lo que necesitábamos. La app es intuitiva, estable y ha mejorado 
-                            significativamente la experiencia de nuestros clientes. ¡Altamente recomendado!"
-                        </p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user" aria-hidden="true"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Carlos Rodríguez</h4>
-                            <p>Propietario de Restaurante</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="stars" aria-label="5 de 5 estrellas">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <p>
-                            "Jose desarrolló nuestro e-commerce desde cero y el resultado ha sido 
-                            increíble. No solo es visualmente atractivo, sino que también es muy 
-                            funcional y ha aumentado nuestras ventas en un 40%. Su profesionalismo 
-                            y expertise son invaluables."
-                        </p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user" aria-hidden="true"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Ana Martínez</h4>
-                            <p>CEO de Boutique Online</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <div class="stars" aria-label="5 de 5 estrellas">
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                            <i class="fas fa-star" aria-hidden="true"></i>
-                        </div>
-                        <p>
-                            "Contraté a Jose para el mantenimiento de nuestro portal inmobiliario y 
-                            ha sido la mejor decisión. Responde rápidamente, soluciona problemas 
-                            eficientemente y siempre está disponible para mejorar el sistema. 
-                            Un profesional de primera."
-                        </p>
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user" aria-hidden="true"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>David García</h4>
-                            <p>Gerente de Inmobiliaria</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Botones de acción -->
+            <div class="testimonials-actions">
+                <button id="open-review-form" class="btn btn-primary" aria-label="Dejar una reseña">
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <span>Dejar una Reseña</span>
+                </button>
+                <!-- 
+                    IMPORTANTE: Reemplaza YOUR_PLACE_ID con tu Google Place ID real.
+                    Para obtener tu Place ID:
+                    1. Ve a https://developers.google.com/maps/documentation/places/web-service/place-id
+                    2. O busca tu negocio en Google Maps y copia el Place ID de la URL
+                    3. También puedes usar: https://www.google.com/maps/search/?api=1&query=TU_DIRECCION
+                -->
+                <a href="https://search.google.com/local/writereview?placeid=ChIJSadCmoe1pBIRcuyJg--BusU" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn btn-secondary"
+                   aria-label="Dejar reseña en Google - Abre en ventana nueva"
+                   id="google-reviews-link">
+                    <i class="fab fa-google" aria-hidden="true"></i>
+                    <span>Reseñar en Google</span>
+                </a>
+            </div>
+            
+            <!-- Contenedor dinámico para reseñas -->
+            <div class="testimonials-grid" id="testimonials-container">
+                <!-- Las reseñas se cargarán dinámicamente aquí -->
             </div>
 
-            <div class="testimonials-stats">
+            <!-- Mensaje cuando no hay reseñas -->
+            <div id="no-reviews-message" class="no-reviews-message" style="display: none;">
+                <i class="fas fa-comments" aria-hidden="true"></i>
+                <p>¡Sé el primero en dejar una reseña!</p>
+                <button class="btn btn-primary" onclick="document.getElementById('open-review-form').click()">
+                    Dejar Reseña
+                </button>
+            </div>
+
+            <div class="testimonials-stats" id="testimonials-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="avg-rating">5.0</div>
+                    <div class="stat-label">Valoración Promedio</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="total-reviews">0</div>
+                    <div class="stat-label">Reseñas Totales</div>
+                </div>
                 <div class="stat-item">
                     <div class="stat-number">100%</div>
                     <div class="stat-label">Clientes Satisfechos</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Proyectos Completados</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Plazos Cumplidos</div>
-                </div>
             </div>
         </div>
     </section>
+
+    <!-- Modal para formulario de reseña -->
+    <div id="review-modal" class="review-modal" role="dialog" aria-labelledby="review-modal-title" aria-hidden="true">
+        <div class="review-modal-overlay" id="review-modal-overlay"></div>
+        <div class="review-modal-content">
+            <button class="review-modal-close" id="review-modal-close" aria-label="Cerrar formulario de reseña">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <h2 id="review-modal-title" class="review-modal-title">Deja tu Reseña</h2>
+            <p class="review-modal-subtitle">Tu opinión es muy importante para nosotros</p>
+            
+            <form id="review-form" class="review-form">
+                <div class="form-group">
+                    <label for="review-name">Nombre *</label>
+                    <input type="text" id="review-name" name="name" required placeholder="Tu nombre" aria-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="review-email">Email *</label>
+                    <input type="email" id="review-email" name="email" required placeholder="tu@email.com" aria-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="review-company">Empresa / Cargo (opcional)</label>
+                    <input type="text" id="review-company" name="company" placeholder="Ej: CEO de Mi Empresa">
+                </div>
+                
+                <div class="form-group">
+                    <label>Valoración *</label>
+                    <div class="rating-input" role="radiogroup" aria-label="Seleccionar valoración">
+                        <input type="radio" id="rating-5" name="rating" value="5" required aria-required="true">
+                        <label for="rating-5" class="rating-star" aria-label="5 estrellas">
+                            <i class="fas fa-star"></i>
+                        </label>
+                        <input type="radio" id="rating-4" name="rating" value="4" required>
+                        <label for="rating-4" class="rating-star" aria-label="4 estrellas">
+                            <i class="fas fa-star"></i>
+                        </label>
+                        <input type="radio" id="rating-3" name="rating" value="3" required>
+                        <label for="rating-3" class="rating-star" aria-label="3 estrellas">
+                            <i class="fas fa-star"></i>
+                        </label>
+                        <input type="radio" id="rating-2" name="rating" value="2" required>
+                        <label for="rating-2" class="rating-star" aria-label="2 estrellas">
+                            <i class="fas fa-star"></i>
+                        </label>
+                        <input type="radio" id="rating-1" name="rating" value="1" required>
+                        <label for="rating-1" class="rating-star" aria-label="1 estrella">
+                            <i class="fas fa-star"></i>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="review-message">Tu Reseña *</label>
+                    <textarea id="review-message" name="message" required rows="5" placeholder="Comparte tu experiencia trabajando conmigo..." aria-required="true"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="review-consent" name="consent" required aria-required="true">
+                        <span>Acepto que mi reseña sea publicada en el sitio web</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    <span>Publicar Reseña</span>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Contacto Section -->
     <section id="contacto" class="contact">

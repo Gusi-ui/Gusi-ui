@@ -1963,6 +1963,272 @@ select:focus,
     letter-spacing: 0.5px;
 }
 
+/* Botones de acción para reseñas */
+.testimonials-actions {
+    display: flex;
+    gap: var(--spacing-lg);
+    justify-content: center;
+    margin-bottom: var(--spacing-3xl);
+    flex-wrap: wrap;
+}
+
+.testimonials-actions .btn {
+    min-width: 200px;
+}
+
+/* Mensaje cuando no hay reseñas */
+.no-reviews-message {
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--bg-card) 0%, #ffffff 100%);
+    border-radius: var(--radius-2xl);
+    border: 2px dashed rgba(99, 102, 241, 0.3);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.no-reviews-message i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.no-reviews-message p {
+    font-size: var(--font-size-xl);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Fecha de reseña */
+.review-date {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xs);
+    display: block;
+    opacity: 0.7;
+}
+
+/* Modal de reseña */
+.review-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.review-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+.review-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.review-modal-content {
+    position: relative;
+    background: var(--bg-primary);
+    border-radius: var(--radius-2xl);
+    padding: var(--spacing-3xl);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+    z-index: 10001;
+}
+
+.review-modal.active .review-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.review-modal-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    background: transparent;
+    border: none;
+    font-size: var(--font-size-2xl);
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-full);
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.review-modal-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transform: rotate(90deg);
+}
+
+.review-modal-title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    text-align: center;
+}
+
+.review-modal-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* Formulario de reseña */
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.review-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.review-form label {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.review-form input[type="text"],
+.review-form input[type="email"],
+.review-form textarea {
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.review-form input[type="text"]:focus,
+.review-form input[type="email"]:focus,
+.review-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.review-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Input de valoración */
+.rating-input {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+.rating-input input[type="radio"] {
+    display: none;
+}
+
+.rating-star {
+    font-size: var(--font-size-3xl);
+    color: #d1d5db;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: var(--spacing-xs);
+}
+
+.rating-star:hover,
+.rating-star.selected,
+.rating-input input[type="radio"]:checked ~ .rating-star {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.rating-input input[type="radio"]:checked ~ .rating-star,
+.rating-star.selected {
+    color: var(--accent-color);
+}
+
+/* Checkbox personalizado */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* Estrellas vacías */
+.stars .far.fa-star {
+    color: #d1d5db;
+}
+
+.stars .fas.fa-star-half-alt {
+    color: var(--accent-color);
+}
+
+/* Responsive para modal */
+@media (max-width: 768px) {
+    .review-modal-content {
+        padding: var(--spacing-xl);
+        width: 95%;
+    }
+    
+    .review-modal-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .testimonials-actions {
+        flex-direction: column;
+    }
+    
+    .testimonials-actions .btn {
+        width: 100%;
+    }
+    
+    .rating-star {
+        font-size: var(--font-size-2xl);
+    }
+}
+
 /* ===== CONTACTO SECTION ===== */
 .contact {
     padding: var(--spacing-3xl) 0;

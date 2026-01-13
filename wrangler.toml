@@ -6,12 +6,19 @@ compatibility_date = "2024-12-29"
 # Se configura con: wrangler secret put RESEND_API_KEY
 
 # Rate limiting con KV (opcional)
-# Descomenta si quieres activar el rate limiting
+# Descomenta si quieres activar el rate limiting para contactos
 # kv_namespaces = [
 #   { binding = "RATE_LIMIT", id = "TU_KV_NAMESPACE_ID" }
 # ]
 
+# KV Namespace para Reseñas (ya configurado)
+kv_namespaces = [
+  { binding = "REVIEWS_KV", id = "6d1616fd6ada4d109170b1e11a28ce2f" }
+]
+
 # Rutas del Worker
 routes = [
-  { pattern = "alamia.es/api/contacto", zone_name = "alamia.es" }
+  { pattern = "alamia.es/api/contacto", zone_name = "alamia.es" },
+  { pattern = "alamia.es/api/resenas", zone_name = "alamia.es" },
+  { pattern = "alamia.es/api/admin/resenas", zone_name = "alamia.es" }
 ]

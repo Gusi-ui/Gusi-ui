@@ -467,7 +467,6 @@ function initContactForm() {
         try {
             jsonString = JSON.stringify(formDataObj);
         } catch (jsonError) {
-            console.error('Error al convertir datos a JSON:', jsonError);
             showNotification('Error al procesar los datos del formulario. Por favor, inténtalo de nuevo.', 'error');
             return;
         }
@@ -1076,3 +1075,504 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Exportar función por si se quiere usar desde consola
 window.toggleTheme = toggleTheme;
+
+// ===== SISTEMA DE RESEÑAS =====
+
+// Inicializar sistema de reseñas
+document.addEventListener('DOMContentLoaded', function() {
+    initReviewsSystem();
+});
+
+function initReviewsSystem() {
+    // Cargar reseñas existentes
+    loadReviews();
+    
+    // Inicializar modal
+    initReviewModal();
+    
+    // Inicializar formulario
+    initReviewForm();
+}
+
+// API endpoint para reseñas (detecta entorno)
+const REVIEWS_API = (() => {
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    // En desarrollo, usar el worker directamente o un proxy
+    return 'https://alamia.es/api/resenas'; // Cambia esto si tienes un worker de desarrollo
+  }
+  return 'https://alamia.es/api/resenas';
+})();
+
+// Cargar reseñas desde la API
+async function loadReviews() {
+    try {
+        const reviews = await fetchReviews();
+        renderReviews(reviews);
+        updateStats(reviews);
+        updateSchemaOrg(reviews);
+    } catch (error) {
+        showNotification('Error al cargar las reseñas. Por favor, recarga la página.', 'error');
+    }
+}
+
+// Obtener reseñas desde la API
+async function fetchReviews() {
+    try {
+        const response = await fetch(REVIEWS_API, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.reviews || [];
+    } catch (error) {
+        // En caso de error, retornar array vacío para no romper la UI
+        return [];
+    }
+}
+
+// Guardar reseña en la API (ya no se usa, pero se mantiene por compatibilidad)
+async function saveReview(review) {
+    try {
+        const response = await fetch(REVIEWS_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(review)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al guardar la reseña');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Renderizar reseñas en la página
+function renderReviews(reviews) {
+    const container = document.getElementById('testimonials-container');
+    const noReviewsMessage = document.getElementById('no-reviews-message');
+    
+    if (!container) return;
+    
+    // Limpiar contenedor
+    container.innerHTML = '';
+    
+    if (reviews.length === 0) {
+        if (noReviewsMessage) {
+            noReviewsMessage.style.display = 'block';
+        }
+        return;
+    }
+    
+    if (noReviewsMessage) {
+        noReviewsMessage.style.display = 'none';
+    }
+    
+    // Ordenar reseñas por fecha (más recientes primero)
+    const sortedReviews = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    // Renderizar cada reseña
+    sortedReviews.forEach(review => {
+        const reviewCard = createReviewCard(review);
+        container.appendChild(reviewCard);
+    });
+    
+    // Animar las tarjetas
+    const cards = container.querySelectorAll('.testimonial-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+}
+
+// Crear tarjeta de reseña
+function createReviewCard(review) {
+    const card = document.createElement('div');
+    card.className = 'testimonial-card';
+    
+    const stars = generateStars(review.rating);
+    const date = formatDate(review.date);
+    
+    card.innerHTML = `
+        <div class="testimonial-content">
+            <div class="stars" aria-label="${review.rating} de 5 estrellas">
+                ${stars}
+            </div>
+            <p>"${escapeHtml(review.message)}"</p>
+        </div>
+        <div class="testimonial-author">
+            <div class="author-avatar">
+                <i class="fas fa-user" aria-hidden="true"></i>
+            </div>
+            <div class="author-info">
+                <h4>${escapeHtml(review.name)}</h4>
+                <p>${review.company ? escapeHtml(review.company) : 'Cliente'}</p>
+                <span class="review-date">${date}</span>
+            </div>
+        </div>
+    `;
+    
+    return card;
+}
+
+// Generar estrellas HTML
+function generateStars(rating) {
+    let starsHtml = '';
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    
+    for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+            starsHtml += '<i class="fas fa-star" aria-hidden="true"></i>';
+        } else if (i === fullStars && hasHalfStar) {
+            starsHtml += '<i class="fas fa-star-half-alt" aria-hidden="true"></i>';
+        } else {
+            starsHtml += '<i class="far fa-star" aria-hidden="true"></i>';
+        }
+    }
+    
+    return starsHtml;
+}
+
+// Formatear fecha
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('es-ES', options);
+}
+
+// Escapar HTML para prevenir XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Actualizar estadísticas
+function updateStats(reviews) {
+    if (reviews.length === 0) {
+        const avgRatingEl = document.getElementById('avg-rating');
+        const totalReviewsEl = document.getElementById('total-reviews');
+        if (avgRatingEl) avgRatingEl.textContent = '0.0';
+        if (totalReviewsEl) totalReviewsEl.textContent = '0';
+        return;
+    }
+    
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const avgRating = (totalRating / reviews.length).toFixed(1);
+    
+    const avgRatingEl = document.getElementById('avg-rating');
+    const totalReviewsEl = document.getElementById('total-reviews');
+    
+    if (avgRatingEl) {
+        avgRatingEl.textContent = avgRating;
+    }
+    if (totalReviewsEl) {
+        totalReviewsEl.textContent = reviews.length;
+    }
+}
+
+// Inicializar modal de reseña
+function initReviewModal() {
+    const modal = document.getElementById('review-modal');
+    const openBtn = document.getElementById('open-review-form');
+    const closeBtn = document.getElementById('review-modal-close');
+    const overlay = document.getElementById('review-modal-overlay');
+    
+    if (!modal || !openBtn) return;
+    
+    // Abrir modal
+    openBtn.addEventListener('click', function() {
+        openReviewModal();
+    });
+    
+    // Cerrar modal
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            closeReviewModal();
+        });
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            closeReviewModal();
+        });
+    }
+    
+    // Cerrar con Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeReviewModal();
+        }
+    });
+}
+
+// Abrir modal
+function openReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (!modal) return;
+    
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    
+    // Enfocar primer campo
+    const firstInput = modal.querySelector('input[type="text"]');
+    if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100);
+    }
+    
+    // Evento de Google Analytics
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'review_modal_opened', {
+            'event_category': 'Reviews',
+            'event_label': 'Review Form'
+        });
+    }
+}
+
+// Cerrar modal
+function closeReviewModal() {
+    const modal = document.getElementById('review-modal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    
+    // Limpiar formulario
+    const form = document.getElementById('review-form');
+    if (form) {
+        form.reset();
+        // Resetear estrellas
+        const stars = form.querySelectorAll('.rating-star');
+        stars.forEach(star => star.classList.remove('selected'));
+    }
+}
+
+// Inicializar formulario de reseña
+function initReviewForm() {
+    const form = document.getElementById('review-form');
+    if (!form) return;
+    
+    // Manejar selección de estrellas
+    const ratingInputs = form.querySelectorAll('input[name="rating"]');
+    const ratingStars = form.querySelectorAll('.rating-star');
+    
+    ratingInputs.forEach((input, index) => {
+        input.addEventListener('change', function() {
+            updateStarDisplay(ratingStars, index);
+        });
+    });
+    
+    ratingStars.forEach((star, index) => {
+        star.addEventListener('click', function() {
+            ratingInputs[index].checked = true;
+            updateStarDisplay(ratingStars, index);
+        });
+    });
+    
+    // Enviar formulario
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitReview();
+    });
+}
+
+// Actualizar visualización de estrellas
+function updateStarDisplay(stars, selectedIndex) {
+    stars.forEach((star, index) => {
+        if (index <= selectedIndex) {
+            star.classList.add('selected');
+        } else {
+            star.classList.remove('selected');
+        }
+    });
+}
+
+// Enviar reseña
+async function submitReview() {
+    const form = document.getElementById('review-form');
+    if (!form) return;
+    
+    const formData = new FormData(form);
+    const name = formData.get('name')?.trim();
+    const email = formData.get('email')?.trim();
+    const company = formData.get('company')?.trim();
+    const rating = parseInt(formData.get('rating'));
+    const message = formData.get('message')?.trim();
+    const consent = formData.get('consent');
+    
+    // Validación
+    if (!name || !email || !rating || !message || !consent) {
+        showNotification('Por favor, completa todos los campos obligatorios', 'error');
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        showNotification('Por favor, introduce un email válido', 'error');
+        return;
+    }
+    
+    if (rating < 1 || rating > 5) {
+        showNotification('Por favor, selecciona una valoración', 'error');
+        return;
+    }
+    
+    if (message.length < 10) {
+        showNotification('La reseña debe tener al menos 10 caracteres', 'error');
+        return;
+    }
+    
+    // Mostrar loading
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Publicando...</span>';
+    submitBtn.disabled = true;
+    
+    try {
+        // Crear objeto de reseña para enviar
+        const reviewData = {
+            name: name,
+            email: email,
+            company: company || null,
+            rating: rating,
+            message: message,
+            consent: true
+        };
+        
+        // Enviar a la API
+        const response = await fetch(REVIEWS_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Error al publicar la reseña');
+        }
+        
+        const data = await response.json();
+        
+        // Cerrar modal
+        closeReviewModal();
+        
+        // Mostrar mensaje según si requiere aprobación
+        if (data.requiresApproval) {
+            showNotification('¡Gracias por tu reseña! Será revisada antes de ser publicada.', 'info');
+        } else {
+            showNotification('¡Gracias por tu reseña! Ha sido publicada correctamente.', 'success');
+        }
+        
+        // Recargar reseñas desde la API
+        const reviews = await fetchReviews();
+        
+        // Actualizar UI
+        renderReviews(reviews);
+        updateStats(reviews);
+        updateSchemaOrg(reviews);
+        
+        // Evento de Google Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'review_submitted', {
+                'event_category': 'Reviews',
+                'event_label': 'Review Form',
+                'value': rating
+            });
+        }
+        
+        // Scroll a la sección de reseñas
+        const testimonialsSection = document.getElementById('testimonios');
+        if (testimonialsSection) {
+            setTimeout(() => {
+                testimonialsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500);
+        }
+        
+    } catch (error) {
+        showNotification(error.message || 'Error al publicar la reseña. Por favor, inténtalo de nuevo.', 'error');
+    } finally {
+        // Restaurar botón
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Actualizar Schema.org con reseñas reales
+function updateSchemaOrg(reviews) {
+    if (reviews.length === 0) return;
+    
+    // Calcular promedio
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const avgRating = (totalRating / reviews.length).toFixed(1);
+    
+    // Buscar schema existente
+    let schemaScript = document.querySelector('script[type="application/ld+json"]');
+    if (!schemaScript) return;
+    
+    try {
+        const schema = JSON.parse(schemaScript.textContent);
+        
+        // Actualizar aggregateRating
+        if (schema.aggregateRating) {
+            schema.aggregateRating.ratingValue = avgRating;
+            schema.aggregateRating.ratingCount = reviews.length.toString();
+        } else {
+            schema.aggregateRating = {
+                "@type": "AggregateRating",
+                "ratingValue": avgRating,
+                "ratingCount": reviews.length.toString(),
+                "bestRating": "5",
+                "worstRating": "1"
+            };
+        }
+        
+        // Actualizar reseñas (máximo 5 más recientes para Schema.org)
+        const recentReviews = [...reviews]
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .slice(0, 5);
+        
+        schema.review = recentReviews.map(review => ({
+            "@type": "Review",
+            "author": {
+                "@type": "Person",
+                "name": review.name
+            },
+            "reviewRating": {
+                "@type": "Rating",
+                "ratingValue": review.rating.toString(),
+                "bestRating": "5",
+                "worstRating": "1"
+            },
+            "reviewBody": review.message,
+            "datePublished": review.date
+        }));
+        
+        // Actualizar script
+        schemaScript.textContent = JSON.stringify(schema, null, 2);
+    } catch (error) {
+        // Error silencioso - no crítico para la funcionalidad
+    }
+}

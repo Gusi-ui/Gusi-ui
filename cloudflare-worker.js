@@ -15,102 +15,473 @@ const CONFIG = {
   emailRemitente: 'info@alamia.es',
   nombreRemitente: 'Formulario Gusi.dev',
   dominio: 'alamia.es',
-  maxEnviosPorHora: 10
+  maxEnviosPorHora: 10,
+  maxResenasPorHora: 3, // Límite de reseñas por hora por IP
+  moderacionActivada: true, // Las reseñas requieren aprobación
+  adminToken: null // Se configura como secret: ADMIN_TOKEN
 };
 
 export default {
   async fetch(request, env, ctx) {
-    // CORS Preflight
+    const url = new URL(request.url);
+    
+    // CORS Preflight - DEBE ser lo primero, sin ninguna validación
     if (request.method === 'OPTIONS') {
-      return handleCORS();
-    }
-
-    // Solo POST
-    if (request.method !== 'POST') {
-      return jsonError('Método no permitido', 405);
-    }
-
-    try {
-      console.log('✅ Request recibido');
-
-      // Validar origen
-      if (!validarOrigen(request)) {
-        console.log('❌ Origen no autorizado');
-        return jsonError('Origen no autorizado', 403);
-      }
-
-      // Rate limiting
-      const ip = request.headers.get('CF-Connecting-IP');
-      if (env.RATE_LIMIT) {
-        const rateLimitOk = await verificarRateLimit(ip, env.RATE_LIMIT);
-        if (!rateLimitOk) {
-          return jsonError('Demasiados intentos. Espera unos minutos.', 429);
+      const origin = request.headers.get('Origin') || request.headers.get('Referer');
+      let allowedOrigin = `https://${CONFIG.dominio}`;
+      
+      if (origin) {
+        if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+          // Extraer el origin completo del string
+          try {
+            const originUrl = new URL(origin);
+            allowedOrigin = originUrl.origin;
+          } catch (e) {
+            // Si falla, usar el origin tal cual
+            allowedOrigin = origin.includes('://') ? origin.split('/').slice(0, 3).join('/') : origin;
+          }
+        } else if (origin === `https://${CONFIG.dominio}` || origin.includes(CONFIG.dominio)) {
+          allowedOrigin = `https://${CONFIG.dominio}`;
         }
       }
-
-      // Leer datos
-      const datos = await request.json();
-      console.log('✅ Datos recibidos');
-
-      // Validar
-      const validacion = validarFormulario(datos);
-      if (!validacion.valido) {
-        return jsonError(validacion.mensaje, 400);
-      }
-
-      // Honeypot anti-spam
-      if (datos._gotcha || datos.botcheck) {
-        console.log('🤖 Bot detectado');
-        return jsonSuccess({ message: 'Mensaje enviado' });
-      }
-
-      // Sanitizar
-      const nombre = sanitizar(datos.name);
-      const email = sanitizar(datos.email);
-      const servicio = sanitizar(datos.service);
-      const mensaje = sanitizar(datos.message);
-
-      console.log('✅ Validación completada');
-
-      // Verificar API key de Resend
-      if (!env.RESEND_API_KEY) {
-        console.error('❌ API key de Resend no configurada');
-        return jsonError('Servicio de email no disponible', 500);
-      }
-
-      // Enviar email con Resend
-      const enviado = await enviarEmailResend(
-        env.RESEND_API_KEY,
-        nombre,
-        email,
-        servicio,
-        mensaje,
-        ip
-      );
-
-      if (!enviado) {
-        throw new Error('Error al enviar email');
-      }
-
-      // Registrar envío (rate limit)
-      if (env.RATE_LIMIT) {
-        await registrarEnvio(ip, env.RATE_LIMIT);
-      }
-
-      console.log('✅ Email enviado exitosamente');
-
-      return jsonSuccess({
-        message: 'Mensaje enviado correctamente',
-        service: servicio
+      
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': allowedOrigin,
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Max-Age': '86400'
+        }
       });
+    }
 
-    } catch (error) {
-      console.error('❌ Error:', error.message);
-      console.error('Stack:', error.stack);
-      return jsonError('Error al procesar el formulario', 500);
+    // Para requests reales, validar origen (más permisivo para desarrollo)
+    const origin = request.headers.get('Origin');
+    const referer = request.headers.get('Referer');
+    
+    // Permitir localhost en desarrollo (cualquier puerto)
+    const isLocalhost = origin && (
+      origin.startsWith('http://localhost') || 
+      origin.startsWith('http://127.0.0.1')
+    );
+    
+    const isProduction = origin && origin === `https://${CONFIG.dominio}`;
+    
+    // También permitir si el referer es localhost
+    const isLocalhostReferer = referer && (
+      referer.startsWith('http://localhost') || 
+      referer.startsWith('http://127.0.0.1')
+    );
+    
+    // Si no es localhost ni producción, rechazar
+    if (!isLocalhost && !isProduction && !isLocalhostReferer && origin) {
+      return jsonError('Origen no autorizado', 403, request);
+    }
+
+    // Determinar ruta
+    if (url.pathname === '/api/contacto' || url.pathname.endsWith('/api/contacto')) {
+      return handleContacto(request, env);
+    } else if (url.pathname === '/api/resenas' || url.pathname.endsWith('/api/resenas')) {
+      return handleResenas(request, env);
+    } else if (url.pathname === '/api/admin/resenas' || url.pathname.endsWith('/api/admin/resenas')) {
+      return handleAdminResenas(request, env);
+    } else {
+      return jsonError('Ruta no encontrada', 404, request);
     }
   }
 };
+
+// ===== MANEJO DE CONTACTO =====
+async function handleContacto(request, env) {
+  if (request.method !== 'POST') {
+    return jsonError('Método no permitido', 405);
+  }
+
+  try {
+    // Rate limiting
+    const ip = request.headers.get('CF-Connecting-IP');
+    if (env.RATE_LIMIT) {
+      const rateLimitOk = await verificarRateLimit(ip, env.RATE_LIMIT);
+      if (!rateLimitOk) {
+        return jsonError('Demasiados intentos. Espera unos minutos.', 429, request);
+      }
+    }
+
+    // Leer datos
+    const datos = await request.json();
+
+    // Validar
+    const validacion = validarFormulario(datos);
+    if (!validacion.valido) {
+      return jsonError(validacion.mensaje, 400, request);
+    }
+
+    // Honeypot anti-spam
+    if (datos._gotcha || datos.botcheck) {
+      return jsonSuccess({ message: 'Mensaje enviado' }, 200, request);
+    }
+
+    // Sanitizar
+    const nombre = sanitizar(datos.name);
+    const email = sanitizar(datos.email);
+    const servicio = sanitizar(datos.service);
+    const mensaje = sanitizar(datos.message);
+
+    // Verificar API key de Resend
+    if (!env.RESEND_API_KEY) {
+      return jsonError('Servicio de email no disponible', 500, request);
+    }
+
+    // Enviar email con Resend
+    const enviado = await enviarEmailResend(
+      env.RESEND_API_KEY,
+      nombre,
+      email,
+      servicio,
+      mensaje,
+      ip
+    );
+
+    if (!enviado) {
+      throw new Error('Error al enviar email');
+    }
+
+    // Registrar envío (rate limit)
+    if (env.RATE_LIMIT) {
+      await registrarEnvio(ip, env.RATE_LIMIT);
+    }
+
+    return jsonSuccess({
+      message: 'Mensaje enviado correctamente',
+      service: servicio
+    }, 200, request);
+
+  } catch (error) {
+    // Log error para debugging (solo en producción, no expone detalles al cliente)
+    return jsonError('Error al procesar el formulario', 500, request);
+  }
+}
+
+// ===== MANEJO DE RESEÑAS =====
+async function handleResenas(request, env) {
+  // Verificar que existe KV para reseñas
+  if (!env.REVIEWS_KV) {
+    return jsonError('Servicio de reseñas no disponible', 500, request);
+  }
+
+  if (request.method === 'GET') {
+    return await obtenerResenas(env.REVIEWS_KV, request);
+  } else if (request.method === 'POST') {
+    return await crearResena(request, env);
+  } else {
+    return jsonError('Método no permitido', 405, request);
+  }
+}
+
+// Obtener todas las reseñas (solo aprobadas para público)
+async function obtenerResenas(kv, request) {
+  try {
+    const reviewsKey = 'reviews:all';
+    const reviewsData = await kv.get(reviewsKey, 'json');
+    const allReviews = reviewsData || [];
+    
+    // Filtrar solo reseñas aprobadas para el público
+    const reviews = allReviews.filter(r => r.approved !== false);
+    
+    return jsonSuccess({
+      reviews: reviews,
+      total: reviews.length,
+      totalPending: allReviews.length - reviews.length
+    }, 200, request);
+  } catch (error) {
+    return jsonError('Error al obtener reseñas', 500, request);
+  }
+}
+
+// Crear nueva reseña
+async function crearResena(request, env) {
+  try {
+    const ip = request.headers.get('CF-Connecting-IP');
+    
+    // Rate limiting para reseñas
+    if (env.RATE_LIMIT) {
+      const rateLimitOk = await verificarRateLimitResenas(ip, env.RATE_LIMIT);
+      if (!rateLimitOk) {
+        return jsonError('Has enviado demasiadas reseñas. Espera unos minutos.', 429, request);
+      }
+    }
+
+    // Leer datos
+    const datos = await request.json();
+
+    // Validar reseña
+    const validacion = validarResena(datos);
+    if (!validacion.valido) {
+      return jsonError(validacion.mensaje, 400, request);
+    }
+
+    // Sanitizar
+    const nombre = sanitizar(datos.name);
+    const email = sanitizar(datos.email);
+    const company = datos.company ? sanitizar(datos.company) : null;
+    const rating = parseInt(datos.rating);
+    const message = sanitizar(datos.message);
+
+    // Crear objeto de reseña
+    const review = {
+      id: Date.now().toString(),
+      name: nombre,
+      email: email,
+      company: company,
+      rating: rating,
+      message: message,
+      date: new Date().toISOString(),
+      verified: false,
+      approved: !CONFIG.moderacionActivada, // Si moderación está activa, requiere aprobación
+      ip: ip,
+      userAgent: request.headers.get('User-Agent') || 'Unknown'
+    };
+
+    // Obtener reseñas existentes
+    const reviewsKey = 'reviews:all';
+    const reviewsData = await env.REVIEWS_KV.get(reviewsKey, 'json');
+    const reviews = reviewsData || [];
+
+    // Agregar nueva reseña
+    reviews.push(review);
+
+    // Guardar en KV
+    await env.REVIEWS_KV.put(reviewsKey, JSON.stringify(reviews));
+    
+    // Si moderación está activa, guardar también en pendientes
+    if (CONFIG.moderacionActivada && !review.approved) {
+      const pendingKey = 'reviews:pending';
+      const pendingData = await env.REVIEWS_KV.get(pendingKey, 'json');
+      const pending = pendingData || [];
+      pending.push(review.id);
+      await env.REVIEWS_KV.put(pendingKey, JSON.stringify(pending));
+    }
+
+    // Registrar envío (rate limit)
+    if (env.RATE_LIMIT) {
+      await registrarResena(ip, env.RATE_LIMIT);
+    }
+
+    const successMessage = CONFIG.moderacionActivada && !review.approved
+      ? 'Reseña enviada. Será revisada antes de ser publicada.'
+      : 'Reseña publicada correctamente';
+
+    return jsonSuccess({
+      message: successMessage,
+      review: review,
+      requiresApproval: CONFIG.moderacionActivada && !review.approved
+    }, 200, request);
+
+  } catch (error) {
+    return jsonError('Error al procesar la reseña', 500, request);
+  }
+}
+
+// Validar reseña
+function validarResena(datos) {
+  const errores = [];
+
+  if (!datos.name || datos.name.trim().length < 2) {
+    errores.push('El nombre debe tener al menos 2 caracteres.');
+  }
+
+  // Validar nombre (no solo números o caracteres especiales)
+  if (datos.name && /^[0-9\s\-_]+$/.test(datos.name)) {
+    errores.push('El nombre debe contener letras.');
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!datos.email || !emailRegex.test(datos.email)) {
+    errores.push('El email no es válido.');
+  }
+
+  // Validar dominio de email (rechazar dominios temporales comunes)
+  const emailDomain = datos.email?.split('@')[1]?.toLowerCase();
+  const tempEmailDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
+  if (emailDomain && tempEmailDomains.some(domain => emailDomain.includes(domain))) {
+    errores.push('Por favor, usa un email válido y permanente.');
+  }
+
+  const rating = parseInt(datos.rating);
+  if (!rating || rating < 1 || rating > 5) {
+    errores.push('La valoración debe ser entre 1 y 5 estrellas.');
+  }
+
+  if (!datos.message || datos.message.trim().length < 10) {
+    errores.push('El mensaje debe tener al menos 10 caracteres.');
+  }
+
+  if (datos.message && datos.message.length > 1000) {
+    errores.push('El mensaje no puede exceder 1000 caracteres.');
+  }
+
+  // Detección básica de spam en el mensaje
+  const spamPatterns = [
+    /(http|https|www\.)/gi, // URLs
+    /[A-Z]{10,}/g, // Muchas mayúsculas seguidas
+    /(.)\1{5,}/g, // Caracteres repetidos
+  ];
+  
+  let spamScore = 0;
+  spamPatterns.forEach(pattern => {
+    if (pattern.test(datos.message || '')) {
+      spamScore++;
+    }
+  });
+  
+  if (spamScore >= 2) {
+    errores.push('El mensaje contiene contenido sospechoso.');
+  }
+
+  if (!datos.consent) {
+    errores.push('Debes aceptar que tu reseña sea publicada.');
+  }
+
+  return {
+    valido: errores.length === 0,
+    mensaje: errores.join(' ')
+  };
+}
+
+// Rate limiting para reseñas
+async function verificarRateLimitResenas(ip, kv) {
+  try {
+    const key = `rate:resenas:${ip}`;
+    const data = await kv.get(key, 'json');
+    const now = Date.now();
+    const hora = 3600000;
+
+    if (!data) return true;
+
+    const enviosRecientes = data.envios.filter(t => now - t < hora);
+    return enviosRecientes.length < CONFIG.maxResenasPorHora;
+
+  } catch (error) {
+    // En caso de error, permitir la acción (fail-open)
+    return true;
+  }
+}
+
+async function registrarResena(ip, kv) {
+  try {
+    const key = `rate:resenas:${ip}`;
+    const now = Date.now();
+    const hora = 3600000;
+
+    const data = await kv.get(key, 'json') || { envios: [] };
+    data.envios.push(now);
+    data.envios = data.envios.filter(t => now - t < hora);
+
+    await kv.put(key, JSON.stringify(data), { expirationTtl: 3600 });
+  } catch (error) {
+    // Error silencioso - no crítico para la funcionalidad
+  }
+}
+
+// ===== ADMINISTRACIÓN DE RESEÑAS =====
+async function handleAdminResenas(request, env) {
+  // Verificar autenticación
+  const authHeader = request.headers.get('Authorization');
+  const adminToken = env.ADMIN_TOKEN || CONFIG.adminToken;
+  
+  if (!adminToken) {
+    return jsonError('Panel de administración no configurado', 503, request);
+  }
+  
+  if (!authHeader || authHeader !== `Bearer ${adminToken}`) {
+    return jsonError('No autorizado', 401, request);
+  }
+
+  if (request.method === 'GET') {
+    return await obtenerTodasResenas(env.REVIEWS_KV, request);
+  } else if (request.method === 'POST') {
+    return await moderarResena(request, env);
+  } else {
+    return jsonError('Método no permitido', 405, request);
+  }
+}
+
+// Obtener todas las reseñas (incluyendo pendientes) - Solo para admin
+async function obtenerTodasResenas(kv, request) {
+  try {
+    const reviewsKey = 'reviews:all';
+    const reviewsData = await kv.get(reviewsKey, 'json');
+    const allReviews = reviewsData || [];
+    
+    const approved = allReviews.filter(r => r.approved === true);
+    const pending = allReviews.filter(r => r.approved !== true);
+    
+    return jsonSuccess({
+      all: allReviews,
+      approved: approved,
+      pending: pending,
+      stats: {
+        total: allReviews.length,
+        approved: approved.length,
+        pending: pending.length
+      }
+    }, 200, request);
+  } catch (error) {
+    return jsonError('Error al obtener reseñas', 500, request);
+  }
+}
+
+// Moderar reseña (aprobar o rechazar)
+async function moderarResena(request, env) {
+  try {
+    const datos = await request.json();
+    const { action, reviewId } = datos; // action: 'approve' o 'reject'
+    
+    if (!action || !reviewId) {
+      return jsonError('Acción y ID de reseña requeridos', 400, request);
+    }
+    
+    if (action !== 'approve' && action !== 'reject') {
+      return jsonError('Acción inválida. Use "approve" o "reject"', 400, request);
+    }
+    
+    const reviewsKey = 'reviews:all';
+    const reviewsData = await env.REVIEWS_KV.get(reviewsKey, 'json');
+    const reviews = reviewsData || [];
+    
+    const reviewIndex = reviews.findIndex(r => r.id === reviewId);
+    if (reviewIndex === -1) {
+      return jsonError('Reseña no encontrada', 404, request);
+    }
+    
+    if (action === 'approve') {
+      reviews[reviewIndex].approved = true;
+      reviews[reviewIndex].approvedAt = new Date().toISOString();
+      
+      // Remover de pendientes
+      const pendingKey = 'reviews:pending';
+      const pendingData = await env.REVIEWS_KV.get(pendingKey, 'json');
+      const pending = (pendingData || []).filter(id => id !== reviewId);
+      await env.REVIEWS_KV.put(pendingKey, JSON.stringify(pending));
+    } else {
+      // Rechazar: marcar como rechazada
+      reviews[reviewIndex].approved = false;
+      reviews[reviewIndex].rejected = true;
+      reviews[reviewIndex].rejectedAt = new Date().toISOString();
+    }
+    
+    await env.REVIEWS_KV.put(reviewsKey, JSON.stringify(reviews));
+    
+    return jsonSuccess({
+      message: `Reseña ${action === 'approve' ? 'aprobada' : 'rechazada'} correctamente`,
+      review: reviews[reviewIndex]
+    }, 200, request);
+    
+  } catch (error) {
+    return jsonError('Error al moderar reseña', 500, request);
+  }
+}
 
 // ===== ENVÍO CON RESEND =====
 async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
@@ -133,8 +504,6 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
 
     const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
 
-    console.log('📧 Enviando email con Resend...');
-
     const { data, error } = await resend.emails.send({
       from: `${CONFIG.nombreRemitente} <${CONFIG.emailRemitente}>`,
       to: [CONFIG.emailDestino],
@@ -144,16 +513,12 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
     });
 
     if (error) {
-      console.error('❌ Error de Resend:', error);
       return false;
     }
 
-    console.log('✅ Email enviado:', data.id);
     return true;
 
   } catch (error) {
-    console.error('❌ Error al enviar email:', error.message);
-    console.error('Stack:', error.stack);
     return false;
   }
 }
@@ -225,7 +590,11 @@ function validarOrigen(request) {
   const permitidos = [
     `https://${CONFIG.dominio}`,
     'http://localhost',
-    'http://127.0.0.1'
+    'http://127.0.0.1',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
   ];
 
   return permitidos.some(p =>
@@ -283,7 +652,7 @@ async function verificarRateLimit(ip, kv) {
     return enviosRecientes.length < CONFIG.maxEnviosPorHora;
 
   } catch (error) {
-    console.error('Error rate limit:', error);
+    // En caso de error, permitir la acción (fail-open)
     return true;
   }
 }
@@ -300,41 +669,124 @@ async function registrarEnvio(ip, kv) {
 
     await kv.put(key, JSON.stringify(data), { expirationTtl: 3600 });
   } catch (error) {
-    console.error('Error al registrar:', error);
+    // Error silencioso - no crítico para la funcionalidad
   }
 }
 
 // ===== RESPUESTAS =====
-function handleCORS() {
+function getCORSOrigin(request) {
+  const origin = request.headers.get('Origin');
+  const referer = request.headers.get('Referer');
+  
+  // Lista de orígenes permitidos
+  const allowedOrigins = [
+    `https://${CONFIG.dominio}`,
+    'http://localhost',
+    'http://127.0.0.1',
+    'http://localhost:8000',
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000'
+  ];
+  
+  // Si hay origin y está en la lista permitida, usarlo
+  if (origin) {
+    const matched = allowedOrigins.find(allowed => origin.startsWith(allowed));
+    if (matched) {
+      return origin;
+    }
+    
+    // Si el origin es localhost (cualquier puerto), permitirlo
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      return origin;
+    }
+  }
+  
+  // Si no hay origin, intentar extraer del referer
+  if (referer) {
+    try {
+      const refererUrl = new URL(referer);
+      const refererOrigin = refererUrl.origin;
+      
+      if (refererOrigin.startsWith('http://localhost') || 
+          refererOrigin.startsWith('http://127.0.0.1') ||
+          refererOrigin === `https://${CONFIG.dominio}`) {
+        return refererOrigin;
+      }
+    } catch (e) {
+      // Si falla al parsear, continuar
+    }
+  }
+  
+  // Por defecto, devolver el dominio de producción
+  return `https://${CONFIG.dominio}`;
+}
+
+function handleCORS(request) {
+  const origin = request.headers.get('Origin');
+  const referer = request.headers.get('Referer');
+  
+  // Determinar el origen permitido
+  let allowedOrigin = `https://${CONFIG.dominio}`;
+  
+  if (origin) {
+    // Permitir cualquier localhost
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      allowedOrigin = origin;
+    } else if (origin === `https://${CONFIG.dominio}`) {
+      allowedOrigin = origin;
+    }
+  } else if (referer) {
+    // Si no hay origin, extraer del referer
+    try {
+      const refererUrl = new URL(referer);
+      const refererOrigin = refererUrl.origin;
+      if (refererOrigin.startsWith('http://localhost') || 
+          refererOrigin.startsWith('http://127.0.0.1')) {
+        allowedOrigin = refererOrigin;
+      }
+    } catch (e) {
+      // Ignorar errores de parsing
+    }
+  }
+  
+  // Headers CORS completos
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'false',
+    'Access-Control-Max-Age': '86400'
+  };
+  
   return new Response(null, {
     status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': `https://${CONFIG.dominio}`,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Max-Age': '86400'
-    }
+    headers: corsHeaders
   });
 }
 
-function jsonSuccess(data, status = 200) {
+function jsonSuccess(data, status = 200, request = null) {
+  const origin = request ? getCORSOrigin(request) : `https://${CONFIG.dominio}`;
   return new Response(JSON.stringify({ success: true, ...data }), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': `https://${CONFIG.dominio}`,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     }
   });
 }
 
-function jsonError(message, status = 400) {
+function jsonError(message, status = 400, request = null) {
+  const origin = request ? getCORSOrigin(request) : `https://${CONFIG.dominio}`;
   return new Response(JSON.stringify({ success: false, message }), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': `https://${CONFIG.dominio}`,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS'
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     }
   });
 }
