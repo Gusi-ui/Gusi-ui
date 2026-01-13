@@ -19,9 +19,32 @@ El despliegue de GitHub Pages se queda en estado `deployment_queued` y alcanza u
 - ✅ Archivos grandes: Solo imágenes optimizadas (normales)
 - ✅ No hay archivos problemáticos
 
+## 🚨 SOLUCIÓN INMEDIATA (Probar Primero)
+
+El problema del timeout en `deployment_queued` suele deberse a que GitHub Pages está configurado para usar **GitHub Actions** pero hay un problema con el workflow o los permisos.
+
+### ⚡ Solución Rápida: Cambiar a "Deploy from a branch"
+
+1. **Ve a tu repositorio en GitHub:**
+   ```
+   https://github.com/Gusi-ui/Gusi-ui/settings/pages
+   ```
+
+2. **En la sección "Source":**
+   - Si está en **"GitHub Actions"**, cámbialo a **"Deploy from a branch"**
+   - Selecciona el branch: **`main`**
+   - Selecciona la carpeta: **`/ (root)`**
+   - Haz clic en **"Save"**
+
+3. **Espera 1-2 minutos** y verifica que el deployment se complete.
+
+4. **Si el problema persiste**, vuelve a cambiar a "GitHub Actions" y sigue con las opciones siguientes.
+
+---
+
 ## 🔄 Soluciones Recomendadas
 
-### Opción A: Esperar y Reintentar (Recomendado)
+### Opción A: Esperar y Reintentar
 
 El timeout puede ser un problema temporal de GitHub. Prueba:
 
@@ -150,9 +173,21 @@ git log --oneline -5
 - ✅ `.gitignore` corregido
 - ✅ Archivos de test eliminados
 - ✅ Token de admin protegido
+- ✅ Archivo `.nojekyll` agregado (para desactivar Jekyll)
 - ⏳ Esperando resolución del timeout de GitHub Pages
+
+## 🔧 Cambios Aplicados
+
+### Commit `5d39ae1`
+- ✅ Agregado archivo `.nojekyll` para desactivar Jekyll en GitHub Pages
+- Esto puede resolver problemas de deployment timeout
+
+### Próximos Pasos
+1. **Cambiar configuración de GitHub Pages** de "GitHub Actions" a "Deploy from a branch"
+2. Si persiste, verificar permisos del repositorio
+3. Contactar soporte de GitHub si el problema continúa después de 24 horas
 
 ---
 
-**Última actualización**: $(date)
-**Commit actual**: `f8644b1` - Fix: Limpiar .gitignore
+**Última actualización**: 2025-01-13
+**Commit actual**: `5d39ae1` - Fix: Agregar .nojekyll para GitHub Pages
