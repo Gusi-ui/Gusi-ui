@@ -18,7 +18,12 @@ kv_namespaces = [
 
 # Rutas del Worker
 routes = [
-  { pattern = "alamia.es/api/contacto", zone_name = "alamia.es" },
-  { pattern = "alamia.es/api/resenas", zone_name = "alamia.es" },
-  { pattern = "alamia.es/api/admin/resenas", zone_name = "alamia.es" }
+  { pattern = "*alamia.es/api/*", zone_name = "alamia.es" }
 ]
+
+[dev]
+# Configuración para desarrollo local
+
+[vars]
+# Variables de entorno para desarrollo
+# CONFIG_VALOR = "desarrollo"

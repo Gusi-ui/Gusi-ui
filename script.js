@@ -1098,8 +1098,8 @@ function initReviewsSystem() {
 const REVIEWS_API = (() => {
   const hostname = window.location.hostname;
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    // En desarrollo, usar el worker directamente o un proxy
-    return 'https://alamia.es/api/resenas'; // Cambia esto si tienes un worker de desarrollo
+    // En desarrollo, usar el worker local
+    return 'http://localhost:8787/api/resenas';
   }
   return 'https://alamia.es/api/resenas';
 })();
@@ -1130,10 +1130,22 @@ async function fetchReviews() {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
-        const data = await response.json();
-        return data.reviews || [];
+        // Verificar que la respuesta sea JSON válido
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('La respuesta de la API no es JSON válido');
+        }
+
+        const text = await response.text();
+        try {
+            const data = JSON.parse(text);
+            return data.reviews || [];
+        } catch (parseError) {
+            console.error('Error al parsear JSON de reseñas:', parseError);
+            return [];
+        }
     } catch (error) {
-        // En caso de error, retornar array vacío para no romper la UI
+        console.error('Error al obtener reseñas:', error);
         return [];
     }
 }
@@ -1378,34 +1390,68 @@ function initReviewForm() {
     const ratingInputs = form.querySelectorAll('input[name="rating"]');
     const ratingStars = form.querySelectorAll('.rating-star');
     
-    ratingInputs.forEach((input, index) => {
+    // Función para actualizar visualización de estrellas
+    const updateStars = (rating) => {
+        ratingStars.forEach((star, index) => {
+            const starRating = index + 1; // Las estrellas van de 1 a 5
+            if (starRating <= rating) {
+                star.classList.add('illuminated');
+            } else {
+                star.classList.remove('illuminated');
+            }
+        });
+    };
+    
+    ratingInputs.forEach((input) => {
         input.addEventListener('change', function() {
-            updateStarDisplay(ratingStars, index);
+            updateStars(parseInt(this.value));
         });
     });
     
     ratingStars.forEach((star, index) => {
         star.addEventListener('click', function() {
-            ratingInputs[index].checked = true;
-            updateStarDisplay(ratingStars, index);
+            const rating = index + 1;
+            // Encontrar el input correspondiente
+            const correspondingInput = form.querySelector(`input[name="rating"][value="${rating}"]`);
+            if (correspondingInput) {
+                correspondingInput.checked = true;
+                updateStars(rating);
+            }
+        });
+        
+        // Hover effect
+        star.addEventListener('mouseenter', function() {
+            const rating = index + 1;
+            ratingStars.forEach((s, i) => {
+                if (i + 1 <= rating) {
+                    s.style.color = 'var(--accent-color)';
+                } else {
+                    s.style.color = '#d1d5db';
+                }
+            });
         });
     });
+    
+    // Reset stars on mouseleave
+    const ratingContainer = form.querySelector('.rating-input');
+    if (ratingContainer) {
+        ratingContainer.addEventListener('mouseleave', function() {
+            const checkedInput = form.querySelector('input[name="rating"]:checked');
+            if (checkedInput) {
+                updateStars(parseInt(checkedInput.value));
+            } else {
+                ratingStars.forEach(star => {
+                    star.classList.remove('illuminated');
+                    star.style.color = '#d1d5db';
+                });
+            }
+        });
+    }
     
     // Enviar formulario
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         submitReview();
-    });
-}
-
-// Actualizar visualización de estrellas
-function updateStarDisplay(stars, selectedIndex) {
-    stars.forEach((star, index) => {
-        if (index <= selectedIndex) {
-            star.classList.add('selected');
-        } else {
-            star.classList.remove('selected');
-        }
     });
 }
 
@@ -1469,9 +1515,21 @@ async function submitReview() {
             body: JSON.stringify(reviewData)
         });
         
+        // Verificar que la respuesta sea JSON válido
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            throw new Error('Error del servidor. Por favor, inténtalo de nuevo más tarde.');
+        }
+        
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Error al publicar la reseña');
+            const errorText = await response.text();
+            try {
+                const errorData = JSON.parse(errorText);
+                throw new Error(errorData.message || 'Error al publicar la reseña');
+            } catch {
+                throw new Error(errorText || 'Error al publicar la reseña');
+            }
         }
         
         const data = await response.json();
@@ -1512,6 +1570,7 @@ async function submitReview() {
         }
         
     } catch (error) {
+        console.error('Error al publicar reseña:', error);
         showNotification(error.message || 'Error al publicar la reseña. Por favor, inténtalo de nuevo.', 'error');
     } finally {
         // Restaurar botón

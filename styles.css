@@ -2152,7 +2152,7 @@ select:focus,
     display: flex;
     gap: var(--spacing-xs);
     justify-content: center;
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 
 .rating-input input[type="radio"] {
@@ -2167,16 +2167,11 @@ select:focus,
     padding: var(--spacing-xs);
 }
 
-.rating-star:hover,
-.rating-star.selected,
+/* Estrellas iluminadas */
+.rating-star.illuminated,
 .rating-input input[type="radio"]:checked ~ .rating-star {
     color: var(--accent-color);
     transform: scale(1.1);
-}
-
-.rating-input input[type="radio"]:checked ~ .rating-star,
-.rating-star.selected {
-    color: var(--accent-color);
 }
 
 /* Checkbox personalizado */

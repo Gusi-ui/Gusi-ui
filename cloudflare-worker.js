@@ -61,21 +61,27 @@ export default {
     const referer = request.headers.get('Referer');
     
     // Permitir localhost en desarrollo (cualquier puerto)
-    const isLocalhost = origin && (
+    const isLocalhostOrigin = origin && (
       origin.startsWith('http://localhost') || 
       origin.startsWith('http://127.0.0.1')
     );
     
-    const isProduction = origin && origin === `https://${CONFIG.dominio}`;
+    // Permitir cualquier puerto localhost
+    const isLocalhostPort = origin && origin.includes('localhost:');
     
-    // También permitir si el referer es localhost
+    const isProduction = origin && (
+      origin === `https://${CONFIG.dominio}` || 
+      origin.includes(CONFIG.dominio)
+    );
+    
+    // También permitir si el referer es localhost (cualquier puerto)
     const isLocalhostReferer = referer && (
       referer.startsWith('http://localhost') || 
       referer.startsWith('http://127.0.0.1')
     );
     
-    // Si no es localhost ni producción, rechazar
-    if (!isLocalhost && !isProduction && !isLocalhostReferer && origin) {
+    // Si no es localhost ni producción, rechazar (pero permitir si no hay origin header)
+    if (origin && !isLocalhostOrigin && !isLocalhostPort && !isProduction && !isLocalhostReferer) {
       return jsonError('Origen no autorizado', 403, request);
     }
 
