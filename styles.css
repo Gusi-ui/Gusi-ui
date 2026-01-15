@@ -2053,6 +2053,28 @@ select:focus,
     margin-bottom: var(--spacing-xl);
 }
 
+/* Botón ver más reseñas */
+.load-more-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-xl);
+    animation: fadeInUp 0.5s ease-out;
+}
+
+#load-more-reviews-btn {
+    min-width: 200px;
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+#load-more-reviews-btn:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    transform: translateY(-2px);
+}
+
 /* Fecha de reseña */
 .review-date {
     font-size: var(--font-size-xs);

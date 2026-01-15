@@ -1215,7 +1215,7 @@ async function saveReview(review) {
 }
 
 // Renderizar reseñas en la página
-function renderReviews(reviews) {
+function renderReviews(reviews, limit = 6) {
     const container = document.getElementById('testimonials-container');
     const noReviewsMessage = document.getElementById('no-reviews-message');
     
@@ -1238,11 +1238,17 @@ function renderReviews(reviews) {
     // Ordenar reseñas por fecha (más recientes primero)
     const sortedReviews = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
     
-    // Renderizar cada reseña
-    sortedReviews.forEach(review => {
+    // Limitar reseñas mostradas
+    const visibleReviews = sortedReviews.slice(0, limit);
+    
+    // Renderizar reseñas visibles
+    visibleReviews.forEach(review => {
         const reviewCard = createReviewCard(review);
         container.appendChild(reviewCard);
     });
+    
+    // Manejo del botón "Ver más"
+    handleLoadMoreButton(reviews.length, limit, sortedReviews);
     
     // Animar las tarjetas
     const cards = container.querySelectorAll('.testimonial-card');
@@ -1255,6 +1261,50 @@ function renderReviews(reviews) {
             card.style.transform = 'translateY(0)';
         }, index * 100);
     });
+}
+
+// Manejar botón de cargar más
+function handleLoadMoreButton(total, currentLimit, allReviews) {
+    const container = document.getElementById('testimonials-container');
+    let loadMoreBtn = document.getElementById('load-more-reviews-btn');
+    
+    // Si hay más reseñas de las mostradas
+    if (total > currentLimit) {
+        if (!loadMoreBtn) {
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'load-more-container';
+            btnContainer.style.textAlign = 'center';
+            btnContainer.style.marginTop = 'var(--spacing-xl)';
+            
+            loadMoreBtn = document.createElement('button');
+            loadMoreBtn.id = 'load-more-reviews-btn';
+            loadMoreBtn.className = 'btn btn-secondary';
+            loadMoreBtn.innerHTML = '<span>Ver todas las reseñas</span> <i class="fas fa-chevron-down"></i>';
+            loadMoreBtn.onclick = () => {
+                // Renderizar todas las reseñas (o incrementar límite)
+                renderReviews(allReviews, total);
+                // Ocultar botón después de expandir
+                loadMoreBtn.style.display = 'none';
+            };
+            
+            btnContainer.appendChild(loadMoreBtn);
+            container.parentNode.insertBefore(btnContainer, container.nextSibling);
+        } else {
+            // Asegurar que el botón sea visible si se reutiliza
+            loadMoreBtn.parentElement.style.display = 'block';
+            loadMoreBtn.style.display = 'inline-flex';
+            // Actualizar onclick con los nuevos datos
+            loadMoreBtn.onclick = () => {
+                renderReviews(allReviews, total);
+                loadMoreBtn.style.display = 'none';
+            };
+        }
+    } else {
+        // Si no hay más reseñas, ocultar el botón si existe
+        if (loadMoreBtn) {
+            loadMoreBtn.parentElement.style.display = 'none';
+        }
+    }
 }
 
 // Crear tarjeta de reseña
