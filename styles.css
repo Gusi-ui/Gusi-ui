@@ -2212,11 +2212,24 @@ select:focus,
     }
     
     .testimonials-actions {
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: 0 var(--spacing-sm);
     }
     
     .testimonials-actions .btn {
-        width: 100%;
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        padding: var(--spacing-sm) var(--spacing-sm);
+        font-size: var(--font-size-xs);
+        white-space: nowrap;
+        height: 44px;
+    }
+    
+    .testimonials-actions .btn i {
+        font-size: 1rem;
     }
     
     .rating-star {
