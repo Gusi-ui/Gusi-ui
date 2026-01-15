@@ -654,10 +654,11 @@ function animateCounters() {
     const counters = document.querySelectorAll('.stat-number');
     
     counters.forEach(counter => {
-        const target = parseInt(counter.textContent.replace(/\D/g, ''));
-        const suffix = counter.textContent.replace(/\d/g, '');
+        // Variables se inicializan cuando comienza la animación
+        let target = 0;
+        let suffix = '';
         let current = 0;
-        const increment = target / 50;
+        let increment = 0;
         
         const updateCounter = () => {
             if (current < target) {
@@ -673,7 +674,19 @@ function animateCounters() {
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    updateCounter();
+                    // Leer el valor objetivo actual (puede haber sido actualizado por JS)
+                    const text = entry.target.textContent;
+                    // Priorizar data-target si existe, sino usar el texto
+                    const dataTarget = entry.target.getAttribute('data-target');
+                    
+                    target = parseInt(dataTarget || text.replace(/\D/g, ''));
+                    suffix = text.replace(/\d/g, '');
+                    current = 0;
+                    increment = target / 50; // Duración aproximada
+                    
+                    if (target > 0) {
+                        updateCounter();
+                    }
                     observer.unobserve(entry.target);
                 }
             });
@@ -1333,9 +1346,11 @@ function updateStats(reviews) {
     
     if (avgRatingEl) {
         avgRatingEl.textContent = avgRating;
+        avgRatingEl.setAttribute('data-target', avgRating); // Para animación
     }
     if (totalReviewsEl) {
         totalReviewsEl.textContent = reviews.length;
+        totalReviewsEl.setAttribute('data-target', reviews.length); // Para animación
     }
 }
 
