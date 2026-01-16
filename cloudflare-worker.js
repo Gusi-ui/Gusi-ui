@@ -177,7 +177,7 @@ async function handleResenas(request, env) {
   }
 
   if (request.method === 'GET') {
-    return await obtenerResenas(env.REVIEWS_KV, request);
+    return await obtenerResenas(env.REVIEWS_KV, request, env);
   } else if (request.method === 'POST') {
     return await crearResena(request, env);
   } else {
@@ -186,22 +186,100 @@ async function handleResenas(request, env) {
 }
 
 // Obtener todas las reseñas (solo aprobadas para público)
-async function obtenerResenas(kv, request) {
+async function obtenerResenas(kv, request, env) {
   try {
+    // 1. Obtener reseñas locales
     const reviewsKey = 'reviews:all';
-    const reviewsData = await kv.get(reviewsKey, 'json');
-    const allReviews = reviewsData || [];
+    const localReviewsData = await kv.get(reviewsKey, 'json');
+    const localReviews = (localReviewsData || []).filter(r => r.approved !== false);
     
-    // Filtrar solo reseñas aprobadas para el público
-    const reviews = allReviews.filter(r => r.approved !== false);
+    // 2. Obtener reseñas de Google (con caché)
+    let googleReviews = [];
+    try {
+      if (env.GOOGLE_API_KEY && env.GOOGLE_PLACE_ID) {
+        googleReviews = await obtenerResenasGoogle(env);
+      }
+    } catch (e) {
+      console.error('Error fetching Google reviews:', e);
+      // Fallback silencioso: si falla Google, mostramos solo locales
+    }
+
+    // 3. Combinar (Locales + Google)
+    // Añadimos propiedad 'source' si no la tienen
+    const formattedLocal = localReviews.map(r => ({ ...r, source: 'web' }));
+    
+    // Combinar y ordenar por fecha (más recientes primero)
+    const allReviews = [...formattedLocal, ...googleReviews].sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
     
     return jsonSuccess({
-      reviews: reviews,
-      total: reviews.length,
-      totalPending: allReviews.length - reviews.length
+      reviews: allReviews,
+      total: allReviews.length,
+      stats: {
+        local: formattedLocal.length,
+        google: googleReviews.length
+      }
     }, 200, request);
   } catch (error) {
     return jsonError('Error al obtener reseñas', 500, request);
+  }
+}
+
+// Función auxiliar para obtener reseñas de Google con caché en KV
+async function obtenerResenasGoogle(env) {
+  const CACHE_KEY = 'reviews:google_cache';
+  const CACHE_TTL = 3600; // 1 hora en segundos
+  
+  // Intentar leer de caché
+  const cachedData = await env.REVIEWS_KV.get(CACHE_KEY, 'json');
+  
+  // Si hay caché y es reciente (menos de 1 hora), usarla
+  // Nota: KV metadata podría usarse, pero guardamos timestamp en el objeto para ser explícitos
+  if (cachedData && cachedData.timestamp && (Date.now() - cachedData.timestamp < CACHE_TTL * 1000)) {
+    return cachedData.reviews;
+  }
+  
+  // Si no hay caché o expiró, consultar API de Google
+  try {
+    const url = `https://places.googleapis.com/v1/places/${env.GOOGLE_PLACE_ID}?fields=reviews,rating,userRatingCount&key=${env.GOOGLE_API_KEY}&languageCode=es`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Google API Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.reviews) return [];
+    
+    // Formatear reseñas al formato de nuestra app
+    const googleReviews = data.reviews.map(r => ({
+      id: `google-${r.name?.split('/')?.pop() || Date.now()}`, // ID único basado en el recurso resource name
+      name: r.authorAttribution?.displayName || 'Usuario de Google',
+      rating: r.rating,
+      message: r.originalText?.text || r.text?.text || '',
+      date: r.publishTime, // Formato ISO viene de Google
+      source: 'google',
+      authorPhoto: r.authorAttribution?.photoUri,
+      company: 'Google Reviews'
+    }));
+    
+    // Guardar en caché KV
+    await env.REVIEWS_KV.put(CACHE_KEY, JSON.stringify({
+      timestamp: Date.now(),
+      reviews: googleReviews
+    }), { expirationTtl: CACHE_TTL }); // TTL a nivel de KV también
+    
+    return googleReviews;
+    
+  } catch (error) {
+    console.error('Error refrescando Google Reviews:', error);
+    // Si falla la API pero tenemos caché vieja, devolver caché vieja como fallback
+    if (cachedData && cachedData.reviews) {
+      return cachedData.reviews;
+    }
+    return [];
   }
 }
 
