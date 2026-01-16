@@ -1837,32 +1837,60 @@ select:focus,
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
 }
 
-.testimonial-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    border-color: var(--primary-color);
-}
-
-.review-source {
+/* Review Badges */
+.review-badge {
     position: absolute;
-    top: var(--spacing-lg);
-    right: var(--spacing-lg);
-    font-size: 1.5rem;
-    opacity: 0.7;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
     transition: all var(--transition-normal);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.review-source.google {
+.review-badge.google {
+    background-color: #ffffff;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+}
+
+.review-badge.google i {
     background: linear-gradient(135deg, #4285F4 0%, #34A853 33%, #FBBC05 66%, #EA4335 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-.testimonial-card:hover .review-source {
-    opacity: 1;
-    transform: scale(1.1);
+.review-badge.web {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
 }
+
+.testimonial-card:hover .review-badge {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.dark .review-badge.google {
+    background-color: #303134;
+    color: #e8eaed;
+    border-color: #5f6368;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+/* Review Source Styles */
+/* .review-source eliminada a favor de .review-badge */
 
 .testimonial-content {
     margin-bottom: var(--spacing-xl);

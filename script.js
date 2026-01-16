@@ -1117,32 +1117,6 @@ const REVIEWS_API = (() => {
   return 'https://alamia.es/api/resenas';
 })();
 
-// Reseñas de Google (simuladas/hardcoded para demostración)
-const GOOGLE_REVIEWS = [
-    {
-        name: "Carlos Rodríguez",
-        rating: 5,
-        message: "Gran profesional. Desarrolló nuestra web corporativa cumpliendo todos los plazos y superando las expectativas. Muy recomendable.",
-        date: "2024-12-10",
-        source: "google"
-    },
-    {
-        name: "Ana M.",
-        rating: 5,
-        message: "Excelente servicio de optimización web. Mi página ahora carga volando y el diseño ha mejorado muchísimo.",
-        date: "2024-11-25",
-        source: "google"
-    },
-    {
-        name: "Restaurante El Puerto",
-        rating: 5,
-        message: "La app de pedidos que nos desarrolló ha cambiado nuestro negocio. Soporte técnico impecable.",
-        date: "2024-10-15",
-        source: "google",
-        company: "Restaurante El Puerto"
-    }
-];
-
 // Cargar reseñas desde la API
 async function loadReviews() {
     try {
@@ -1151,16 +1125,15 @@ async function loadReviews() {
         updateStats(reviews);
         updateSchemaOrg(reviews);
     } catch (error) {
-        // Si falla la API, mostrar al menos las de Google
-        console.error('Error cargando reseñas de API, mostrando backup:', error);
-        renderReviews(GOOGLE_REVIEWS);
-        updateStats(GOOGLE_REVIEWS);
+        console.error('Error cargando reseñas:', error);
+        // Si falla, mostrar mensaje de error o estado vacío
+        const container = document.getElementById('testimonials-container');
+        if (container) container.innerHTML = '<p class="text-center text-muted">No se pudieron cargar las reseñas.</p>';
     }
 }
 
 // Obtener reseñas desde la API
 async function fetchReviews() {
-    let apiReviews = [];
     try {
         const response = await fetch(REVIEWS_API, {
             method: 'GET',
@@ -1175,9 +1148,15 @@ async function fetchReviews() {
                 const text = await response.text();
                 try {
                     const data = JSON.parse(text);
-                    apiReviews = data.reviews || [];
-                    // Marcar como locales
-                    apiReviews = apiReviews.map(r => ({...r, source: 'local'}));
+                    let apiReviews = data.reviews || [];
+                    
+                    // Asegurar que las reseñas locales tengan el source correcto
+                    apiReviews = apiReviews.map(r => ({
+                        ...r, 
+                        source: r.source || 'web' // Si no tiene source, es web
+                    }));
+                    
+                    return apiReviews;
                 } catch (parseError) {
                     console.error('Error al parsear JSON de reseñas:', parseError);
                 }
@@ -1187,8 +1166,7 @@ async function fetchReviews() {
         console.error('Error al obtener reseñas de la API:', error);
     }
     
-    // Combinar reseñas de API con reseñas de Google
-    return [...apiReviews, ...GOOGLE_REVIEWS];
+    return [];
 }
 
 // Guardar reseña en la API (ya no se usa, pero se mantiene por compatibilidad)
@@ -1215,7 +1193,7 @@ async function saveReview(review) {
 }
 
 // Renderizar reseñas en la página
-function renderReviews(reviews, limit = 6) {
+function renderReviews(reviews, limit = 4) {
     const container = document.getElementById('testimonials-container');
     const noReviewsMessage = document.getElementById('no-reviews-message');
     
@@ -1315,13 +1293,22 @@ function createReviewCard(review) {
     const stars = generateStars(review.rating);
     const date = formatDate(review.date);
     
-    // Icono de fuente (Google o Local)
-    const sourceIcon = review.source === 'google' 
-        ? '<i class="fab fa-google review-source google" title="Reseña de Google" aria-label="Fuente: Google"></i>' 
-        : '';
+    // Determinar fuente y badge
+    const isGoogle = review.source === 'google';
+    const sourceClass = isGoogle ? 'google' : 'web';
+    const sourceIcon = isGoogle ? 'fab fa-google' : 'fas fa-globe';
+    const sourceLabel = isGoogle ? 'Google' : 'Web';
+    
+    // Badge HTML
+    const badgeHtml = `
+        <div class="review-badge ${sourceClass}">
+            <i class="${sourceIcon}" aria-hidden="true"></i>
+            <span>${sourceLabel}</span>
+        </div>
+    `;
     
     card.innerHTML = `
-        ${sourceIcon}
+        ${badgeHtml}
         <div class="testimonial-content">
             <div class="stars" aria-label="${review.rating} de 5 estrellas">
                 ${stars}
@@ -1330,13 +1317,13 @@ function createReviewCard(review) {
         </div>
         <div class="testimonial-author">
             <div class="author-avatar">
-                ${review.source === 'google' 
+                ${isGoogle 
                     ? '<i class="fab fa-google" aria-hidden="true"></i>' 
                     : '<i class="fas fa-user" aria-hidden="true"></i>'}
             </div>
             <div class="author-info">
                 <h4>${escapeHtml(review.name)}</h4>
-                <p>${review.company ? escapeHtml(review.company) : (review.source === 'google' ? 'Usuario de Google' : 'Cliente')}</p>
+                <p>${review.company ? escapeHtml(review.company) : (isGoogle ? 'Usuario de Google' : 'Cliente')}</p>
                 <span class="review-date">${date}</span>
             </div>
         </div>
