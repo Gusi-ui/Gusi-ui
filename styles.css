@@ -1867,9 +1867,9 @@ select:focus,
 }
 
 .review-badge.web {
-    background-color: var(--primary-light);
-    color: var(--primary-color);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: 1px solid var(--primary-color);
 }
 
 .testimonial-card:hover .review-badge {
