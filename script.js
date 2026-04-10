@@ -1192,8 +1192,8 @@ async function saveReview(review) {
     }
 }
 
-// Renderizar reseñas en la página
-function renderReviews(reviews, limit = 4) {
+// Renderizar reseñas en la página (Carrusel)
+function renderReviews(reviews, limit = 15) {
     const container = document.getElementById('testimonials-container');
     const noReviewsMessage = document.getElementById('no-reviews-message');
     
@@ -1216,7 +1216,7 @@ function renderReviews(reviews, limit = 4) {
     // Ordenar reseñas por fecha (más recientes primero)
     const sortedReviews = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
     
-    // Limitar reseñas mostradas
+    // Limitar reseñas mostradas en el carrusel
     const visibleReviews = sortedReviews.slice(0, limit);
     
     // Renderizar reseñas visibles
@@ -1225,8 +1225,8 @@ function renderReviews(reviews, limit = 4) {
         container.appendChild(reviewCard);
     });
     
-    // Manejo del botón "Ver más"
-    handleLoadMoreButton(reviews.length, limit, sortedReviews);
+    // Configurar botones de carrusel
+    setupCarouselButtons();
     
     // Animar las tarjetas
     const cards = container.querySelectorAll('.testimonial-card');
@@ -1241,48 +1241,42 @@ function renderReviews(reviews, limit = 4) {
     });
 }
 
-// Manejar botón de cargar más
-function handleLoadMoreButton(total, currentLimit, allReviews) {
+// Configurar botones de navegación del carrusel
+function setupCarouselButtons() {
     const container = document.getElementById('testimonials-container');
-    let loadMoreBtn = document.getElementById('load-more-reviews-btn');
+    const prevBtn = document.getElementById('prev-testimonial');
+    const nextBtn = document.getElementById('next-testimonial');
     
-    // Si hay más reseñas de las mostradas
-    if (total > currentLimit) {
-        if (!loadMoreBtn) {
-            const btnContainer = document.createElement('div');
-            btnContainer.className = 'load-more-container';
-            btnContainer.style.textAlign = 'center';
-            btnContainer.style.marginTop = 'var(--spacing-xl)';
-            
-            loadMoreBtn = document.createElement('button');
-            loadMoreBtn.id = 'load-more-reviews-btn';
-            loadMoreBtn.className = 'btn btn-secondary';
-            loadMoreBtn.innerHTML = '<span>Ver todas las reseñas</span> <i class="fas fa-chevron-down"></i>';
-            loadMoreBtn.onclick = () => {
-                // Renderizar todas las reseñas (o incrementar límite)
-                renderReviews(allReviews, total);
-                // Ocultar botón después de expandir
-                loadMoreBtn.style.display = 'none';
-            };
-            
-            btnContainer.appendChild(loadMoreBtn);
-            container.parentNode.insertBefore(btnContainer, container.nextSibling);
-        } else {
-            // Asegurar que el botón sea visible si se reutiliza
-            loadMoreBtn.parentElement.style.display = 'block';
-            loadMoreBtn.style.display = 'inline-flex';
-            // Actualizar onclick con los nuevos datos
-            loadMoreBtn.onclick = () => {
-                renderReviews(allReviews, total);
-                loadMoreBtn.style.display = 'none';
-            };
+    if (!container || !prevBtn || !nextBtn) return;
+    
+    // Calcular el desplazamiento dinámicamente basado en el primer elemento
+    const getScrollAmount = () => {
+        const firstCard = container.querySelector('.testimonial-card');
+        if (firstCard) {
+            const gap = parseFloat(getComputedStyle(container).gap) || 32;
+            return firstCard.offsetWidth + gap;
         }
-    } else {
-        // Si no hay más reseñas, ocultar el botón si existe
-        if (loadMoreBtn) {
-            loadMoreBtn.parentElement.style.display = 'none';
-        }
-    }
+        return 400; // fallback
+    };
+    
+    // Limpiar listeners anteriores si los hay
+    const newPrevBtn = prevBtn.cloneNode(true);
+    const newNextBtn = nextBtn.cloneNode(true);
+    prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+    nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+    
+    newPrevBtn.addEventListener('click', () => {
+        container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+    
+    newNextBtn.addEventListener('click', () => {
+        container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+}
+
+// Ya no usamos el botón "Cargar más"
+function handleLoadMoreButton(total, currentLimit, allReviews) {
+    // Función obsoleta
 }
 
 // Crear tarjeta de reseña

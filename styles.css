@@ -1965,19 +1965,69 @@ select:focus,
     font-weight: 500;
 }
 
-.testimonials-grid {
-    display: grid;
-    /* Ensure columns don't exceed viewport width on small screens */
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-    gap: var(--spacing-2xl);
+.testimonials-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
     margin-bottom: var(--spacing-3xl);
+    gap: var(--spacing-md);
 }
 
-@media (min-width: 1025px) {
-    .testimonials-grid {
-        /* Balance layout on desktop (e.g., 4 items -> 2x2) */
-        grid-template-columns: repeat(2, minmax(380px, 1fr));
-        justify-content: center;
+.testimonials-carousel {
+    display: flex;
+    overflow-x: auto;
+    flex-grow: 1;
+    scroll-snap-type: x mandatory;
+    gap: var(--spacing-2xl);
+    padding: var(--spacing-md) 0 var(--spacing-2xl); /* padding for shadows and scrollbar */
+    scroll-behavior: smooth;
+    
+    /* hide scrollbar for better aesthetics */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.testimonials-carousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
+
+.carousel-btn {
+    background: var(--bg-card);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 10;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+}
+
+.carousel-btn:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    transform: scale(1.1);
+}
+
+.carousel-btn:active {
+    transform: scale(0.95);
+}
+
+/* On small screens, hide arrows to rely on swipe */
+@media (max-width: 768px) {
+    .carousel-btn {
+        display: none;
+    }
+    .testimonials-carousel-wrapper {
+        margin: 0 calc(-1 * var(--spacing-lg));
+    }
+    .testimonials-carousel {
+        padding: var(--spacing-md) var(--spacing-lg) var(--spacing-2xl);
     }
 }
 
@@ -1990,6 +2040,21 @@ select:focus,
     border: 2px solid rgba(99, 102, 241, 0.1);
     position: relative;
     overflow: hidden;
+    scroll-snap-align: center;
+    flex: 0 0 85%;
+    max-width: 400px;
+}
+
+@media (min-width: 768px) {
+    .testimonial-card {
+        flex: 0 0 calc(50% - var(--spacing-2xl));
+    }
+}
+
+@media (min-width: 1025px) {
+    .testimonial-card {
+        flex: 0 0 380px;
+    }
 }
 
 .testimonial-card::before {

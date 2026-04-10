@@ -757,9 +757,17 @@
                 </a>
             </div>
             
-            <!-- Contenedor dinámico para reseñas -->
-            <div class="testimonials-grid" id="testimonials-container">
-                <!-- Las reseñas se cargarán dinámicamente aquí -->
+            <!-- Contenedor dinámico para reseñas (Carrusel) -->
+            <div class="testimonials-carousel-wrapper">
+                <button class="carousel-btn prev-btn" id="prev-testimonial" aria-label="Reseña anterior">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <div class="testimonials-carousel" id="testimonials-container">
+                    <!-- Las reseñas se cargarán dinámicamente aquí -->
+                </div>
+                <button class="carousel-btn next-btn" id="next-testimonial" aria-label="Siguiente reseña">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
             </div>
 
             <!-- Mensaje cuando no hay reseñas -->
