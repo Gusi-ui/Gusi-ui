@@ -1,0 +1,12 @@
+# Astro static site — no SPA fallback needed
+/gracias-web    /gracias/web    301
+/gracias-mobile /gracias/mobile 301
+/gracias-ecommerce /gracias/ecommerce 301
+/gracias-mantenimiento /gracias/mantenimiento 301
+/gracias-otros  /gracias/otros  301
+/gracias.html   /gracias        301
+/error.html     /error          301
+/politica-privacidad.html /politica-privacidad 301
+/politica-cookies.html /politica-cookies 301
+/terminos-servicio.html /terminos-servicio 301
+/admin-resenas.html /admin/resenas 301

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduLearn - Plataforma Educativa Online | Cursos Interactivos</title>
+    <meta name="description" content="EduLearn: La mejor plataforma educativa online con cursos interactivos, seguimiento de progreso y certificados. Aprende desarrollo web, diseño, marketing digital y más.">
+    <meta name="keywords" content="plataforma educativa, cursos online, aprendizaje, desarrollo web, diseño gráfico, marketing digital, educación online, certificados">
+    <meta name="author" content="EduLearn">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="EduLearn - Plataforma Educativa Online">
+    <meta property="og:description" content="Descubre miles de cursos online diseñados por expertos. Desarrolla nuevas habilidades y avanza en tu carrera profesional.">
+    <meta property="og:image" content="/tu-foto-perfil.jpg">
+    <meta property="og:url" content="https://edulearn.com">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="EduLearn - Plataforma Educativa Online">
+    <meta property="twitter:description" content="Descubre miles de cursos online diseñados por expertos. Desarrolla nuevas habilidades y avanza en tu carrera profesional.">
+    <meta property="twitter:image" content="/tu-foto-perfil.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>EduLearn</span>
+                </div>
+                
+                <nav class="nav" id="nav">
+                    <ul class="nav-list">
+                        <li><a href="#home" class="nav-link active">Inicio</a></li>
+                        <li><a href="#courses" class="nav-link">Cursos</a></li>
+                        <li><a href="#about" class="nav-link">Nosotros</a></li>
+                        <li><a href="#contact" class="nav-link">Contacto</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Buscar cursos..." id="searchInput">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal('loginModal')">
+                        <i class="fas fa-user"></i>
+                        <span>Iniciar Sesión</span>
+                    </button>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Aprende <span class="highlight">sin límites</span><br>
+                        con EduLearn
+                    </h1>
+                    <p class="hero-description">
+                        Descubre miles de cursos online diseñados por expertos. 
+                        Desarrolla nuevas habilidades y avanza en tu carrera profesional.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="scrollToSection('courses')">
+                            <i class="fas fa-play"></i>
+                            Explorar Cursos
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="openModal('demoModal')">
+                            <i class="fas fa-video"></i>
+                            Ver Demo
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">50K+</span>
+                            <span class="stat-label">Estudiantes</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">200+</span>
+                            <span class="stat-label">Cursos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Satisfacción</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <div class="card-header">
+                            <div class="card-avatar">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="card-info">
+                                <h4>María González</h4>
+                                <p>Desarrolladora Web</p>
+                            </div>
+                        </div>
+                        <div class="card-progress">
+                            <div class="progress-info">
+                                <span>Progreso del curso</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="card-course">
+                            <h5>JavaScript Avanzado</h5>
+                            <p>Lección 8 de 12</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Courses -->
+    <section class="featured-courses">
+        <div class="container">
+            <div class="section-header">
+                <h2>Cursos Destacados</h2>
+                <p>Los cursos más populares y mejor valorados</p>
+            </div>
+            <div class="courses-grid" id="featuredCourses">
+                <!-- Los cursos se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <h2>Categorías Populares</h2>
+                <p>Explora cursos por área de conocimiento</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card" data-category="desarrollo">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Desarrollo Web</h3>
+                    <p>3 cursos disponibles</p>
+                </div>
+                <div class="category-card" data-category="diseno">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Diseño Gráfico</h3>
+                    <p>3 cursos disponibles</p>
+                </div>
+                <div class="category-card" data-category="marketing">
+                    <div class="category-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3>Marketing Digital</h3>
+                    <p>1 curso disponible</p>
+                </div>
+                <div class="category-card" data-category="negocios">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Negocios</h3>
+                    <p>1 curso disponible</p>
+                </div>
+                <div class="category-card" data-category="idiomas">
+                    <div class="category-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Idiomas</h3>
+                    <p>1 curso disponible</p>
+                </div>
+                <div class="category-card" data-category="datos">
+                    <div class="category-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Ciencia de Datos</h3>
+                    <p>2 cursos disponibles</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Courses -->
+    <section class="courses-section" id="courses">
+        <div class="container">
+            <div class="section-header">
+                <h2>Todos los Cursos</h2>
+                <p>Encuentra el curso perfecto para ti</p>
+            </div>
+            
+            <div class="courses-filters">
+                <div class="filter-group">
+                    <label for="categoryFilter">Categoría:</label>
+                    <select id="categoryFilter">
+                        <option value="">Todas las categorías</option>
+                        <option value="programacion">Programación</option>
+                        <option value="diseno">Diseño</option>
+                        <option value="marketing">Marketing Digital</option>
+                        <option value="datos">Ciencia de Datos</option>
+                        <option value="negocios">Negocios</option>
+                        <option value="idiomas">Idiomas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="levelFilter">Nivel:</label>
+                    <select id="levelFilter">
+                        <option value="">Todos los niveles</option>
+                        <option value="principiante">Principiante</option>
+                        <option value="intermedio">Intermedio</option>
+                        <option value="avanzado">Avanzado</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="priceFilter">Precio:</label>
+                    <select id="priceFilter">
+                        <option value="">Todos los precios</option>
+                        <option value="free">Gratis</option>
+                        <option value="paid">De pago</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sortFilter">Ordenar por:</label>
+                    <select id="sortFilter">
+                        <option value="popular">Más populares</option>
+                        <option value="recent">Más recientes</option>
+                        <option value="rating">Mejor valorados</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="courses-grid" id="allCourses">
+                <!-- Los cursos se cargarán dinámicamente -->
+            </div>
+            
+            <div class="load-more">
+                <button class="btn btn-secondary" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i>
+                    Cargar más cursos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>¿Por qué elegir EduLearn?</h2>
+                    <p>
+                        Somos una plataforma educativa comprometida con la excelencia académica 
+                        y la innovación en el aprendizaje online. Nuestros cursos están diseñados 
+                        por expertos de la industria y se actualizan constantemente.
+                    </p>
+                    <div class="features-list">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Certificados reconocidos internacionalmente</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Acceso de por vida a los cursos</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Soporte 24/7 de instructores</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Proyectos prácticos y reales</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>50,000+</h3>
+                            <p>Estudiantes activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>200+</h3>
+                            <p>Cursos disponibles</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>15,000+</h3>
+                            <p>Certificados emitidos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>4.8/5</h3>
+                            <p>Valoración promedio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Lo que dicen nuestros estudiantes</h2>
+                <p>Testimonios reales de personas que han transformado su carrera</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>
+                            "Gracias a EduLearn pude cambiar de carrera y conseguir mi trabajo 
+                            soñado como desarrolladora. Los cursos son muy completos y prácticos."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Ana Martínez</h4>
+                            <p>Desarrolladora Frontend</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>
+                            "La calidad de los instructores es excepcional. Cada curso está 
+                            muy bien estructurado y es fácil de seguir, incluso para principiantes."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Carlos Rodríguez</h4>
+                            <p>Diseñador UX/UI</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>
+                            "He tomado varios cursos y todos han superado mis expectativas. 
+                            La plataforma es muy intuitiva y el contenido siempre actualizado."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Laura Fernández</h4>
+                            <p>Marketing Manager</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>¿Tienes preguntas?</h2>
+                    <p>
+                        Nuestro equipo está aquí para ayudarte. Contáctanos y te 
+                        responderemos lo antes posible.
+                    </p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>info@edulearn.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Teléfono</h4>
+                                <p>+34 900 123 456</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Horario</h4>
+                                <p>Lun - Vie: 9:00 - 18:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Asunto</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Selecciona un asunto</option>
+                            <option value="info">Información general</option>
+                            <option value="support">Soporte técnico</option>
+                            <option value="courses">Consulta sobre cursos</option>
+                            <option value="partnership">Colaboración</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>EduLearn</span>
+                    </div>
+                    <p>
+                        Transformamos vidas a través de la educación online de calidad. 
+                        Únete a miles de estudiantes que ya han alcanzado sus metas.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Cursos</h3>
+                    <ul>
+                        <li><a href="#">Desarrollo Web</a></li>
+                        <li><a href="#">Diseño Gráfico</a></li>
+                        <li><a href="#">Marketing Digital</a></li>
+                        <li><a href="#">Negocios</a></li>
+                        <li><a href="#">Idiomas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <ul>
+                        <li><a href="#">Sobre nosotros</a></li>
+                        <li><a href="#">Instructores</a></li>
+                        <li><a href="#">Carreras</a></li>
+                        <li><a href="#">Prensa</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Soporte</h3>
+                    <ul>
+                        <li><a href="#">Centro de ayuda</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Términos de uso</a></li>
+                        <li><a href="#">Política de privacidad</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 EduLearn. Todos los derechos reservados.</p>
+                <p>Desarrollado por <strong>Jose Martínez (Gusi)</strong> - Freelance Developer</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Iniciar Sesión</h3>
+                <button class="modal-close" onclick="closeModal('loginModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="remember">
+                            <span>Recordarme</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Iniciar Sesión
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>¿No tienes cuenta? <a href="#" onclick="openModal('registerModal'); closeModal('loginModal');">Regístrate aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear Cuenta</h3>
+                <button class="modal-close" onclick="closeModal('registerModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Nombre completo</label>
+                        <input type="text" id="registerName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña</label>
+                        <input type="password" id="registerPassword" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar contraseña</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="terms" required>
+                            <span>Acepto los <a href="#">términos y condiciones</a></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus"></i>
+                        Crear Cuenta
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>¿Ya tienes cuenta? <a href="#" onclick="openModal('loginModal'); closeModal('registerModal');">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Modal -->
+    <div class="modal" id="demoModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Demo de la Plataforma</h3>
+                <button class="modal-close" onclick="closeModal('demoModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="demo-content">
+                    <div class="demo-video">
+                        <div class="video-container">
+                            <iframe 
+                                id="demoVideo"
+                                src="https://www.youtube.com/embed/8jLOx1hD3_o?rel=0&modestbranding=1&showinfo=0&autoplay=0" 
+                                title="Demo de Plataforma Educativa - Coursera"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="video-info">
+                            <h4>🎓 Cómo funciona EduLearn</h4>
+                            <p>Descubre en este video una demostración real de una plataforma educativa online, mostrando cómo los estudiantes pueden acceder a cursos, seguir su progreso y obtener certificados.</p>
+                        </div>
+                    </div>
+                    <div class="demo-features">
+                        <h4>✨ Características principales:</h4>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Interfaz intuitiva y fácil de usar</li>
+                            <li><i class="fas fa-check"></i> Seguimiento de progreso en tiempo real</li>
+                            <li><i class="fas fa-check"></i> Certificados al completar cursos</li>
+                            <li><i class="fas fa-check"></i> Acceso desde cualquier dispositivo</li>
+                            <li><i class="fas fa-check"></i> Soporte 24/7 de instructores</li>
+                            <li><i class="fas fa-check"></i> Proyectos prácticos y reales</li>
+                            <li><i class="fas fa-check"></i> Comunidad de estudiantes activa</li>
+                        </ul>
+                        
+                        <div class="demo-stats">
+                            <div class="demo-stat">
+                                <span class="stat-number">50K+</span>
+                                <span class="stat-label">Estudiantes</span>
+                            </div>
+                            <div class="demo-stat">
+                                <span class="stat-number">200+</span>
+                                <span class="stat-label">Cursos</span>
+                            </div>
+                            <div class="demo-stat">
+                                <span class="stat-number">95%</span>
+                                <span class="stat-label">Satisfacción</span>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-cta">
+                            <button class="btn btn-primary btn-lg" onclick="closeModal('demoModal'); scrollToSection('courses');">
+                                <i class="fas fa-rocket"></i>
+                                Comenzar Ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Detail Modal -->
+    <div class="modal" id="courseModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="courseModalTitle">Detalles del Curso</h3>
+                <button class="modal-close" onclick="closeModal('courseModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="courseModalContent">
+                    <!-- El contenido se cargará dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+    <!-- BANNER DE DEMOSTRACIÓN -->
+    <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); padding: 15px 25px; border-radius: 50px; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 999999; border: 1px solid rgba(255,255,255,0.1); width: max-content; max-width: 90vw;">
+        <div style="color: white; font-family: system-ui, -apple-system, sans-serif; font-size: 14px;">
+            <strong style="color: #60a5fa;">✨ Proyecto de Demostración</strong>
+            <span style="opacity: 0.9; margin-left: 5px; display: none; @media(min-width: 768px){display: inline;}">¿Te gusta lo que ves? Construyamos algo increíble juntos.</span>
+        </div>
+        <a href="https://wa.me/34619027645?text=Hola!%20He%20visto%20tu%20proyecto%20de%20demostración%20y%20me%20gustaría%20tener%20una%20web%20similar." target="_blank" style="background: #25D366; color: white; text-decoration: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; font-size: 14px; font-family: system-ui, sans-serif; transition: all 0.3s ease; white-space: nowrap;">
+            Contratar Web
+        </a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alamia.es/sitemap-index.xml
