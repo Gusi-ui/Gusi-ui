@@ -1,0 +1,11 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import legalContent from '@/assets/legal/politica-privacidad.html?raw';
+---
+
+<SimplePageLayout
+  title="Política de Privacidad | alamia.es"
+  description="Política de Privacidad de alamia.es. Conoce cómo protegemos y gestionamos tus datos personales."
+>
+  <div class="policy-page" set:html={legalContent.replace(/index\.html#/g, '/#').replace(/Gusi\.dev/g, 'alamia.es')} />
+</SimplePageLayout>

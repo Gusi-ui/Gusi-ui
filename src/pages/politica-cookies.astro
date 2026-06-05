@@ -1,0 +1,11 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import legalContent from '@/assets/legal/politica-cookies.html?raw';
+---
+
+<SimplePageLayout
+  title="Política de Cookies | alamia.es"
+  description="Política de Cookies de alamia.es."
+>
+  <div class="policy-page" set:html={legalContent.replace(/index\.html#/g, '/#').replace(/Gusi\.dev/g, 'alamia.es')} />
+</SimplePageLayout>

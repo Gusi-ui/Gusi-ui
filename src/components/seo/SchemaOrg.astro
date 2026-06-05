@@ -1,0 +1,88 @@
+---
+import { SITE_URL, CONTACT_EMAIL, WHATSAPP_URL } from '@/lib/constants';
+
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${SITE_URL}/#business`,
+  name: 'Jose Martínez - Desarrollador Freelance',
+  alternateName: 'alamia.es',
+  description:
+    'Desarrollador freelance experto especializado en desarrollo web moderno, aplicaciones móviles y soluciones digitales personalizadas.',
+  url: `${SITE_URL}/`,
+  telephone: '+34-619-027-645',
+  email: CONTACT_EMAIL,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Mataró',
+    addressRegion: 'Barcelona',
+    addressCountry: 'ES',
+    postalCode: '08301',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '41.5378',
+    longitude: '2.4448',
+  },
+  openingHours: 'Mo-Fr 09:00-18:00',
+  priceRange: '€€',
+  serviceType: [
+    'Desarrollo Web Freelance',
+    'Aplicaciones Móviles',
+    'E-commerce',
+    'Mantenimiento Web',
+    'SEO Técnico',
+  ],
+  areaServed: ['España', 'Barcelona', 'Madrid', 'Valencia', 'Sevilla', 'Europa'],
+  knowsAbout: [
+    'Desarrollo Web',
+    'React',
+    'Node.js',
+    'JavaScript',
+    'CSS3',
+    'HTML5',
+    'React Native',
+    'SEO',
+    'Diseño Responsivo',
+  ],
+  sameAs: [
+    WHATSAPP_URL,
+    'https://github.com/gusi-dev',
+    'https://linkedin.com/in/jose-martinez-freelance',
+  ],
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
+  name: 'Jose Martínez',
+  alternateName: 'Gusi',
+  url: SITE_URL,
+  image: `${SITE_URL}/tu-foto-perfil-optimizada.jpg`,
+  jobTitle: 'Desarrollador Freelance',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'alamia.es',
+  },
+  description:
+    'Desarrollador freelance especializado en desarrollo web, aplicaciones móviles y soluciones digitales personalizadas.',
+  knowsAbout: [
+    'Desarrollo Web',
+    'Aplicaciones Móviles',
+    'React',
+    'Node.js',
+    'JavaScript',
+    'SEO',
+    'Diseño UX/UI',
+  ],
+  sameAs: [
+    WHATSAPP_URL,
+    'https://github.com/gusi-dev',
+    'https://linkedin.com/in/jose-martinez-freelance',
+  ],
+};
+---
+
+<script type="application/ld+json" id="schema-business" set:html={JSON.stringify(businessSchema)} />
+<script type="application/ld+json" id="schema-person" set:html={JSON.stringify(personSchema)} />

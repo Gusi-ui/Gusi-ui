@@ -1,8 +1,52 @@
 {
-  "dependencies": {
-    "resend": "^6.6.0"
+  "name": "alamia-portfolio",
+  "version": "2.1.0",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy:worker": "wrangler deploy --config worker/wrangler.toml",
+    "worker:dev": "wrangler dev --config worker/wrangler.toml",
+    "lint": "eslint src worker/src",
+    "format": "prettier --write \"src/**/*.{ts,tsx,astro}\" \"worker/src/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "astro": "6"
+      }
+    },
+    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
   },
   "devDependencies": {
-    "wrangler": "^4.59.1"
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/sitemap": "^3.7.3",
+    "@eslint/js": "^9.39.4",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vite-pwa/astro": "^1.2.0",
+    "astro": "^6.4.4",
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "resend": "^6.12.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vitest": "^4.1.8",
+    "wrangler": "^4.69.0"
   }
 }

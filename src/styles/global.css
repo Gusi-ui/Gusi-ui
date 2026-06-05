@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@import './legacy.css';
+
+@theme {
+  --color-primary: #4f46e5;
+  --color-primary-dark: #3730a3;
+  --color-primary-light: #818cf8;
+  --color-accent: #06b6d4;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}

@@ -1,0 +1,53 @@
+---
+import ContactForm from '@/islands/ContactForm';
+import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
+---
+
+<section id="contacto" class="contact">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">¿Listo para Empezar?</h2>
+      <p class="section-subtitle">Contáctame y hablemos sobre tu proyecto</p>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="contact-content">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="contact-details">
+            <h3>WhatsApp</h3>
+            <p>Respuesta inmediata</p>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener">{WHATSAPP_PHONE}</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="contact-details">
+            <h3>Email</h3>
+            <p>Respuesta en 24h</p>
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="contact-details">
+            <h3>Ubicación</h3>
+            <p>Trabajo remoto</p>
+            <span>Mataró, Barcelona, España</span>
+          </div>
+        </div>
+      </div>
+
+      <ContactForm client:load />
+    </div>
+  </div>
+</section>

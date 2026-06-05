@@ -35,8 +35,19 @@ yarn-error.log*
 *.swp
 *.swo
 
-# Node modules (si se agregan en el futuro)
+# Node modules
 node_modules/
+
+# Lockfiles (solo pnpm)
+package-lock.json
+yarn.lock
+
+# Astro / Build
+dist/
+.astro/
+
+# Vitest
+coverage/
 
 # Archivos de prueba
 test-menu*.html
@@ -46,6 +57,8 @@ test-*.html
 TOKEN_ADMIN.txt
 *.token
 *.secret
+worker/.dev.vars
+.dev.vars
 
 # Archivos de desarrollo local
 .wrangler/

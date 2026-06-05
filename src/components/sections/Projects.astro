@@ -1,0 +1,68 @@
+---
+import ProjectFilter from '@/islands/ProjectFilter';
+import { projects } from '@/data/projects';
+import { WHATSAPP_URL } from '@/lib/constants';
+---
+
+<section id="proyectos" class="projects">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Mis Proyectos</h2>
+      <p class="section-subtitle">Algunos de los trabajos que he realizado para mis clientes</p>
+      <div class="section-divider"></div>
+    </div>
+
+    <ProjectFilter client:load />
+
+    <div class="projects-grid" id="projects-grid">
+      {
+        projects.map((project) => (
+          <div class="project-card" data-project-type={project.type}>
+            <div class="project-image">
+              <picture>
+                {project.image.avif && (
+                  <source srcset={`/${project.image.avif}`} type="image/avif" />
+                )}
+                {project.image.webp && (
+                  <source srcset={`/${project.image.webp}`} type="image/webp" />
+                )}
+                <img
+                  src={`/${project.image.jpg}`}
+                  alt={project.image.alt}
+                  loading="lazy"
+                />
+              </picture>
+              <div class="project-overlay">
+                <div class="project-actions">
+                  <a href={project.demoUrl} class="project-btn" target="_blank" rel="noopener">
+                    <i class="fas fa-eye" />
+                    <span>Ver Proyecto</span>
+                  </a>
+                  <a
+                    href={`${WHATSAPP_URL}?text=${encodeURIComponent(project.whatsappMessage)}`}
+                    class="project-btn project-btn-whatsapp"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <i class="fab fa-whatsapp" />
+                    <span>Contratar Similar</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project-content">
+              <div class="project-badge">{project.badge}</div>
+              <h3 class="project-title">{project.title}</h3>
+              <p class="project-description">{project.description}</p>
+              <div class="project-tech">
+                {project.tech.map((tech) => (
+                  <span class="tech-tag">{tech}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

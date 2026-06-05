@@ -1,0 +1,109 @@
+---
+import '@/styles/global.css';
+import SchemaOrg from '@/components/seo/SchemaOrg.astro';
+import { SITE_URL, SITE_NAME, GA_ID } from '@/lib/constants';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Desarrollador Freelance | Jose Martínez - Desarrollo Web & Apps | alamia.es',
+  description = 'Desarrollador freelance experto en desarrollo web, aplicaciones móviles y soluciones digitales. Más de 50 proyectos exitosos. Especialista en React, Node.js y SEO.',
+  canonical = SITE_URL,
+  noindex = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Jose Martínez - alamia.es" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${SITE_URL}/tu-foto-perfil-optimizada.jpg`} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="es_ES" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE_URL}/tu-foto-perfil-optimizada.jpg`} />
+    <meta name="twitter:site" content="@gusi_dev" />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/freelancer-icon-optimizado.png" />
+
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('site-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const hour = new Date().getHours();
+          const isNightTime = hour >= 20 || hour < 7;
+          if (stored === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else if (stored === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else if (prefersDark || isNightTime) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        const s = document.createElement('script');
+        s.async = 1;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id={GA_ID}';
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', '{GA_ID}', { transport_type: 'beacon', anonymize_ip: 1 });
+      }
+    </script>
+
+    <SchemaOrg />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <script src="https://unpkg.com/web-vitals@4/dist/web-vitals.attribution.iife.js" defer></script>
+    <script>
+      import '@/scripts/site-init';
+    </script>
+  </body>
+</html>

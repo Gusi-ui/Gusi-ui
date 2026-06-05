@@ -1,0 +1,17 @@
+name = "formulario-contacto"
+main = "src/index.ts"
+compatibility_date = "2024-12-29"
+
+# Secrets: RESEND_API_KEY, ADMIN_TOKEN, GOOGLE_API_KEY, GOOGLE_PLACE_ID
+# wrangler secret put RESEND_API_KEY
+
+kv_namespaces = [
+  { binding = "REVIEWS_KV", id = "6d1616fd6ada4d109170b1e11a28ce2f" }
+]
+
+routes = [
+  { pattern = "*alamia.es/api/*", zone_name = "alamia.es" }
+]
+
+[dev]
+port = 8787

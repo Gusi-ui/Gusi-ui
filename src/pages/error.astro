@@ -1,0 +1,51 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import { WHATSAPP_URL, CONTACT_EMAIL } from '@/lib/constants';
+---
+
+<SimplePageLayout
+  title="Error al Enviar | alamia.es"
+  description="Ha ocurrido un error al enviar tu mensaje."
+  noindex
+>
+  <div class="container" style="padding: 6rem 1rem 4rem;">
+    <div
+      style="max-width: 600px; margin: 0 auto; background: white; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);"
+    >
+      <div style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; padding: 3rem 2rem; text-align: center;">
+        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+        <h1 style="font-size: 1.75rem;">Error al Enviar</h1>
+        <p style="opacity: 0.9;">No se pudo procesar tu mensaje</p>
+      </div>
+      <div style="padding: 2rem;">
+        <p id="error-details" style="color: #64748b; margin-bottom: 1.5rem;">
+          Ha ocurrido un error técnico. Por favor, inténtalo de nuevo o contacta directamente.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="/#contacto" class="btn btn-primary" style="text-decoration: none;">
+            <i class="fas fa-redo"></i> Reintentar
+          </a>
+          <a href={WHATSAPP_URL} class="btn btn-whatsapp" target="_blank" rel="noopener" style="text-decoration: none;">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          <a href={`mailto:${CONTACT_EMAIL}`} class="btn btn-primary" style="text-decoration: none;">
+            <i class="fas fa-envelope"></i> Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script is:inline>
+    try {
+      const errorData = sessionStorage.getItem('formError');
+      if (errorData) {
+        const error = JSON.parse(errorData);
+        const el = document.getElementById('error-details');
+        if (el && error.message) {
+          el.textContent = 'Error: ' + error.message;
+        }
+        sessionStorage.removeItem('formError');
+      }
+    } catch (e) {}
+  </script>
+</SimplePageLayout>

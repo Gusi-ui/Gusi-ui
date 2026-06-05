@@ -1,0 +1,11 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import legalContent from '@/assets/legal/terminos-servicio.html?raw';
+---
+
+<SimplePageLayout
+  title="Términos de Servicio | alamia.es"
+  description="Términos de Servicio de alamia.es."
+>
+  <div class="policy-page" set:html={legalContent.replace(/index\.html#/g, '/#').replace(/Gusi\.dev/g, 'alamia.es')} />
+</SimplePageLayout>

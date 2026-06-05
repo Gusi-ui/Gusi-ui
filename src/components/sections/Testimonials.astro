@@ -1,0 +1,16 @@
+---
+import ReviewsSection from '@/islands/ReviewsSection';
+import { GOOGLE_REVIEWS_URL } from '@/lib/constants';
+---
+
+<section id="testimonios" class="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Lo que dicen mis clientes</h2>
+      <p class="section-subtitle">Experiencias reales de proyectos exitosos</p>
+      <div class="section-divider"></div>
+    </div>
+
+    <ReviewsSection client:load googleReviewsUrl={GOOGLE_REVIEWS_URL} />
+  </div>
+</section>

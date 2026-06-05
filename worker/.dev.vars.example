@@ -1,0 +1,12 @@
+# Copia este archivo a .dev.vars y rellena tus valores reales.
+# cp .dev.vars.example .dev.vars
+#
+# Obtén RESEND_API_KEY en https://resend.com/api-keys
+# ADMIN_TOKEN: el mismo que usas en producción (wrangler secret put ADMIN_TOKEN)
+
+RESEND_API_KEY=re_tu_api_key_aqui
+ADMIN_TOKEN=tu_token_admin_aqui
+
+# Opcionales (reseñas de Google)
+# GOOGLE_API_KEY=
+# GOOGLE_PLACE_ID=

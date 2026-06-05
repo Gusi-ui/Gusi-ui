@@ -1,0 +1,37 @@
+---
+import ThemeToggle from '@/islands/ThemeToggle';
+---
+
+<header class="header">
+  <nav class="nav">
+    <div class="nav-brand">
+      <img
+        src="/freelancer-icon-optimizado.png"
+        alt="alamia.es - Desarrollador Freelance"
+        class="brand-logo"
+      />
+      <span class="brand-text">alamia.es</span>
+      <ThemeToggle client:load />
+    </div>
+    <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal">
+      <a href="#inicio" class="nav-link" role="menuitem">Inicio</a>
+      <a href="#servicios" class="nav-link" role="menuitem">Servicios</a>
+      <a href="#proyectos" class="nav-link" role="menuitem">Proyectos</a>
+      <a href="#testimonios" class="nav-link" role="menuitem">Testimonios</a>
+      <a href="#contacto" class="nav-link" role="menuitem">Contacto</a>
+    </div>
+    <div
+      class="nav-toggle"
+      id="nav-toggle"
+      aria-label="Menú de navegación"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      role="button"
+      tabindex="0"
+    >
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+    </div>
+  </nav>
+</header>
