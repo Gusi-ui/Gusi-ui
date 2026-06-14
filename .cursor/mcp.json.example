@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer TU_GITHUB_PAT_AQUI"
+      }
+    },
+    "cloudflare-alamia": {
+      "url": "https://mcp.cloudflare.com/mcp",
+      "headers": {
+        "Authorization": "Bearer TU_CLOUDFLARE_TOKEN"
+      }
+    }
+  }
+}
