@@ -81,7 +81,7 @@ export const projects: Project[] = [
     image: {
       avif: 'imagen-gestion-citas.avif',
       webp: 'imagen-gestion-citas.webp',
-      jpg: 'images/proyectos/gestion-citas.jpg',
+      jpg: 'imagen-gestion-citas.webp',
       alt: 'Sistema de gestión de citas - Calendario y agenda online',
     },
     demoUrl: '/proyectos-ejemplo/gestion-citas/index.html',

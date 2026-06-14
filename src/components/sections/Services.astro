@@ -1,56 +1,34 @@
 ---
-import { services } from '@/data/services';
-import { WHATSAPP_URL } from '@/lib/constants';
+import { projectServices, maintenanceService } from '@/data/services';
+import ServiceCard from '@/islands/ServiceCard.tsx';
+import MaintenanceCard from '@/islands/MaintenanceCard.tsx';
+import { isStripeConfigured } from '@/lib/payments/stripe-client';
+
+const stripeEnabled = isStripeConfigured();
 ---
 
 <section id="servicios" class="services" itemscope itemtype="https://schema.org/Service">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">Mis Servicios</h2>
-      <p class="section-subtitle">Soluciones digitales personalizadas para tu negocio</p>
+      <p class="section-subtitle">
+        Elige el servicio que necesitas. Un clic y pagas de forma segura.
+      </p>
       <div class="section-divider"></div>
     </div>
-    <div class="services-grid">
+
+    <div class="services-grid services-grid--projects">
       {
-        services.map((service) => (
-          <div
-            class="service-card"
-            itemscope
-            itemtype="https://schema.org/Service"
-            role="article"
-            aria-labelledby={service.id}
-          >
-            <div class="service-icon" aria-hidden="true">
-              <i class={service.icon} />
-            </div>
-            <h3 class="service-title" itemprop="name" id={service.id}>
-              {service.title}
-            </h3>
-            <p class="service-description" itemprop="description">
-              {service.description}
-            </p>
-            <div class="service-features">
-              {service.features.map((feature) => (
-                <div class="feature-item">
-                  <i class="fas fa-check" />
-                  <span itemprop="serviceType">{feature}</span>
-                </div>
-              ))}
-            </div>
-            <div class="service-footer">
-              <div class="service-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                <span itemprop="priceCurrency">€</span>
-                <span itemprop="price">{service.price}</span>
-                <span class="price-period">/mes</span>
-              </div>
-              <a href={WHATSAPP_URL} class="service-btn" target="_blank" itemprop="url">
-                <i class="fab fa-whatsapp" />
-                <span>Consultar Plan</span>
-              </a>
-            </div>
+        projectServices.map((service) => (
+          <div class="services-grid__cell">
+            <ServiceCard client:visible service={service} stripeEnabled={stripeEnabled} />
           </div>
         ))
       }
+    </div>
+
+    <div class="maintenance-band__cell">
+      <MaintenanceCard client:visible service={maintenanceService} stripeEnabled={stripeEnabled} />
     </div>
   </div>
 </section>

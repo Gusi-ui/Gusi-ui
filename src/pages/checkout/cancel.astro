@@ -1,0 +1,36 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import { projectServices, maintenanceService } from '@/data/services';
+import { WHATSAPP_URL } from '@/lib/constants';
+
+const productSlug = Astro.url.searchParams.get('product');
+const allServices = [...projectServices, maintenanceService];
+const product = allServices.find((s) => s.slug === productSlug);
+const year = new Date().getFullYear();
+---
+
+<SimplePageLayout title="Pago cancelado | alamia.es" noindex>
+  <div class="container checkout-page">
+    <div class="checkout-status checkout-status-cancel">
+      <i class="fas fa-times-circle" aria-hidden="true"></i>
+      <h2>Pago cancelado</h2>
+      <p>No se ha realizado ningún cargo. Puedes volver a intentarlo cuando quieras.</p>
+      {
+        product && (
+          <p class="checkout-product">
+            Servicio seleccionado: <strong>{product.title}</strong>
+          </p>
+        )
+      }
+      <div class="checkout-actions">
+        <a href="/#servicios" class="btn btn-primary">
+          <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver a servicios
+        </a>
+        <a href={WHATSAPP_URL} class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i> Consultar por WhatsApp
+        </a>
+      </div>
+      <p class="checkout-footer">&copy; {year} Jose Martínez (Gusi) — alamia.es</p>
+    </div>
+  </div>
+</SimplePageLayout>

@@ -1,47 +1,102 @@
-export type Service = {
+export type BillingPlan = 'one_time' | 'monthly';
+
+export type ServiceBadge = 'best-seller' | 'best-value';
+
+export type ProjectService = {
+  kind: 'project';
   id: string;
+  slug: string;
   icon: string;
   title: string;
   description: string;
   features: string[];
   price: number;
+  priceHint: string;
+  badge?: ServiceBadge;
+  highlight?: 'featured';
 };
 
-export const services: Service[] = [
+export type MaintenanceService = {
+  kind: 'maintenance';
+  id: string;
+  slug: string;
+  icon: string;
+  title: string;
+  description: string;
+  features: string[];
+  price: number;
+  priceHint: string;
+  valueAnchor: string;
+};
+
+export const projectServices: ProjectService[] = [
   {
+    kind: 'project',
     id: 'servicio-1',
+    slug: 'desarrollo-web',
     icon: 'fas fa-laptop-code',
-    title: 'Desarrollo Web',
+    title: 'Desarrollo',
     description:
-      'Sitios web modernos, responsivos y optimizados para SEO. Desde landing pages hasta aplicaciones web complejas.',
-    features: ['Diseño Responsivo', 'Optimización SEO', 'Velocidad de Carga'],
-    price: 20,
+      'Tu presencia online lista para captar clientes, sin complicaciones técnicas.',
+    features: ['Diseño responsivo', 'SEO básico configurado', 'Entrega en 7–10 días'],
+    price: 250,
+    priceHint: 'Pago único · Sin sorpresas',
   },
   {
+    kind: 'project',
     id: 'servicio-2',
-    icon: 'fas fa-mobile-alt',
-    title: 'Apps Móviles',
+    slug: 'optimizacion-web',
+    icon: 'fas fa-gauge-high',
+    title: 'Optimización',
     description:
-      'Aplicaciones móviles nativas e híbridas para iOS y Android. Experiencia de usuario excepcional garantizada.',
-    features: ['iOS & Android', 'UI/UX Moderno', 'Integración API'],
-    price: 50,
+      'Acelera tu web y mejora tu posicionamiento con métricas reales de rendimiento.',
+    features: [
+      'Auditoría Core Web Vitals',
+      'Optimización de carga (LCP, INP)',
+      'Informe antes/después',
+    ],
+    price: 190,
+    priceHint: 'Pago único · Resultados medibles',
+    badge: 'best-seller',
+    highlight: 'featured',
   },
   {
+    kind: 'project',
     id: 'servicio-3',
+    slug: 'backend-apis',
     icon: 'fas fa-server',
     title: 'Backend & APIs',
-    description:
-      'APIs RESTful, bases de datos y servidores escalables para aplicaciones web y móviles.',
-    features: ['Pasarelas de Pago', 'Panel Admin', 'Inventario'],
-    price: 75,
-  },
-  {
-    id: 'servicio-4',
-    icon: 'fas fa-tools',
-    title: 'Mantenimiento',
-    description:
-      'Soporte técnico continuo, actualizaciones de seguridad, optimización de rendimiento y hosting con dominio incluido.',
-    features: ['Soporte 24/7', 'Actualizaciones', 'Backups'],
-    price: 10,
+    description: 'La base técnica que tu negocio necesita para escalar con seguridad.',
+    features: ['API REST documentada', 'Base de datos configurada', 'Panel admin básico'],
+    price: 400,
+    priceHint: 'Pago único · Proyecto llave en mano',
+    badge: 'best-value',
+    highlight: 'featured',
   },
 ];
+
+export const maintenanceService: MaintenanceService = {
+  kind: 'maintenance',
+  id: 'servicio-4',
+  slug: 'mantenimiento',
+  icon: 'fas fa-shield-halved',
+  title: 'Mantenimiento Web',
+  description:
+    'Tu web siempre actualizada, segura y monitorizada. Olvídate de los problemas técnicos.',
+  features: [
+    'Actualizaciones de seguridad mensuales',
+    'Copias de seguridad automáticas',
+    'Monitorización de uptime 24/7',
+    'Soporte por email (respuesta < 24h)',
+    '1h de cambios menores al mes',
+    'Informe mensual de estado',
+  ],
+  price: 10,
+  priceHint: 'Cancela cuando quieras',
+  valueAnchor: 'Menos que un café a la semana',
+};
+
+export const BADGE_LABELS: Record<ServiceBadge, string> = {
+  'best-seller': 'Más vendido',
+  'best-value': 'Mayor valor',
+};
