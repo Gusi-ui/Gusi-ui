@@ -19,4 +19,5 @@ export type VerifySessionResponse = {
   amountTotal?: number;
   currency?: string;
   mode?: 'payment' | 'subscription';
+  customerId?: string | null;
 };

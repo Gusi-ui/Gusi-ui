@@ -9,7 +9,7 @@
  */
 
 import { Resend } from 'resend';
-import { handleCreateCheckout, handleVerifySession } from './payments';
+import { handleCreateCheckout, handleVerifySession, handleCustomerPortal } from './payments';
 import { handleStripeWebhook } from './stripe-webhook';
 
 const CONFIG = {
@@ -108,6 +108,11 @@ export default {
       url.pathname.endsWith('/api/payments/webhook')
     ) {
       return handleStripeWebhook(request, env);
+    } else if (
+      url.pathname === '/api/payments/customer-portal' ||
+      url.pathname.endsWith('/api/payments/customer-portal')
+    ) {
+      return handleCustomerPortal(request, env, request);
     } else {
       return jsonError('Ruta no encontrada', 404, request);
     }

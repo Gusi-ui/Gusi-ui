@@ -1,0 +1,10 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import ManageSubscription from '@/islands/ManageSubscription.tsx';
+---
+
+<SimplePageLayout title="Gestionar mantenimiento | alamia.es" noindex>
+  <div class="container checkout-page">
+    <ManageSubscription client:load />
+  </div>
+</SimplePageLayout>

@@ -24,3 +24,6 @@ STRIPE_PRICE_MANTENIMIENTO_MONTHLY=price_xxxxxxxx
 # Webhook (Stripe Dashboard → Developers → Webhooks → Signing secret)
 # Local: stripe listen --forward-to localhost:8787/api/payments/webhook
 STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxx
+
+# Bizum: actívalo en Stripe Dashboard → Settings → Payment methods (solo pagos únicos)
+# Customer Portal: Settings → Billing → Customer portal (permitir cancelación de suscripciones)

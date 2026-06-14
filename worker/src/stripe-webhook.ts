@@ -42,7 +42,12 @@ const generarEmailPagoHTML = (
 </body>
 </html>`.trim();
 
-const generarEmailClienteHTML = (productTitle: string, billingLabel: string, amount: string): string => `
+const generarEmailClienteHTML = (
+  productTitle: string,
+  billingLabel: string,
+  amount: string,
+  isSubscription = false
+): string => `
 <!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"></head>
@@ -56,6 +61,11 @@ const generarEmailClienteHTML = (productTitle: string, billingLabel: string, amo
       <p><strong>${productTitle}</strong> — ${billingLabel}</p>
       <p><strong>Total:</strong> ${amount}</p>
       <p>Te contactaremos en breve para los siguientes pasos.</p>
+      ${
+        isSubscription
+          ? `<p style="margin-top:20px;"><a href="https://alamia.es/mantenimiento/gestionar" style="color:#4f46e5;">Gestionar o cancelar tu suscripción</a></p>`
+          : ''
+      }
       <p style="margin-top:24px;">— Jose Martínez · <a href="https://alamia.es">alamia.es</a></p>
     </div>
   </div>
@@ -89,7 +99,7 @@ const sendPaymentEmails = async (
     from: `${NOMBRE_REMITENTE} <${EMAIL_REMITENTE}>`,
     to: [customerEmail],
     subject: `Confirmación de pago — ${productTitle}`,
-    html: generarEmailClienteHTML(productTitle, billingLabel, amount),
+    html: generarEmailClienteHTML(productTitle, billingLabel, amount, billingPlan === 'monthly'),
   });
 };
 
