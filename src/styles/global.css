@@ -1,3 +1,5 @@
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-600.css';
 @import 'tailwindcss';
 @import './legacy.css';
 
@@ -7,4 +9,32 @@
   --color-primary-light: #818cf8;
   --color-accent: #06b6d4;
   --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon--spin {
+  animation: icon-spin 1s linear infinite;
+}
+
+@keyframes icon-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

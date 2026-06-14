@@ -1,3 +1,5 @@
+import type { IconName } from '@/lib/icons';
+
 export type BillingPlan = 'one_time' | 'monthly';
 
 export type ServiceBadge = 'best-seller' | 'best-value';
@@ -6,7 +8,7 @@ export type ProjectService = {
   kind: 'project';
   id: string;
   slug: string;
-  icon: string;
+  icon: IconName;
   title: string;
   description: string;
   features: string[];
@@ -20,7 +22,7 @@ export type MaintenanceService = {
   kind: 'maintenance';
   id: string;
   slug: string;
-  icon: string;
+  icon: IconName;
   title: string;
   description: string;
   features: string[];
@@ -34,7 +36,7 @@ export const projectServices: ProjectService[] = [
     kind: 'project',
     id: 'servicio-1',
     slug: 'desarrollo-web',
-    icon: 'fas fa-laptop-code',
+    icon: 'laptop-code',
     title: 'Desarrollo',
     description:
       'Tu presencia online lista para captar clientes, sin complicaciones técnicas.',
@@ -46,7 +48,7 @@ export const projectServices: ProjectService[] = [
     kind: 'project',
     id: 'servicio-2',
     slug: 'optimizacion-web',
-    icon: 'fas fa-gauge-high',
+    icon: 'gauge-high',
     title: 'Optimización',
     description:
       'Acelera tu web y mejora tu posicionamiento con métricas reales de rendimiento.',
@@ -64,7 +66,7 @@ export const projectServices: ProjectService[] = [
     kind: 'project',
     id: 'servicio-3',
     slug: 'backend-apis',
-    icon: 'fas fa-server',
+    icon: 'server',
     title: 'Backend & APIs',
     description: 'La base técnica que tu negocio necesita para escalar con seguridad.',
     features: ['API REST documentada', 'Base de datos configurada', 'Panel admin básico'],
@@ -79,7 +81,7 @@ export const maintenanceService: MaintenanceService = {
   kind: 'maintenance',
   id: 'servicio-4',
   slug: 'mantenimiento',
-  icon: 'fas fa-shield-halved',
+  icon: 'shield-halved',
   title: 'Mantenimiento Web',
   description:
     'Tu web siempre actualizada, segura y monitorizada. Olvídate de los problemas técnicos.',

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { MaintenanceService } from '@/data/services';
+import Icon from '@/components/ui/Icon';
 import { startCheckout } from '@/lib/payments/checkout';
+import { prefetchStripe } from '@/lib/payments/stripe-client';
 import { showNotification } from '@/lib/notifications';
 
 type MaintenanceCardProps = {
@@ -40,7 +42,7 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
 
       <div className="maintenance-band__intro">
         <div className="maintenance-band__icon" aria-hidden="true">
-          <i className={service.icon} />
+          <Icon name={service.icon} />
         </div>
         <div className="maintenance-band__headings">
           <h3 className="service-title" itemProp="name" id={service.id}>
@@ -56,7 +58,7 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
       <ul className="maintenance-band__features">
         {service.features.map((feature) => (
           <li className="maintenance-feature" key={feature}>
-            <i className="fas fa-check" aria-hidden="true" />
+            <Icon name="check" />
             <span itemProp="serviceType">{feature}</span>
           </li>
         ))}
@@ -80,15 +82,14 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
           type="button"
           className="service-btn service-btn-primary maintenance-cta"
           onClick={handleCheckout}
+          onMouseEnter={prefetchStripe}
+          onFocus={prefetchStripe}
           disabled={isCheckingOut}
           aria-label={
             isCheckingOut ? 'Procesando pago...' : `Activar ${service.title}`
           }
         >
-          <i
-            className={`fas ${isCheckingOut ? 'fa-spinner fa-spin' : 'fa-credit-card'}`}
-            aria-hidden="true"
-          />
+          <Icon name={isCheckingOut ? 'spinner' : 'credit-card'} spin={isCheckingOut} />
           <span>{isCheckingOut ? 'Procesando...' : 'Activar mantenimiento'}</span>
         </button>
 

@@ -1,0 +1,21 @@
+---
+import { ICONS, type IconName } from '@/lib/icons';
+
+interface Props {
+  name: IconName;
+  spin?: boolean;
+  class?: string;
+}
+
+const { name, spin = false, class: className = '' } = Astro.props;
+const icon = ICONS[name];
+---
+
+<span
+  class:list={['icon', `icon--${name}`, spin && 'icon--spin', className]}
+  aria-hidden="true"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox={icon.viewBox} fill="currentColor">
+    <path d={icon.path}></path>
+  </svg>
+</span>

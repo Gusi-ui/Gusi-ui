@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Icon from '@/components/ui/Icon';
 import { getPaymentsApi } from '@/lib/constants';
 import { openCustomerPortal } from '@/lib/payments/customer-portal';
 import { showNotification } from '@/lib/notifications';
@@ -69,7 +70,7 @@ const CheckoutSuccess = () => {
   if (status === 'loading') {
     return (
       <div className="checkout-status checkout-status-loading">
-        <i className="fas fa-spinner fa-spin" aria-hidden="true" />
+        <Icon name="spinner" spin />
         <p>Verificando tu pago...</p>
       </div>
     );
@@ -78,7 +79,7 @@ const CheckoutSuccess = () => {
   if (status === 'error') {
     return (
       <div className="checkout-status checkout-status-error">
-        <i className="fas fa-exclamation-circle" aria-hidden="true" />
+        <Icon name="exclamation-circle" />
         <h2>No pudimos confirmar el pago</h2>
         <p>Si crees que es un error, contáctanos y revisaremos tu caso.</p>
         <a href="/#contacto" className="btn btn-primary">
@@ -91,7 +92,7 @@ const CheckoutSuccess = () => {
   if (status === 'pending') {
     return (
       <div className="checkout-status checkout-status-pending">
-        <i className="fas fa-clock" aria-hidden="true" />
+        <Icon name="clock" />
         <h2>Pago en proceso</h2>
         <p>Estamos confirmando tu transacción. Recibirás un email cuando se complete.</p>
       </div>
@@ -106,7 +107,7 @@ const CheckoutSuccess = () => {
 
   return (
     <div className="checkout-status checkout-status-success">
-      <i className="fas fa-check-circle" aria-hidden="true" />
+      <Icon name="check-circle" />
       <h2>{isSubscription ? '¡Suscripción activada!' : '¡Pago confirmado!'}</h2>
       {details?.productTitle && (
         <p className="checkout-product">
@@ -124,15 +125,12 @@ const CheckoutSuccess = () => {
             onClick={handleManageSubscription}
             disabled={isOpeningPortal}
           >
-            <i
-              className={`fas ${isOpeningPortal ? 'fa-spinner fa-spin' : 'fa-cog'}`}
-              aria-hidden="true"
-            />
+            <Icon name={isOpeningPortal ? 'spinner' : 'cog'} spin={isOpeningPortal} />
             {isOpeningPortal ? 'Abriendo portal...' : 'Gestionar o cancelar suscripción'}
           </button>
         )}
         <a href="/" className="btn btn-primary">
-          <i className="fas fa-home" aria-hidden="true" /> Volver al inicio
+          <Icon name="home" /> Volver al inicio
         </a>
       </div>
     </div>

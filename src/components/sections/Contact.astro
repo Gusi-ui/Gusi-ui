@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/ui/Icon.astro';
 import ContactForm from '@/islands/ContactForm';
 import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
 ---
@@ -15,7 +16,7 @@ import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
       <div class="contact-info">
         <div class="contact-item">
           <div class="contact-icon">
-            <i class="fab fa-whatsapp"></i>
+            <Icon name="whatsapp" />
           </div>
           <div class="contact-details">
             <h3>WhatsApp</h3>
@@ -26,7 +27,7 @@ import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
 
         <div class="contact-item">
           <div class="contact-icon">
-            <i class="fas fa-envelope"></i>
+            <Icon name="envelope" />
           </div>
           <div class="contact-details">
             <h3>Email</h3>
@@ -37,7 +38,7 @@ import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
 
         <div class="contact-item">
           <div class="contact-icon">
-            <i class="fas fa-map-marker-alt"></i>
+            <Icon name="location" />
           </div>
           <div class="contact-details">
             <h3>Ubicación</h3>
@@ -47,7 +48,7 @@ import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
         </div>
       </div>
 
-      <ContactForm client:load />
+      <ContactForm client:visible />
     </div>
   </div>
 </section>

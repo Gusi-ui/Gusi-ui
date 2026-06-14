@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/ui/Icon.astro';
 import { WHATSAPP_URL } from '@/lib/constants';
 ---
 
@@ -10,7 +11,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
     <div class="hero-content">
       <div class="hero-text">
         <div class="hero-badge">
-          <i class="fas fa-code"></i>
+          <Icon name="code" />
           <span>Desarrollador Freelance</span>
         </div>
         <h1 class="hero-title">
@@ -38,7 +39,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
         </div>
         <div class="hero-buttons">
           <a href="#proyectos" class="btn btn-primary" role="button" aria-label="Ver mis proyectos realizados">
-            <i class="fas fa-rocket" aria-hidden="true"></i>
+            <Icon name="rocket" />
             <span>Ver Proyectos</span>
           </a>
           <a
@@ -49,7 +50,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
             role="button"
             aria-label="Contratar servicios por WhatsApp"
           >
-            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+            <Icon name="whatsapp" />
             <span>Contratar Ahora</span>
           </a>
         </div>
@@ -78,6 +79,8 @@ import { WHATSAPP_URL } from '@/lib/constants';
                   class="profile-image critical-image"
                   itemprop="image"
                   loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
                   width="400"
                   height="500"
                 />
@@ -87,19 +90,19 @@ import { WHATSAPP_URL } from '@/lib/constants';
             </div>
             <div class="floating-elements">
               <div class="floating-icon icon-1">
-                <i class="fab fa-react"></i>
+                <Icon name="react" />
                 <div class="icon-glow"></div>
               </div>
               <div class="floating-icon icon-2">
-                <i class="fab fa-node-js"></i>
+                <Icon name="node-js" />
                 <div class="icon-glow"></div>
               </div>
               <div class="floating-icon icon-3">
-                <i class="fas fa-mobile-alt"></i>
+                <Icon name="mobile" />
                 <div class="icon-glow"></div>
               </div>
               <div class="floating-icon icon-4">
-                <i class="fas fa-database"></i>
+                <Icon name="database" />
                 <div class="icon-glow"></div>
               </div>
             </div>

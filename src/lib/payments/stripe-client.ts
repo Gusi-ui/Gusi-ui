@@ -14,3 +14,8 @@ export const getStripe = (): Promise<Stripe | null> => {
 
 export const isStripeConfigured = (): boolean =>
   Boolean(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+export const prefetchStripe = (): void => {
+  if (!isStripeConfigured()) return;
+  void getStripe();
+};

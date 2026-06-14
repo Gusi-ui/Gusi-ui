@@ -1,9 +1,11 @@
+import type { IconName } from '@/lib/icons';
+
 export type GraciasPage = {
   slug: string;
   title: string;
   heading: string;
   subtitle: string;
-  icon: string;
+  icon: IconName;
   color: string;
   nextSteps: string[];
 };
@@ -14,7 +16,7 @@ export const graciasPages: GraciasPage[] = [
     title: '¡Consulta Web Recibida! | alamia.es',
     heading: '¡Consulta de Desarrollo Web Recibida!',
     subtitle: 'Gracias por tu interés en desarrollo web. Revisaré tu proyecto y te contactaré en menos de 24 horas.',
-    icon: 'fas fa-laptop-code',
+    icon: 'laptop-code',
     color: '#4f46e5',
     nextSteps: [
       'Revisaré los detalles de tu proyecto',
@@ -27,7 +29,7 @@ export const graciasPages: GraciasPage[] = [
     title: '¡Consulta App Móvil Recibida! | alamia.es',
     heading: '¡Consulta de App Móvil Recibida!',
     subtitle: 'Gracias por tu interés en desarrollo de aplicaciones móviles.',
-    icon: 'fas fa-mobile-alt',
+    icon: 'mobile',
     color: '#06b6d4',
     nextSteps: [
       'Analizaré los requisitos de tu app',
@@ -40,7 +42,7 @@ export const graciasPages: GraciasPage[] = [
     title: '¡Consulta E-Commerce Recibida! | alamia.es',
     heading: '¡Consulta de E-Commerce Recibida!',
     subtitle: 'Gracias por tu interés en tu tienda online.',
-    icon: 'fas fa-shopping-cart',
+    icon: 'shopping-cart',
     color: '#10b981',
     nextSteps: [
       'Evaluaré las funcionalidades que necesitas',
@@ -53,7 +55,7 @@ export const graciasPages: GraciasPage[] = [
     title: '¡Consulta Mantenimiento Recibida! | alamia.es',
     heading: '¡Consulta de Mantenimiento Recibida!',
     subtitle: 'Gracias por confiar en mis servicios de mantenimiento web.',
-    icon: 'fas fa-tools',
+    icon: 'tools',
     color: '#f59e0b',
     nextSteps: [
       'Revisaré el estado actual de tu sitio',
@@ -66,7 +68,7 @@ export const graciasPages: GraciasPage[] = [
     title: '¡Consulta Recibida! | alamia.es',
     heading: '¡Consulta Recibida!',
     subtitle: 'Gracias por contactarme. Revisaré tu mensaje y te responderé pronto.',
-    icon: 'fas fa-envelope',
+    icon: 'envelope',
     color: '#8b5cf6',
     nextSteps: [
       'Leeré tu mensaje con atención',
@@ -81,7 +83,7 @@ export const graciasDefault: GraciasPage = {
   title: '¡Mensaje Recibido! | alamia.es',
   heading: '¡Mensaje Recibido!',
   subtitle: 'Gracias por contactarme. Te responderé lo antes posible.',
-  icon: 'fas fa-check-circle',
+  icon: 'check-circle',
   color: '#10b981',
   nextSteps: ['Revisaré tu mensaje', 'Te contactaré en menos de 24 horas'],
 };

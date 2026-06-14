@@ -16,7 +16,7 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,avif,woff2}'],
+        globPatterns: ['**/*.{js,css,ico,png,jpg,jpeg,svg,webp,avif,woff2}'],
         navigateFallback: null,
       },
       devOptions: {

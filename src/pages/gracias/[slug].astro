@@ -1,5 +1,6 @@
 ---
 import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import Icon from '@/components/ui/Icon.astro';
 import { graciasPages } from '@/data/gracias';
 import { WHATSAPP_URL } from '@/lib/constants';
 
@@ -18,7 +19,9 @@ const year = new Date().getFullYear();
       style="max-width: 600px; margin: 0 auto; background: white; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);"
     >
       <div style={`background: linear-gradient(135deg, ${page.color}, #3730a3); color: white; padding: 3rem 2rem; text-align: center;`}>
-        <i class={page.icon} style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+        <span style="font-size: 3rem; margin-bottom: 1rem; display: block;">
+          <Icon name={page.icon} />
+        </span>
         <h1 style="font-size: 1.75rem; margin-bottom: 0.5rem;">{page.heading}</h1>
         <p style="opacity: 0.9;">{page.subtitle}</p>
       </div>
@@ -27,17 +30,17 @@ const year = new Date().getFullYear();
         <ul style="list-style: none; padding: 0;">
           {page.nextSteps.map((step) => (
             <li style="padding: 0.75rem 0; border-bottom: 1px solid #e2e8f0; display: flex; gap: 0.75rem;">
-              <i class="fas fa-check-circle" style={`color: ${page.color};`}></i>
+              <Icon name="check-circle" />
               <span>{step}</span>
             </li>
           ))}
         </ul>
         <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
           <a href="/" class="btn btn-primary" style="text-decoration: none;">
-            <i class="fas fa-home"></i> Volver al inicio
+            <Icon name="home" /> Volver al inicio
           </a>
           <a href={WHATSAPP_URL} class="btn btn-whatsapp" target="_blank" rel="noopener" style="text-decoration: none;">
-            <i class="fab fa-whatsapp"></i> WhatsApp
+            <Icon name="whatsapp" /> WhatsApp
           </a>
         </div>
         <p style="margin-top: 2rem; color: #64748b; font-size: 0.875rem; text-align: center;">

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import type { ProjectService } from '@/data/services';
 import { BADGE_LABELS } from '@/data/services';
+import Icon from '@/components/ui/Icon';
 import { startCheckout } from '@/lib/payments/checkout';
+import { prefetchStripe } from '@/lib/payments/stripe-client';
 import { showNotification } from '@/lib/notifications';
 
 type ServiceCardProps = {
@@ -53,7 +55,7 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
       )}
 
       <div className="service-icon" aria-hidden="true">
-        <i className={service.icon} />
+        <Icon name={service.icon} />
       </div>
 
       <h3 className="service-title" itemProp="name" id={service.id}>
@@ -67,7 +69,7 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
       <div className="service-features">
         {service.features.map((feature) => (
           <div className="feature-item" key={feature}>
-            <i className="fas fa-check" aria-hidden="true" />
+            <Icon name="check" />
             <span itemProp="serviceType">{feature}</span>
           </div>
         ))}
@@ -92,15 +94,14 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
           type="button"
           className="service-btn service-btn-primary"
           onClick={handleCheckout}
+          onMouseEnter={prefetchStripe}
+          onFocus={prefetchStripe}
           disabled={isCheckingOut}
           aria-label={
             isCheckingOut ? 'Procesando pago...' : `Contratar ${service.title} con pago único`
           }
         >
-          <i
-            className={`fas ${isCheckingOut ? 'fa-spinner fa-spin' : 'fa-credit-card'}`}
-            aria-hidden="true"
-          />
+          <Icon name={isCheckingOut ? 'spinner' : 'credit-card'} spin={isCheckingOut} />
           <span>{isCheckingOut ? 'Procesando...' : 'Contratar ahora'}</span>
         </button>
       </div>

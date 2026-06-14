@@ -55,6 +55,8 @@
     "wrangler": "^4.69.0"
   },
   "dependencies": {
-    "@stripe/stripe-js": "^9.8.0"
+    "@fontsource/inter": "^5.2.8",
+    "@stripe/stripe-js": "^9.8.0",
+    "web-vitals": "^5.3.0"
   }
 }

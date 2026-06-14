@@ -1,11 +1,19 @@
+import { iconSvgHtml, type IconName } from '@/lib/icons';
+
 export type NotificationType = 'success' | 'error' | 'info';
+
+const NOTIFICATION_ICONS: Record<NotificationType, IconName> = {
+  success: 'check-circle',
+  error: 'exclamation-circle',
+  info: 'info-circle',
+};
 
 export const showNotification = (message: string, type: NotificationType = 'info'): void => {
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
   notification.innerHTML = `
     <div class="notification-content">
-      <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+      ${iconSvgHtml(NOTIFICATION_ICONS[type])}
       <span>${message}</span>
     </div>
   `;

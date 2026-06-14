@@ -1,4 +1,5 @@
 ---
+import Icon from '@/components/ui/Icon.astro';
 import ProjectFilter from '@/islands/ProjectFilter';
 import { projects } from '@/data/projects';
 import { WHATSAPP_URL } from '@/lib/constants';
@@ -12,7 +13,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
       <div class="section-divider"></div>
     </div>
 
-    <ProjectFilter client:load />
+    <ProjectFilter client:visible />
 
     <div class="projects-grid" id="projects-grid">
       {
@@ -35,7 +36,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
               <div class="project-overlay">
                 <div class="project-actions">
                   <a href={project.demoUrl} class="project-btn" target="_blank" rel="noopener">
-                    <i class="fas fa-eye" />
+                    <Icon name="eye" />
                     <span>Ver Proyecto</span>
                   </a>
                   <a
@@ -44,7 +45,7 @@ import { WHATSAPP_URL } from '@/lib/constants';
                     target="_blank"
                     rel="noopener"
                   >
-                    <i class="fab fa-whatsapp" />
+                    <Icon name="whatsapp" />
                     <span>Contratar Similar</span>
                   </a>
                 </div>

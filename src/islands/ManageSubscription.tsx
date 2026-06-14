@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Icon from '@/components/ui/Icon';
 import { openCustomerPortal } from '@/lib/payments/customer-portal';
 import { showNotification } from '@/lib/notifications';
 
@@ -36,7 +37,8 @@ const ManageSubscription = () => {
 
   return (
     <div className="checkout-status checkout-status-manage">
-      <i className="fas fa-shield-halved" aria-hidden="true" />
+      <Icon name="shield-halved" />
+
       <h2>Gestionar tu mantenimiento</h2>
 
       {returnedFromPortal ? (
@@ -68,10 +70,7 @@ const ManageSubscription = () => {
           className="checkout-manage-input"
         />
         <button type="submit" className="btn btn-primary btn-full" disabled={isLoading}>
-          <i
-            className={`fas ${isLoading ? 'fa-spinner fa-spin' : 'fa-external-link-alt'}`}
-            aria-hidden="true"
-          />
+          <Icon name={isLoading ? 'spinner' : 'external-link'} spin={isLoading} />
           <span>{isLoading ? 'Abriendo portal...' : 'Gestionar o cancelar suscripción'}</span>
         </button>
       </form>

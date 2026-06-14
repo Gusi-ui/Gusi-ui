@@ -1,4 +1,6 @@
 ---
+import Icon from '@/components/ui/Icon.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -13,15 +15,15 @@ const currentYear = new Date().getFullYear();
         </p>
         <div class="footer-contact">
           <div class="contact-item">
-            <i class="fas fa-envelope"></i>
+            <Icon name="envelope" />
             <span>info@alamia.es</span>
           </div>
           <div class="contact-item">
-            <i class="fab fa-whatsapp"></i>
+            <Icon name="whatsapp" />
             <span>+34 619 027 645</span>
           </div>
           <div class="contact-item">
-            <i class="fas fa-map-marker-alt"></i>
+            <Icon name="location" />
             <span>Mataró, Barcelona</span>
           </div>
         </div>
@@ -41,12 +43,12 @@ const currentYear = new Date().getFullYear();
         <div class="footer-technologies">
           <h4>Tecnologías</h4>
           <div class="tech-tags">
-            <span class="tech-tag"><i class="fab fa-react"></i> React</span>
-            <span class="tech-tag"><i class="fab fa-node-js"></i> Node.js</span>
-            <span class="tech-tag"><i class="fab fa-react"></i> React Native</span>
-            <span class="tech-tag"><i class="fas fa-bolt"></i> Astro</span>
-            <span class="tech-tag"><i class="fas fa-database"></i> MongoDB</span>
-            <span class="tech-tag"><i class="fas fa-database"></i> PostgreSQL</span>
+            <span class="tech-tag"><Icon name="react" /> React</span>
+            <span class="tech-tag"><Icon name="node-js" /> Node.js</span>
+            <span class="tech-tag"><Icon name="react" /> React Native</span>
+            <span class="tech-tag"><Icon name="bolt" /> Astro</span>
+            <span class="tech-tag"><Icon name="database" /> MongoDB</span>
+            <span class="tech-tag"><Icon name="database" /> PostgreSQL</span>
           </div>
         </div>
       </div>
@@ -62,9 +64,9 @@ const currentYear = new Date().getFullYear();
             <a href="#contacto">Contacto</a>
           </div>
           <div class="legal-links">
-            <a href="/politica-privacidad">Política de Privacidad</a>
-            <a href="/terminos-servicio">Términos de Servicio</a>
-            <a href="/politica-cookies">Cookies</a>
+            <a href="/politica-privacidad/">Política de Privacidad</a>
+            <a href="/terminos-servicio/">Términos de Servicio</a>
+            <a href="/politica-cookies/">Cookies</a>
           </div>
         </div>
       </div>

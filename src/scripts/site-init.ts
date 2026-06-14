@@ -1,3 +1,5 @@
+import { onCLS, onINP, onLCP } from 'web-vitals';
+
 const initNavigation = (): void => {
   const navToggle = document.getElementById('nav-toggle');
   const navMenu = document.getElementById('nav-menu');
@@ -42,15 +44,21 @@ const initHeaderScroll = (): void => {
     header.classList.toggle('scrolled', window.scrollY > 100);
     ticking = false;
   };
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(update);
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
 };
 
 const initScrollAnimations = (): void => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -63,20 +71,26 @@ const initScrollAnimations = (): void => {
     { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
   );
 
-  ['.section-header', '.services-grid__cell', '.maintenance-band__cell', '.project-card', '.contact-item', '.hero-text', '.hero-visual'].forEach(
-    (selector) => {
-      document.querySelectorAll(selector).forEach((el, index) => {
-        if (
-          selector === '.services-grid__cell' ||
-          selector === '.maintenance-band__cell' ||
-          selector === '.project-card'
-        ) {
-          (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-        }
-        observer.observe(el);
-      });
-    }
-  );
+  [
+    '.section-header',
+    '.services-grid__cell',
+    '.maintenance-band__cell',
+    '.project-card',
+    '.contact-item',
+    '.hero-text',
+    '.hero-visual',
+  ].forEach((selector) => {
+    document.querySelectorAll(selector).forEach((el, index) => {
+      if (
+        selector === '.services-grid__cell' ||
+        selector === '.maintenance-band__cell' ||
+        selector === '.project-card'
+      ) {
+        (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
+      }
+      observer.observe(el);
+    });
+  });
 };
 
 const initSmoothScrolling = (): void => {
@@ -95,21 +109,30 @@ const initSmoothScrolling = (): void => {
 };
 
 const initParallaxEffect = (): void => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   const heroPattern = document.querySelector('.hero-pattern');
   if (!heroPattern) return;
-  window.addEventListener('scroll', () => {
-    const rate = window.pageYOffset * -0.5;
-    (heroPattern as HTMLElement).style.transform = `translateY(${rate}px)`;
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const rate = window.pageYOffset * -0.5;
+      (heroPattern as HTMLElement).style.transform = `translateY(${rate}px)`;
+    },
+    { passive: true }
+  );
 };
 
 const addLoadAnimations = (): void => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   document.querySelector('.hero-text')?.classList.add('slide-in-left');
   document.querySelector('.hero-visual')?.classList.add('slide-in-right');
 };
 
 const initWebVitals = (): void => {
-  if (typeof window.webVitals === 'undefined') return;
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+
   const send = (metric: { name: string; value: number; id: string }) => {
     if (typeof gtag !== 'undefined') {
       gtag('event', metric.name, {
@@ -120,9 +143,10 @@ const initWebVitals = (): void => {
       });
     }
   };
-  window.webVitals.onLCP?.(send);
-  window.webVitals.onINP?.(send);
-  window.webVitals.onCLS?.(send);
+
+  onLCP(send);
+  onINP(send);
+  onCLS(send);
 };
 
 const init = (): void => {
@@ -144,13 +168,5 @@ if (document.readyState === 'loading') {
 window.addEventListener('load', addLoadAnimations);
 
 declare global {
-  interface Window {
-    webVitals?: {
-      onLCP?: (cb: (m: { name: string; value: number; id: string }) => void) => void;
-      onINP?: (cb: (m: { name: string; value: number; id: string }) => void) => void;
-      onCLS?: (cb: (m: { name: string; value: number; id: string }) => void) => void;
-    };
-    gtag?: (...args: unknown[]) => void;
-  }
   function gtag(...args: unknown[]): void;
 }

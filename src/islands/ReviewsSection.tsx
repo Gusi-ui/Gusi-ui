@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import Icon from '@/components/ui/Icon';
 import { fetchReviews, updateSchemaOrg, generateStars, type Review } from '@/lib/reviews';
 import { getReviewsApi } from '@/lib/constants';
 import { isValidEmail } from '@/lib/utils';
@@ -112,7 +113,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
           type="button"
           onClick={() => setModalOpen(true)}
         >
-          <i className="fas fa-star" aria-hidden="true" />
+          <Icon name="star" />
           <span>Dejar una Reseña</span>
         </button>
         <a
@@ -122,7 +123,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
           className="btn btn-google"
           aria-label="Dejar reseña en Google"
         >
-          <i className="fab fa-google" aria-hidden="true" />
+          <Icon name="google" />
           <span>Reseñar en Google</span>
         </a>
       </div>
@@ -134,7 +135,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
           type="button"
           onClick={() => handleCarousel('prev')}
         >
-          <i className="fas fa-chevron-left" aria-hidden="true" />
+          <Icon name="chevron-left" />
         </button>
         <div className="testimonials-carousel" id="testimonials-container">
           {loading && <p className="text-center text-muted">Cargando reseñas...</p>}
@@ -146,7 +147,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
             return (
               <div key={review.id || `${review.name}-${review.date}`} className="testimonial-card">
                 <div className={`review-badge ${isGoogle ? 'google' : 'web'}`}>
-                  <i className={isGoogle ? 'fab fa-google' : 'fas fa-globe'} aria-hidden="true" />
+                  <Icon name={isGoogle ? 'google' : 'globe'} />
                   <span>{isGoogle ? 'Google' : 'Web'}</span>
                 </div>
                 <div className="testimonial-content">
@@ -159,7 +160,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
                 </div>
                 <div className="testimonial-author">
                   <div className="author-avatar">
-                    <i className={isGoogle ? 'fab fa-google' : 'fas fa-user'} aria-hidden="true" />
+                    <Icon name={isGoogle ? 'google' : 'user'} />
                   </div>
                   <div className="author-info">
                     <h4>{review.name}</h4>
@@ -177,7 +178,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
           type="button"
           onClick={() => handleCarousel('next')}
         >
-          <i className="fas fa-chevron-right" aria-hidden="true" />
+          <Icon name="chevron-right" />
         </button>
       </div>
 
@@ -222,7 +223,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
             type="button"
             onClick={() => setModalOpen(false)}
           >
-            <i className="fas fa-times" aria-hidden="true" />
+            <Icon name="times" />
           </button>
           <h2 id="review-modal-title" className="review-modal-title">
             Deja tu Reseña
@@ -276,7 +277,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
                     aria-label={`${star} estrellas`}
                     onClick={() => setRating(star)}
                   >
-                    <i className="fas fa-star" />
+                    <Icon name="star" />
                   </button>
                 ))}
               </div>
@@ -304,7 +305,7 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
               </label>
             </div>
             <button type="submit" className="btn btn-primary btn-full" disabled={submitting}>
-              <i className={`fas ${submitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`} aria-hidden="true" />
+              <Icon name={submitting ? 'spinner' : 'paper-plane'} spin={submitting} />
               <span>{submitting ? 'Publicando...' : 'Publicar Reseña'}</span>
             </button>
           </form>

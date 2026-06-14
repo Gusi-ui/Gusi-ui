@@ -5,11 +5,18 @@ import ThemeToggle from '@/islands/ThemeToggle';
 <header class="header">
   <nav class="nav">
     <div class="nav-brand">
-      <img
-        src="/freelancer-icon-optimizado.png"
-        alt="alamia.es - Desarrollador Freelance"
-        class="brand-logo"
-      />
+      <picture>
+        <source srcset="/images/optimizadas/freelancer-icon.avif" type="image/avif" />
+        <source srcset="/images/optimizadas/freelancer-icon.webp" type="image/webp" />
+        <img
+          src="/freelancer-icon-optimizado.png"
+          alt="alamia.es - Desarrollador Freelance"
+          class="brand-logo"
+          width="40"
+          height="40"
+          decoding="async"
+        />
+      </picture>
       <span class="brand-text">alamia.es</span>
       <ThemeToggle client:load />
     </div>

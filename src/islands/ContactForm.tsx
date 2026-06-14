@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import Icon from '@/components/ui/Icon';
 import { getContactApi } from '@/lib/constants';
 import { sanitizeText, isValidEmail } from '@/lib/utils';
 import { showNotification } from '@/lib/notifications';
@@ -160,7 +161,7 @@ const ContactForm = () => {
         aria-label="Enviar mensaje de contacto"
         disabled={isSubmitting}
       >
-        <i className={`fas ${isSubmitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`} aria-hidden="true" />
+        <Icon name={isSubmitting ? 'spinner' : 'paper-plane'} spin={isSubmitting} />
         <span>{isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}</span>
       </button>
     </form>
