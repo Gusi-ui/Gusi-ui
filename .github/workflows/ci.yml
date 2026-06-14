@@ -6,15 +6,18 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -30,16 +33,30 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Verify Stripe publishable key
+        env:
+          STRIPE_PK: ${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$STRIPE_PK" ]; then
+            echo "::error::Falta el secret PUBLIC_STRIPE_PUBLISHABLE_KEY en GitHub → Settings → Secrets → Actions"
+            exit 1
+          fi
+          case "$STRIPE_PK" in
+            pk_test_*|pk_live_*) echo "Stripe publishable key OK" ;;
+            *) echo "::error::PUBLIC_STRIPE_PUBLISHABLE_KEY debe empezar por pk_test_ o pk_live_" && exit 1 ;;
+          esac
+
       - run: pnpm run build
         env:
           PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}
@@ -56,11 +73,11 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           cache: 'pnpm'
