@@ -1,80 +1,80 @@
 <!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Política de Cookies | alamia.es</title><meta name="description" content="Política de Cookies de alamia.es."><meta name="robots" content="index, follow"><link rel="canonical" href="https://alamia.es/politica-cookies/"><link rel="icon" href="/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/_astro/constants.mhhy0rJG.css"></head> <body> <header class="header"> <nav class="nav"> <div class="nav-brand"> <picture> <source srcset="/images/optimizadas/freelancer-icon.avif" type="image/avif"> <source srcset="/images/optimizadas/freelancer-icon.webp" type="image/webp"> <img src="/freelancer-icon-optimizado.png" alt="alamia.es - Desarrollador Freelance" class="brand-logo" width="40" height="40" decoding="async"> </picture> <span class="brand-text">alamia.es</span> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(c,s,d)=>s in c?g(c,s,{enumerable:!0,configurable:!0,writable:!0,value:d}):c[s]=d;var l=(c,s,d)=>w(c,typeof s!="symbol"?s+"":s,d);var E=new Set(["__proto__","constructor","prototype"]);{let c={0:t=>y(t),1:t=>d(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(d(t)),5:t=>new Set(d(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in c?c[p](e):void 0},d=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let n=this.querySelectorAll("astro-slot"),r={},i=this.querySelectorAll("template[data-astro-template]");for(let o of i){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of n){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let a=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(a+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${a}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,r,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),n.disconnect(),this.childrenConnectedCallback()},n=new MutationObserver(()=>{var r;((r=this.lastChild)==null?void 0:r.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});n.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let n=new URL(e,document.baseURI),r=`astro-retry=${Date.now()}`,i=n.hash.replace(/^#/,"");return n.hash=i?`${i}&${r}`:r,n.toString()}async importWithRetry(e){try{return await import(e)}catch(n){return await new Promise(r=>setTimeout(r,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let n=this.getAttribute("component-url"),r=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:n}});this.dispatchEvent(r)&&console.error(`[astro-island] Error hydrating ${n}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),n=this.getAttribute("client");if(Astro[n]===void 0){window.addEventListener(`astro:${n}`,()=>this.start(),{once:!0});return}try{await Astro[n](async()=>{let r=this.getAttribute("renderer-url");try{let[i,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),r?this.importWithRetry(r):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=i;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=i[h]}return this.hydrator=u,this.hydrate}catch(i){return this.handleHydrationError(i),()=>{}}},e,this)}catch(r){this.handleHydrationError(r)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="ZDk0hk" prefix="r1" component-url="/_astro/ThemeToggle.CsHrKtOM.js" component-export="default" renderer-url="/_astro/client.DuwkX3wC.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;ThemeToggle&quot;,&quot;value&quot;:true}" await-children><button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema oscuro" title="Alternar tema oscuro" type="button"><span id="theme-icon" aria-hidden="true">🌙</span></button><!--astro:end--></astro-island> </div> <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal"> <a href="#inicio" class="nav-link" role="menuitem">Inicio</a> <a href="#servicios" class="nav-link" role="menuitem">Servicios</a> <a href="#proyectos" class="nav-link" role="menuitem">Proyectos</a> <a href="#testimonios" class="nav-link" role="menuitem">Testimonios</a> <a href="#contacto" class="nav-link" role="menuitem">Contacto</a> </div> <div class="nav-toggle" id="nav-toggle" aria-label="Menú de navegación" aria-expanded="false" aria-controls="nav-menu" role="button" tabindex="0"> <span class="bar" aria-hidden="true"></span> <span class="bar" aria-hidden="true"></span> <span class="bar" aria-hidden="true"></span> </div> </nav> </header> <main class="legal-page">  <div class="policy-page">        <div class="container">
             <div class="policy-header">
                 <h1>Política de Cookies</h1>
-                <p class="policy-subtitle">Última actualización: Diciembre 2024</p>
+                <p class="policy-subtitle">Última actualización: Junio 2026</p>
                 <div class="section-divider"></div>
             </div>
             
             <div class="policy-content">
                 <section class="policy-section">
                     <h2>1. ¿Qué son las Cookies?</h2>
-                    <p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo (ordenador, tablet, smartphone) cuando visitas nuestro sitio web. Estas cookies permiten que el sitio web recuerde tus acciones y preferencias durante un periodo de tiempo.</p>
+                    <p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas nuestro sitio web. También podemos usar tecnologías similares, como el almacenamiento local del navegador (<em>localStorage</em>), para recordar preferencias básicas.</p>
                 </section>
 
                 <section class="policy-section">
-                    <h2>2. Tipos de Cookies que Utilizamos</h2>
+                    <h2>2. Tipos de Cookies y Almacenamiento que Utilizamos</h2>
                     
                     <h3>2.1. Cookies Técnicas Esenciales</h3>
-                    <p><strong>Finalidad:</strong> Estas cookies son estrictamente necesarias para el funcionamiento básico del sitio web.</p>
+                    <p><strong>Finalidad:</strong> Necesarias para el funcionamiento y la seguridad del sitio.</p>
                     <ul>
-                        <li>Permitir la navegación por el sitio</li>
-                        <li>Garantizar la seguridad del sitio</li>
-                        <li>Recordar preferencias básicas de visualización</li>
+                        <li>Permitir la navegación y el equilibrio de carga (CDN)</li>
+                        <li>Protección frente a tráfico abusivo o automatizado</li>
+                        <li>Mantener sesiones seguras durante procesos de pago en Stripe</li>
                     </ul>
-                    <p><strong>Duración:</strong> Sesión o persistentes según su función</p>
+                    <p><strong>Base legal:</strong> Interés legítimo y ejecución de medidas precontractuales.</p>
 
-                    <h3>2.2. Cookies de Funcionalidad</h3>
-                    <p><strong>Finalidad:</strong> Mejorar la experiencia del usuario recordando sus elecciones.</p>
+                    <h3>2.2. Preferencias del Sitio (localStorage)</h3>
+                    <p><strong>Finalidad:</strong> Recordar tu elección de tema claro/oscuro.</p>
                     <ul>
-                        <li>Recordar preferencias de idioma</li>
-                        <li>Guardar configuraciones de accesibilidad</li>
-                        <li>Mantener el estado de formularios</li>
+                        <li><strong>Clave:</strong> <code>site-theme</code></li>
+                        <li><strong>Contenido:</strong> <code>light</code> o <code>dark</code></li>
+                        <li><strong>Duración:</strong> Hasta que la elimines desde tu navegador</li>
                     </ul>
-                    <p><strong>Duración:</strong> Hasta 1 año</p>
+                    <p>No es una cookie, pero cumple una función equivalente de personalización básica.</p>
 
-                    <h3>2.3. Cookies de Rendimiento</h3>
-                    <p><strong>Finalidad:</strong> Mejorar el rendimiento del sitio web mediante análisis anónimos.</p>
-                    <ul>
-                        <li>Analizar tráfico y uso del sitio</li>
-                        <li>Medir tiempos de carga</li>
-                        <li>Identificar páginas populares</li>
-                    </ul>
-                    <p><strong>Duración:</strong> Hasta 2 años</p>
+                    <h3>2.3. Cookies Analíticas</h3>
+                    <p>Medimos métricas de rendimiento de forma interna (Core Web Vitals). <strong>Actualmente no utilizamos cookies de analítica de terceros</strong> (como Google Analytics) en este sitio.</p>
                 </section>
 
                 <section class="policy-section">
                     <h2>3. Cookies de Terceros</h2>
-                    <p>Utilizamos servicios de terceros que pueden instalar sus propias cookies:</p>
+                    <p>Al usar determinadas funciones del sitio, proveedores externos pueden instalar cookies en tu dispositivo:</p>
                     
-                    <h3>3.1. Font Awesome (Iconos)</h3>
+                    <h3>3.1. Cloudflare (CDN y seguridad)</h3>
                     <ul>
-                        <li><strong>Proveedor:</strong> Fonticons, Inc.</li>
-                        <li><strong>Finalidad:</strong> Mostrar iconos y fuentes</li>
-                        <li><strong>Política:</strong> <a href="https://fontawesome.com/privacy" target="_blank">fontawesome.com/privacy</a></li>
+                        <li><strong>Proveedor:</strong> Cloudflare, Inc.</li>
+                        <li><strong>Finalidad:</strong> Distribución de contenido, protección DDoS y optimización de rendimiento</li>
+                        <li><strong>Cookies habituales:</strong> <code>__cf_bm</code>, <code>cf_clearance</code> (según configuración)</li>
+                        <li><strong>Política:</strong> <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">cloudflare.com/privacypolicy</a></li>
                     </ul>
 
-                    <h3>3.2. Google Fonts (Tipografías)</h3>
+                    <h3>3.2. Stripe (pagos online)</h3>
                     <ul>
-                        <li><strong>Proveedor:</strong> Google LLC</li>
-                        <li><strong>Finalidad:</strong> Mostrar tipografías web</li>
-                        <li><strong>Política:</strong> <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></li>
+                        <li><strong>Proveedor:</strong> Stripe Payments Europe, Ltd.</li>
+                        <li><strong>Finalidad:</strong> Procesar pagos únicos (tarjeta o Bizum) y suscripciones mensuales de mantenimiento web</li>
+                        <li><strong>Cuándo se activan:</strong> Al pulsar «Contratar» / «Activar mantenimiento» o al acceder al portal de gestión de suscripción</li>
+                        <li><strong>Dominios relacionados:</strong> <code>js.stripe.com</code>, <code>checkout.stripe.com</code>, <code>billing.stripe.com</code></li>
+                        <li><strong>Política:</strong> <a href="https://stripe.com/es/privacy" target="_blank" rel="noopener noreferrer">stripe.com/es/privacy</a></li>
                     </ul>
 
+                    <h3>3.3. Recursos propios (sin cookies de terceros)</h3>
+                    <p>Las tipografías e iconos del sitio se sirven desde nuestro propio dominio. <strong>No cargamos Google Fonts ni Font Awesome desde CDNs externos</strong> en las páginas principales de alamia.es.</p>
                 </section>
 
                 <section class="policy-section">
                     <h2>4. Gestión de Cookies</h2>
                     
                     <h3>4.1. Consentimiento</h3>
-                    <p>Al utilizar nuestro sitio web, aceptas el uso de cookies técnicas esenciales. Para cookies no esenciales, solicitaremos tu consentimiento explícito.</p>
+                    <p>Las cookies técnicas y las necesarias para pagos seguros pueden instalarse sin consentimiento previo. Si en el futuro activamos cookies no esenciales (por ejemplo, analítica de marketing), solicitaremos tu consentimiento explícito.</p>
 
                     <h3>4.2. Cómo Controlar las Cookies</h3>
-                    <p>Puedes controlar y/o eliminar cookies según desees. Puedes:</p>
+                    <p>Puedes controlar y/o eliminar cookies según desees:</p>
                     <ul>
-                        <li>Configurar tu navegador para rechazar cookies</li>
-                        <li>Eliminar cookies existentes de tu dispositivo</li>
-                        <li>Utilizar herramientas de privacidad de tu navegador</li>
+                        <li>Configurar tu navegador para rechazar o borrar cookies</li>
+                        <li>Eliminar el almacenamiento local (<code>site-theme</code>) desde las herramientas de desarrollador</li>
+                        <li>Usar las opciones de privacidad de tu navegador</li>
                     </ul>
+                    <p>Si bloqueas cookies técnicas o de Stripe, es posible que no puedas completar pagos online.</p>
 
                     <h3>4.3. Configuración por Navegador</h3>
                     <ul>
@@ -87,22 +87,22 @@
 
                 <section class="policy-section">
                     <h2>5. Base Legal</h2>
-                    <p>El uso de cookies se basa en:</p>
+                    <p>De acuerdo con el RGPD y la LSSI-CE:</p>
                     <ul>
-                        <li><strong>Interés legítimo:</strong> Para cookies técnicas esenciales</li>
-                        <li><strong>Consentimiento:</strong> Para cookies no esenciales y de analítica</li>
+                        <li><strong>Interés legítimo:</strong> Cookies técnicas, seguridad y rendimiento</li>
+                        <li><strong>Ejecución contractual:</strong> Cookies necesarias para procesar pagos solicitados</li>
+                        <li><strong>Consentimiento:</strong> Cookies no esenciales, cuando aplique</li>
                     </ul>
-                    <p>De acuerdo con el Reglamento General de Protección de Datos (RGPD) y la Ley de Servicios de la Sociedad de la Información (LSSI).</p>
                 </section>
 
                 <section class="policy-section">
                     <h2>6. Actualizaciones de la Política</h2>
-                    <p>Podemos actualizar esta política periódicamente para reflejar cambios en nuestras prácticas o por requisitos legales. Te recomendamos revisar esta página regularmente.</p>
+                    <p>Podemos actualizar esta política para reflejar cambios técnicos (por ejemplo, nuevas formas de pago) o requisitos legales. Publicaremos la fecha de revisión en la parte superior.</p>
                 </section>
 
                 <section class="policy-section">
                     <h2>7. Contacto</h2>
-                    <p>Para cualquier pregunta sobre nuestra política de cookies, contacta con:</p>
+                    <p>Para cualquier pregunta sobre cookies o privacidad:</p>
                     <p><strong>Email:</strong> info@alamia.es</p>
                     <p><strong>Teléfono:</strong> +34 619 027 645</p>
                     <p><strong>Dirección:</strong> Mataró, Barcelona, España</p>
@@ -110,11 +110,9 @@
 
                 <section class="policy-section">
                     <h2>8. Información Adicional</h2>
-                    <p>Para más información sobre cookies y privacidad online, puedes visitar:</p>
                     <ul>
-                        <li><a href="https://www.aepd.es" target="_blank">Agencia Española de Protección de Datos</a></li>
-                        <li><a href="https://www.agpd.es" target="_blank">Agencia de Protección de Datos</a></li>
-                        <li><a href="https://www.aboutcookies.org" target="_blank">AboutCookies.org</a></li>
+                        <li><a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">Agencia Española de Protección de Datos</a></li>
+                        <li><a href="/politica-privacidad/">Política de Privacidad de alamia.es</a></li>
                     </ul>
                 </section>
             </div>
