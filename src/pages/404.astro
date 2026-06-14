@@ -1,0 +1,26 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+---
+
+<SimplePageLayout title="Página no encontrada | alamia.es" noindex>
+  <script slot="head" is:inline>
+    (function () {
+      var path = window.location.pathname;
+      var lastSlash = path.lastIndexOf('/');
+      var hasExtension = lastSlash !== -1 && path.indexOf('.', lastSlash) !== -1;
+
+      if (path.length > 1 && !path.endsWith('/') && !hasExtension) {
+        window.location.replace(path + '/' + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
+
+  <div class="container checkout-page">
+    <div class="checkout-status">
+      <i class="fas fa-compass" aria-hidden="true"></i>
+      <h2>Página no encontrada</h2>
+      <p>La ruta que buscas no existe o ha cambiado.</p>
+      <a href="/" class="btn btn-primary">Volver al inicio</a>
+    </div>
+  </div>
+</SimplePageLayout>

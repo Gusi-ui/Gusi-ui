@@ -6,7 +6,7 @@ import AstroPWA from '@vite-pwa/astro';
 
 export default defineConfig({
   site: 'https://alamia.es',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   compressHTML: true,
   integrations: [
     react(),

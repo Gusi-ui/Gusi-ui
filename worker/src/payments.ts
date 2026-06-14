@@ -84,8 +84,8 @@ export const handleCreateCheckout = async (
     const session = await stripe.checkout.sessions.create({
       mode: config.mode,
       line_items: [{ price: config.priceId, quantity }],
-      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/checkout/cancel?product=${productSlug}`,
+      success_url: `${siteUrl}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/checkout/cancel/?product=${productSlug}`,
       locale: 'es',
       metadata: {
         productSlug,
@@ -257,7 +257,7 @@ export const handleCustomerPortal = async (
     const siteUrl = getSiteUrl(corsRequest);
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${siteUrl}/mantenimiento/gestionar`,
+      return_url: `${siteUrl}/mantenimiento/gestionar/`,
     });
 
     if (!portalSession.url) {

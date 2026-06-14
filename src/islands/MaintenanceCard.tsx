@@ -92,7 +92,7 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
           <span>{isCheckingOut ? 'Procesando...' : 'Activar mantenimiento'}</span>
         </button>
 
-        <a href="/mantenimiento/gestionar" className="maintenance-manage-link">
+        <a href="/mantenimiento/gestionar/" className="maintenance-manage-link">
           ¿Ya eres cliente? Gestionar o cancelar suscripción
         </a>
       </div>

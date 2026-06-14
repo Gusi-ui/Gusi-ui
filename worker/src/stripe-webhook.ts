@@ -63,7 +63,7 @@ const generarEmailClienteHTML = (
       <p>Te contactaremos en breve para los siguientes pasos.</p>
       ${
         isSubscription
-          ? `<p style="margin-top:20px;"><a href="https://alamia.es/mantenimiento/gestionar" style="color:#4f46e5;">Gestionar o cancelar tu suscripción</a></p>`
+          ? `<p style="margin-top:20px;"><a href="https://alamia.es/mantenimiento/gestionar/" style="color:#4f46e5;">Gestionar o cancelar tu suscripción</a></p>`
           : ''
       }
       <p style="margin-top:24px;">— Jose Martínez · <a href="https://alamia.es">alamia.es</a></p>
