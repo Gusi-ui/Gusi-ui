@@ -24,3 +24,14 @@ export const getContactApi = (): string => {
   }
   return `${SITE_URL}/api/contacto`;
 };
+
+export const getPaymentsApi = (path = ''): string => {
+  const base =
+    typeof window === 'undefined'
+      ? `${SITE_URL}/api/payments`
+      : window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8787/api/payments'
+        : `${SITE_URL}/api/payments`;
+
+  return path ? `${base}${path.startsWith('/') ? path : `/${path}`}` : base;
+};

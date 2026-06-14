@@ -9,6 +9,7 @@
  */
 
 import { Resend } from 'resend';
+import { handleCreateCheckout, handleVerifySession } from './payments';
 
 const CONFIG = {
   emailDestino: 'info@alamia.es',
@@ -91,6 +92,16 @@ export default {
       return handleResenas(request, env);
     } else if (url.pathname === '/api/admin/resenas' || url.pathname.endsWith('/api/admin/resenas')) {
       return handleAdminResenas(request, env);
+    } else if (
+      url.pathname === '/api/payments/checkout' ||
+      url.pathname.endsWith('/api/payments/checkout')
+    ) {
+      return handleCreateCheckout(request, env, request);
+    } else if (
+      url.pathname === '/api/payments/verify-session' ||
+      url.pathname.endsWith('/api/payments/verify-session')
+    ) {
+      return handleVerifySession(request, env, request);
     } else {
       return jsonError('Ruta no encontrada', 404, request);
     }

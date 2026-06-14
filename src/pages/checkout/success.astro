@@ -1,0 +1,10 @@
+---
+import SimplePageLayout from '@/layouts/SimplePageLayout.astro';
+import CheckoutSuccess from '@/islands/CheckoutSuccess.tsx';
+---
+
+<SimplePageLayout title="Pago confirmado | alamia.es" noindex>
+  <div class="container checkout-page">
+    <CheckoutSuccess client:load />
+  </div>
+</SimplePageLayout>

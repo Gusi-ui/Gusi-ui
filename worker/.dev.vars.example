@@ -10,3 +10,12 @@ ADMIN_TOKEN=tu_token_admin_aqui
 # Opcionales (reseñas de Google)
 # GOOGLE_API_KEY=
 # GOOGLE_PLACE_ID=
+
+# Stripe — pasarela de pagos (obtén las claves en https://dashboard.stripe.com)
+STRIPE_SECRET_KEY=sk_test_tu_clave_secreta
+
+# Price IDs de Stripe (Dashboard → Productos → Precios)
+STRIPE_PRICE_DESARROLLO_WEB_ONETIME=price_xxx
+STRIPE_PRICE_OPTIMIZACION_WEB_ONETIME=price_xxx
+STRIPE_PRICE_BACKEND_APIS_ONETIME=price_xxx
+STRIPE_PRICE_MANTENIMIENTO_MONTHLY=price_xxx
