@@ -63,10 +63,14 @@ const initScrollAnimations = (): void => {
     { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
   );
 
-  ['.section-header', '.service-card', '.project-card', '.contact-item', '.hero-text', '.hero-visual'].forEach(
+  ['.section-header', '.services-grid__cell', '.maintenance-band__cell', '.project-card', '.contact-item', '.hero-text', '.hero-visual'].forEach(
     (selector) => {
       document.querySelectorAll(selector).forEach((el, index) => {
-        if (selector.includes('card')) {
+        if (
+          selector === '.services-grid__cell' ||
+          selector === '.maintenance-band__cell' ||
+          selector === '.project-card'
+        ) {
           (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
         }
         observer.observe(el);

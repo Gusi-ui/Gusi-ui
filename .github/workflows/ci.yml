@@ -41,6 +41,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+        env:
+          PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

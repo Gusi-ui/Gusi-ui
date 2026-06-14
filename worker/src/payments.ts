@@ -9,6 +9,22 @@ import {
 
 const SITE_URL = 'https://alamia.es';
 
+const isPlaceholderSecret = (value?: string): boolean =>
+  !value ||
+  value.includes('xxx') ||
+  value.includes('tu_clave') ||
+  value.includes('tu_api') ||
+  value.includes('placeholder') ||
+  value.includes('price_...');
+
+const getSiteUrl = (request: Request | null): string => {
+  const origin = request?.headers.get('Origin');
+  if (origin?.startsWith('http://localhost') || origin?.startsWith('http://127.0.0.1')) {
+    return origin;
+  }
+  return SITE_URL;
+};
+
 const getStripe = (secretKey: string) =>
   new Stripe(secretKey, {
     httpClient: Stripe.createFetchHttpClient(),
@@ -23,8 +39,12 @@ export const handleCreateCheckout = async (
     return jsonError('Método no permitido', 405, corsRequest);
   }
 
-  if (!env.STRIPE_SECRET_KEY) {
-    return jsonError('Pasarela de pago no configurada', 503, corsRequest);
+  if (!env.STRIPE_SECRET_KEY || isPlaceholderSecret(env.STRIPE_SECRET_KEY)) {
+    return jsonError(
+      'Configura STRIPE_SECRET_KEY real en worker/.dev.vars (modo test: sk_test_...)',
+      503,
+      corsRequest
+    );
   }
 
   try {
@@ -50,17 +70,22 @@ export const handleCreateCheckout = async (
     }
 
     const config = resolveCheckoutConfig(env, productSlug, billingPlan as BillingPlan);
-    if (!config) {
-      return jsonError('Precio no configurado para este producto', 503, corsRequest);
+    if (!config || isPlaceholderSecret(config.priceId)) {
+      return jsonError(
+        'Configura los STRIPE_PRICE_* reales en worker/.dev.vars (Dashboard → Productos → Price ID)',
+        503,
+        corsRequest
+      );
     }
 
+    const siteUrl = getSiteUrl(corsRequest);
     const stripe = getStripe(env.STRIPE_SECRET_KEY);
 
     const session = await stripe.checkout.sessions.create({
       mode: config.mode,
       line_items: [{ price: config.priceId, quantity }],
-      success_url: `${SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${SITE_URL}/checkout/cancel?product=${productSlug}`,
+      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/checkout/cancel?product=${productSlug}`,
       locale: 'es',
       metadata: {
         productSlug,
@@ -86,8 +111,10 @@ export const handleCreateCheckout = async (
       200,
       corsRequest
     );
-  } catch {
-    return jsonError('Error al iniciar el pago', 500, corsRequest);
+  } catch (error) {
+    console.error('[checkout]', error);
+    const stripeMessage = error instanceof Error ? error.message : 'Error al iniciar el pago';
+    return jsonError(stripeMessage, 500, corsRequest);
   }
 };
 

@@ -1685,6 +1685,25 @@ select:focus,
     width: 100%;
 }
 
+.maintenance-band__cell {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+}
+
+.maintenance-band__cell > astro-island,
+.maintenance-band__cell > :only-child {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.maintenance-band__cell .maintenance-band {
+    flex: 1;
+    width: 100%;
+}
+
 @media (max-width: 1024px) {
     .services-grid--projects {
         grid-template-columns: 1fr;

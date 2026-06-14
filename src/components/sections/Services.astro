@@ -27,6 +27,8 @@ const stripeEnabled = isStripeConfigured();
       }
     </div>
 
-    <MaintenanceCard client:visible service={maintenanceService} stripeEnabled={stripeEnabled} />
+    <div class="maintenance-band__cell">
+      <MaintenanceCard client:visible service={maintenanceService} stripeEnabled={stripeEnabled} />
+    </div>
   </div>
 </section>

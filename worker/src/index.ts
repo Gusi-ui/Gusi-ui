@@ -10,6 +10,7 @@
 
 import { Resend } from 'resend';
 import { handleCreateCheckout, handleVerifySession } from './payments';
+import { handleStripeWebhook } from './stripe-webhook';
 
 const CONFIG = {
   emailDestino: 'info@alamia.es',
@@ -102,6 +103,11 @@ export default {
       url.pathname.endsWith('/api/payments/verify-session')
     ) {
       return handleVerifySession(request, env, request);
+    } else if (
+      url.pathname === '/api/payments/webhook' ||
+      url.pathname.endsWith('/api/payments/webhook')
+    ) {
+      return handleStripeWebhook(request, env);
     } else {
       return jsonError('Ruta no encontrada', 404, request);
     }
