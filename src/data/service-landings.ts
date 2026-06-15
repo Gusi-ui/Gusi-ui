@@ -125,7 +125,7 @@ export const serviceLandings: ServiceLanding[] = [
           'Sí. Trabajo con clientes de toda España de forma remota. La comunicación es por WhatsApp, email y videollamada.',
       },
     ],
-    relatedBlogSlugs: ['cuanto-cuesta-pagina-web-autonomos'],
+    relatedBlogSlugs: ['cuanto-cuesta-pagina-web-autonomos', 'wordpress-vs-web-a-medida'],
     siloLabel: 'Desarrollo Web',
   },
   {
@@ -202,7 +202,7 @@ export const serviceLandings: ServiceLanding[] = [
           'Incluye SEO técnico (velocidad, rastreo, estructura). El posicionamiento de contenidos requiere estrategia adicional.',
       },
     ],
-    relatedBlogSlugs: [],
+    relatedBlogSlugs: ['core-web-vitals-explicado'],
     siloLabel: 'Optimización Web',
   },
   {
@@ -355,7 +355,7 @@ export const serviceLandings: ServiceLanding[] = [
           'Recibo alerta automática, investigo la causa y trabajo en la recuperación lo antes posible.',
       },
     ],
-    relatedBlogSlugs: [],
+    relatedBlogSlugs: ['mantenimiento-web-guia-completa'],
     siloLabel: 'Mantenimiento Web',
   },
 ];
