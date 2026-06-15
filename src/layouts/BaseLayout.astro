@@ -70,7 +70,7 @@ const {
 
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
 
-    <script is:inline>
+    <script is:inline define:vars={{ gaId: GA_ID }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -78,10 +78,10 @@ const {
       if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
         const s = document.createElement('script');
         s.async = 1;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id={GA_ID}';
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
         document.head.appendChild(s);
         gtag('js', new Date());
-        gtag('config', '{GA_ID}', { transport_type: 'beacon', anonymize_ip: 1 });
+        gtag('config', gaId, { transport_type: 'beacon', anonymize_ip: 1 });
       }
     </script>
 
