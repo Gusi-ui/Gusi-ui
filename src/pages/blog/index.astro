@@ -1,20 +1,12 @@
 ---
 import ContentLayout from '@/layouts/ContentLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { getCollection } from 'astro:content';
-import { getServiceLandingPath } from '@/data/service-landings';
-import type { ServiceSlug } from '@/data/service-landings';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
-const siloLabels: Record<ServiceSlug, string> = {
-  'desarrollo-web': 'Desarrollo Web',
-  'optimizacion-web': 'Optimización Web',
-  'backend-apis': 'Backend & APIs',
-  mantenimiento: 'Mantenimiento Web',
-};
 
 const title = 'Blog de desarrollo web | alamia.es';
 const description =
@@ -22,48 +14,39 @@ const description =
 ---
 
 <ContentLayout title={title} description={description}>
-  <div class="container" style="padding-bottom: 4rem;">
-    <nav class="service-landing__breadcrumb" aria-label="Migas de pan">
-      <a href="/">Inicio</a>
-      <span aria-hidden="true">/</span>
-      <span>Blog</span>
-    </nav>
+  <div class="blog-index">
+    <div class="container">
+      <header class="blog-index__header">
+        <nav class="service-landing__breadcrumb" aria-label="Migas de pan">
+          <a href="/">Inicio</a>
+          <span aria-hidden="true">/</span>
+          <span>Blog</span>
+        </nav>
 
-    <h1 class="service-landing__title">Blog</h1>
-    <p class="service-landing__subtitle">
-      Guías prácticas sobre desarrollo web, backend y mantenimiento para autónomos y pequeñas
-      empresas.
-    </p>
+        <h1 class="service-landing__title">Blog de desarrollo web</h1>
+        <p class="service-landing__subtitle">
+          Guías prácticas sobre desarrollo web, backend, rendimiento y mantenimiento para autónomos
+          y pequeñas empresas. Sin jerga innecesaria.
+        </p>
+      </header>
 
-    <div class="blog-index__grid">
-      {
-        posts.map((post) => (
-          <a href={`/blog/${post.id}/`} class="blog-card">
-            <p class="blog-card__meta">
-              {post.data.pubDate.toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-              {' · '}
-              {siloLabels[post.data.serviceSilo]}
-            </p>
-            <h2 class="blog-card__title">{post.data.title}</h2>
-            <p class="blog-card__excerpt">{post.data.description}</p>
+      <div class="blog-index__grid">
+        {posts.map((post) => <BlogCard post={post} />)}
+      </div>
+
+      <div class="blog-index__footer-cta">
+        <p>¿Prefieres hablar directamente sobre tu proyecto?</p>
+        <div class="service-landing__cta-row">
+          <a href="/servicios/" class="btn btn-primary">
+            <Icon name="laptop-code" />
+            <span>Ver servicios y precios</span>
           </a>
-        ))
-      }
-    </div>
-
-    <div class="service-landing__cta-row" style="margin-top: 3rem;">
-      <a href="/servicios/" class="btn btn-primary">
-        <Icon name="laptop-code" />
-        <span>Ver servicios</span>
-      </a>
-      <a href="/#contacto" class="btn btn-secondary">
-        <Icon name="envelope" />
-        <span>Contactar</span>
-      </a>
+          <a href="/#contacto" class="btn btn-secondary">
+            <Icon name="envelope" />
+            <span>Contactar</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </ContentLayout>

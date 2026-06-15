@@ -1,0 +1,40 @@
+---
+import { SILO_LABELS, formatBlogDate, getBlogHeroImage, getReadingTime } from '@/lib/blog';
+import type { ServiceSlug } from '@/data/service-landings';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const heroImage = getBlogHeroImage(post.data.serviceSilo, post.data.heroImage);
+const readingTime = getReadingTime(post.body ?? '');
+---
+
+<a href={`/blog/${post.id}/`} class="blog-card">
+  <div class="blog-card__image-wrap">
+    <img
+      src={heroImage}
+      alt={post.data.imageAlt ?? post.data.title}
+      class="blog-card__image"
+      width="640"
+      height="360"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class={`blog-badge blog-badge--${post.data.serviceSilo}`}>
+      {SILO_LABELS[post.data.serviceSilo as ServiceSlug]}
+    </span>
+  </div>
+  <div class="blog-card__body">
+    <p class="blog-card__meta">
+      <time datetime={post.data.pubDate.toISOString()}>{formatBlogDate(post.data.pubDate)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime} min</span>
+    </p>
+    <h2 class="blog-card__title">{post.data.title}</h2>
+    <p class="blog-card__excerpt">{post.data.description}</p>
+    <span class="blog-card__read-more">Leer artículo →</span>
+  </div>
+</a>

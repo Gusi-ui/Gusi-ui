@@ -1,9 +1,17 @@
 ---
 import ContentLayout from '@/layouts/ContentLayout.astro';
+import BlogPostHero from '@/components/blog/BlogPostHero.astro';
+import BlogServiceCta from '@/components/blog/BlogServiceCta.astro';
+import BlogAuthorCard from '@/components/blog/BlogAuthorCard.astro';
+import BlogRelatedPosts from '@/components/blog/BlogRelatedPosts.astro';
 import Icon from '@/components/ui/Icon.astro';
 import { getCollection, render } from 'astro:content';
-import { getServiceLandingPath } from '@/data/service-landings';
-import type { ServiceSlug } from '@/data/service-landings';
+import {
+  BLOG_CTA_BY_SILO,
+  getBlogHeroImage,
+  getReadingTime,
+  SILO_LABELS,
+} from '@/lib/blog';
 import { SITE_URL } from '@/lib/constants';
 
 export async function getStaticPaths() {
@@ -18,47 +26,33 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const heroImage = getBlogHeroImage(post.data.serviceSilo, post.data.heroImage);
+const heroImageUrl = heroImage.startsWith('http') ? heroImage : `${SITE_URL}${heroImage}`;
+const readingTime = getReadingTime(post.body ?? '');
+const cta = BLOG_CTA_BY_SILO[post.data.serviceSilo];
 
-const siloLabels: Record<ServiceSlug, string> = {
-  'desarrollo-web': 'Desarrollo Web',
-  'optimizacion-web': 'Optimización Web',
-  'backend-apis': 'Backend & APIs',
-  mantenimiento: 'Mantenimiento Web',
-};
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedFromFrontmatter = (post.data.relatedSlugs ?? [])
+  .map((slug) => allPosts.find((p) => p.id === slug))
+  .filter(Boolean);
 
-const servicePath = getServiceLandingPath(post.data.serviceSilo);
-const serviceLabel = siloLabels[post.data.serviceSilo];
+const relatedFromSilo =
+  relatedFromFrontmatter.length > 0
+    ? relatedFromFrontmatter
+    : allPosts.filter((p) => p.id !== post.id && p.data.serviceSilo === post.data.serviceSilo);
 
-const ctaCopy: Record<ServiceSlug, { title: string; text: string; button: string }> = {
-  'desarrollo-web': {
-    title: '¿Necesitas una web para tu negocio?',
-    text: 'Desarrollo web profesional desde 250€ con entrega en 7-10 días.',
-    button: 'Ver servicio de desarrollo web',
-  },
-  'optimizacion-web': {
-    title: '¿Tu web carga lenta?',
-    text: 'Optimización de Core Web Vitals desde 190€ con informe antes/después.',
-    button: 'Ver servicio de optimización',
-  },
-  'backend-apis': {
-    title: '¿Tu proyecto necesita un backend?',
-    text: 'APIs REST documentadas y panel admin desde 400€.',
-    button: 'Ver servicio de backend y APIs',
-  },
-  mantenimiento: {
-    title: '¿Quieres olvidarte del mantenimiento técnico?',
-    text: 'Plan mensual desde 10€ con backups, seguridad y soporte.',
-    button: 'Ver plan de mantenimiento',
-  },
-};
-
-const cta = ctaCopy[post.data.serviceSilo];
+const relatedPosts = relatedFromSilo.slice(0, 3).map((p) => ({
+  slug: p!.id,
+  title: p!.data.title,
+  description: p!.data.description,
+}));
 
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: post.data.title,
   description: post.data.description,
+  image: heroImageUrl,
   datePublished: post.data.pubDate.toISOString(),
   dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
   author: {
@@ -70,46 +64,66 @@ const articleSchema = {
     '@type': 'Organization',
     name: 'alamia.es',
     url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/freelancer-icon-optimizado.png`,
+    },
   },
   mainEntityOfPage: canonical,
 };
 ---
 
-<ContentLayout title={`${post.data.title} | alamia.es`} description={post.data.description}>
+<ContentLayout
+  title={`${post.data.title} | alamia.es`}
+  description={post.data.description}
+  ogImage={heroImage}
+>
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
 
-  <article class="container">
-    <header class="blog-post__header">
-      <nav class="service-landing__breadcrumb" aria-label="Migas de pan">
-        <a href="/">Inicio</a>
-        <span aria-hidden="true">/</span>
-        <a href="/blog/">Blog</a>
-        <span aria-hidden="true">/</span>
-        <span>{serviceLabel}</span>
-      </nav>
+  <article class="blog-article">
+    <BlogPostHero
+      slug={post.id}
+      title={post.data.title}
+      description={post.data.description}
+      pubDate={post.data.pubDate}
+      serviceSilo={post.data.serviceSilo}
+      heroImage={post.data.heroImage}
+      imageAlt={post.data.imageAlt}
+      readingTime={readingTime}
+    />
 
-      <h1 class="blog-post__title">{post.data.title}</h1>
-      <p class="blog-post__meta">
-        {post.data.pubDate.toLocaleDateString('es-ES', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-        {' · '}
-        <a href={servicePath}>{serviceLabel}</a>
-      </p>
-    </header>
+    <div class="container blog-article__layout">
+      <div class="blog-post__content blog-prose">
+        <Content />
 
-    <div class="blog-post__content">
-      <Content />
+        <aside class="blog-post__inline-cta">
+          <div class="blog-post__inline-cta-inner">
+            <span class="blog-post__inline-cta-label">¿Te ha sido útil?</span>
+            <h2>{cta.title}</h2>
+            <p>{cta.text}</p>
+            <div class="blog-post__inline-cta-actions">
+              <a href={cta.href} class="btn btn-primary">
+                <Icon name="chevron-right" />
+                <span>{cta.button}</span>
+              </a>
+              <a href="/blog/" class="btn btn-secondary">
+                <Icon name="compass" />
+                <span>Más artículos</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
 
-      <aside class="blog-post__cta">
-        <h3>{cta.title}</h3>
-        <p>{cta.text}</p>
-        <a href={servicePath} class="btn btn-primary" style="margin-top: 1rem; text-decoration: none;">
-          <Icon name="chevron-right" />
-          <span>{cta.button}</span>
-        </a>
+      <aside class="blog-article__sidebar" aria-label="Información relacionada">
+        <BlogServiceCta
+          title={cta.title}
+          text={cta.text}
+          button={cta.button}
+          href={cta.href}
+        />
+        <BlogAuthorCard />
+        <BlogRelatedPosts posts={relatedPosts} />
       </aside>
     </div>
   </article>

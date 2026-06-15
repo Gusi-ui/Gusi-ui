@@ -3,10 +3,12 @@ title: 'Mantenimiento web: guía completa para autónomos y PYMEs'
 description: 'Qué incluye un plan de mantenimiento web profesional, cuánto cuesta en España y por qué tu negocio lo necesita aunque la web "funcione bien".'
 pubDate: 2026-06-15
 serviceSilo: mantenimiento
+relatedSlugs:
+  - como-saber-si-tu-web-ha-sido-hackeada
 draft: false
 ---
 
-Tener una web publicada no es el final del camino. Con el tiempo aparecen actualizaciones de seguridad, plugins obsoletos, enlaces rotos y copias de seguridad que nadie revisa. El mantenimiento web es lo que evita que un domingo por la mañana descubras que tu negocio lleva horas offline.
+Tener una web publicada no es el final del camino. Con el tiempo aparecen actualizaciones de seguridad, plugins obsoletos, enlaces rotos y copias de seguridad que nadie revisa. El [mantenimiento web mensual](/servicios/mantenimiento/) es lo que evita que un domingo por la mañana descubras que tu negocio lleva horas offline.
 
 ## ¿Qué es el mantenimiento web?
 
@@ -59,7 +61,7 @@ Los precios varían según complejidad:
 - **Estándar (20€ – 80€/mes):** WordPress o webs con formularios, integraciones y algo de tráfico.
 - **Avanzado (80€+/mes):** ecommerce, APIs, alto tráfico o SLA de respuesta en horas.
 
-Para un autónomo con una web corporativa sencilla, un plan desde **10€/mes** puede cubrir lo esencial: seguridad, backups, monitorización y una hora de cambios menores.
+Para un autónomo con una web corporativa sencilla, un [plan de mantenimiento desde 10€/mes](/servicios/mantenimiento/) puede cubrir lo esencial: seguridad, backups, monitorización y una hora de cambios menores. Si sospechas que tu web ya ha sido comprometida, lee [cómo saber si tu web ha sido hackeada](/blog/como-saber-si-tu-web-ha-sido-hackeada/).
 
 ## Mantenimiento en WordPress vs. webs estáticas (Astro, HTML)
 

@@ -7,6 +7,7 @@ interface Props {
   title?: string;
   description?: string;
   canonical?: string;
+  ogImage?: string;
   noindex?: boolean;
 }
 
@@ -14,6 +15,7 @@ const {
   title = 'Desarrollador Freelance | Jose Martínez - Desarrollo Web & Apps | alamia.es',
   description = 'Desarrollador freelance experto en desarrollo web, aplicaciones móviles y soluciones digitales. Más de 50 proyectos exitosos. Especialista en React, Node.js y SEO.',
   canonical = SITE_URL,
+  ogImage = `${SITE_URL}/tu-foto-perfil-optimizada.jpg`,
   noindex = false,
 } = Astro.props;
 ---
@@ -32,7 +34,7 @@ const {
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${SITE_URL}/tu-foto-perfil-optimizada.jpg`} />
+    <meta property="og:image" content={ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`} />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content="es_ES" />
 
@@ -40,7 +42,7 @@ const {
     <meta name="twitter:url" content={canonical} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${SITE_URL}/tu-foto-perfil-optimizada.jpg`} />
+    <meta name="twitter:image" content={ogImage.startsWith('http') ? ogImage : `${SITE_URL}${ogImage}`} />
     <meta name="twitter:site" content="@gusi_dev" />
 
     <link rel="canonical" href={canonical} />

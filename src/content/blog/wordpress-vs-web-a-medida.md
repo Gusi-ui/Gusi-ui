@@ -3,6 +3,9 @@ title: 'WordPress vs web a medida: ¿qué conviene a tu negocio?'
 description: 'Comparativa honesta entre WordPress y desarrollo web a medida para autónomos y PYMEs. Ventajas, desventajas y cuándo elegir cada opción.'
 pubDate: 2026-06-18
 serviceSilo: desarrollo-web
+relatedSlugs:
+  - cuanto-cuesta-pagina-web-autonomos
+  - como-elegir-desarrollador-freelance
 draft: false
 ---
 
@@ -89,7 +92,7 @@ Sí existe: **Jamstack + CMS headless** (WordPress, Sanity o Contentful como bac
 
 ## Mi recomendación honesta
 
-- **Autónomo con web de servicios + contacto:** web a medida desde 250€ suele ser la mejor relación calidad/precio/velocidad.
+- **Autónomo con web de servicios + contacto:** [desarrollo web a medida desde 250€](/servicios/desarrollo-web/) suele ser la mejor relación calidad/precio/velocidad.
 - **Negocio con blog activo o tienda:** WordPress o ecommerce especializado.
 - **Proyecto que empezará simple y crecerá:** empieza simple (landing a medida) y escala cuando tengas tracción real.
 

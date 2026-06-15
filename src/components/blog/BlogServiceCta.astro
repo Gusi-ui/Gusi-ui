@@ -1,0 +1,27 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { WHATSAPP_URL } from '@/lib/constants';
+
+interface Props {
+  title: string;
+  text: string;
+  button: string;
+  href: string;
+}
+
+const { title, text, button, href } = Astro.props;
+---
+
+<aside class="blog-sidebar-card blog-sidebar-card--cta">
+  <span class="blog-sidebar-card__label">Servicio relacionado</span>
+  <h2 class="blog-sidebar-card__title">{title}</h2>
+  <p class="blog-sidebar-card__text">{text}</p>
+  <a href={href} class="btn btn-primary blog-sidebar-card__btn">
+    <Icon name="chevron-right" />
+    <span>{button}</span>
+  </a>
+  <a href={WHATSAPP_URL} class="blog-sidebar-card__link" target="_blank" rel="noopener noreferrer">
+    <Icon name="whatsapp" />
+    <span>Consultar por WhatsApp</span>
+  </a>
+</aside>

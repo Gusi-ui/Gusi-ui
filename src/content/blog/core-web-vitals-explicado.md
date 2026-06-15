@@ -3,10 +3,12 @@ title: 'Core Web Vitals explicado: qué son y cómo mejorarlos'
 description: 'Guía práctica sobre LCP, INP y CLS: las métricas que Google usa para medir la experiencia de tu web y cómo pasar PageSpeed en verde.'
 pubDate: 2026-06-22
 serviceSilo: optimizacion-web
+relatedSlugs:
+  - mantenimiento-web-guia-completa
 draft: false
 ---
 
-Si has usado PageSpeed Insights y has visto métricas en rojo o naranja, probablemente has leído nombres como LCP, INP o CLS. Son los **Core Web Vitals**: las tres métricas que Google considera clave para medir si tu web ofrece una buena experiencia. Te lo explico sin tecnicismos innecesarios.
+Si has usado PageSpeed Insights y has visto métricas en rojo o naranja, probablemente has leído nombres como LCP, INP o CLS. Son los **Core Web Vitals**: las tres métricas que Google considera clave para medir si tu web ofrece una buena experiencia. Si necesitas ayuda profesional, consulta el [servicio de optimización web desde 190€](/servicios/optimizacion-web/).
 
 ## ¿Qué son los Core Web Vitals?
 
@@ -134,7 +136,7 @@ Tiene sentido si:
 - Has perdido posiciones y sospechas del rendimiento
 - No tienes conocimientos técnicos para aplicar los cambios
 
-Un servicio de optimización web con informe antes/después te da claridad sobre qué se ha mejorado y cuánto.
+Un servicio de [optimización web con informe antes/después](/servicios/optimizacion-web/) te da claridad sobre qué se ha mejorado y cuánto. Para mantener esos resultados en el tiempo, combínalo con un [plan de mantenimiento mensual](/servicios/mantenimiento/).
 
 ## Conclusión
 

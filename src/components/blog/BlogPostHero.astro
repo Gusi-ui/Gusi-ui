@@ -1,0 +1,59 @@
+---
+import { SILO_LABELS, formatBlogDate, getBlogHeroImage } from '@/lib/blog';
+import type { ServiceSlug } from '@/data/service-landings';
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  serviceSilo: ServiceSlug;
+  heroImage?: string;
+  imageAlt?: string;
+  readingTime: number;
+}
+
+const { slug, title, description, pubDate, serviceSilo, heroImage, imageAlt, readingTime } =
+  Astro.props;
+
+const imageSrc = getBlogHeroImage(serviceSilo, heroImage);
+const alt = imageAlt ?? `${title} — ${SILO_LABELS[serviceSilo]}`;
+---
+
+<header class="blog-hero">
+  <div class="blog-hero__media">
+    <img
+      src={imageSrc}
+      alt={alt}
+      class="blog-hero__image"
+      width="1200"
+      height="630"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="blog-hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="container blog-hero__content">
+    <nav class="blog-hero__breadcrumb" aria-label="Migas de pan">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <a href="/blog/">Blog</a>
+      <span aria-hidden="true">/</span>
+      <span>{SILO_LABELS[serviceSilo]}</span>
+    </nav>
+
+    <span class={`blog-badge blog-badge--${serviceSilo}`}>{SILO_LABELS[serviceSilo]}</span>
+    <h1 class="blog-hero__title">{title}</h1>
+    <p class="blog-hero__excerpt">{description}</p>
+
+    <div class="blog-hero__meta">
+      <span>Por Jose Martínez</span>
+      <span aria-hidden="true">·</span>
+      <time datetime={pubDate.toISOString()}>{formatBlogDate(pubDate)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime} min de lectura</span>
+    </div>
+  </div>
+</header>

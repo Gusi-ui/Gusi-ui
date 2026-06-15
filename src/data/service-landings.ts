@@ -125,7 +125,11 @@ export const serviceLandings: ServiceLanding[] = [
           'Sí. Trabajo con clientes de toda España de forma remota. La comunicación es por WhatsApp, email y videollamada.',
       },
     ],
-    relatedBlogSlugs: ['cuanto-cuesta-pagina-web-autonomos', 'wordpress-vs-web-a-medida'],
+    relatedBlogSlugs: [
+      'cuanto-cuesta-pagina-web-autonomos',
+      'wordpress-vs-web-a-medida',
+      'como-elegir-desarrollador-freelance',
+    ],
     siloLabel: 'Desarrollo Web',
   },
   {
@@ -278,7 +282,7 @@ export const serviceLandings: ServiceLanding[] = [
           'Implemento autenticación, HTTPS, validación de datos y buenas prácticas de seguridad estándar.',
       },
     ],
-    relatedBlogSlugs: ['que-es-api-rest'],
+    relatedBlogSlugs: ['que-es-api-rest', 'cuando-necesitas-backend-propio'],
     siloLabel: 'Backend & APIs',
   },
   {
@@ -355,7 +359,7 @@ export const serviceLandings: ServiceLanding[] = [
           'Recibo alerta automática, investigo la causa y trabajo en la recuperación lo antes posible.',
       },
     ],
-    relatedBlogSlugs: ['mantenimiento-web-guia-completa'],
+    relatedBlogSlugs: ['mantenimiento-web-guia-completa', 'como-saber-si-tu-web-ha-sido-hackeada'],
     siloLabel: 'Mantenimiento Web',
   },
 ];

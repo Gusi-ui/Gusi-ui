@@ -1,0 +1,31 @@
+---
+interface RelatedPost {
+  slug: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  posts: RelatedPost[];
+}
+
+const { posts } = Astro.props;
+
+if (posts.length === 0) return null;
+---
+
+<aside class="blog-sidebar-card">
+  <h2 class="blog-sidebar-card__title">También te puede interesar</h2>
+  <ul class="blog-related-list">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.slug}/`} class="blog-related-list__link">
+            <span class="blog-related-list__title">{post.title}</span>
+            <span class="blog-related-list__desc">{post.description}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>

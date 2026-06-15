@@ -9,6 +9,9 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     serviceSilo: z.enum(['desarrollo-web', 'optimizacion-web', 'backend-apis', 'mantenimiento']),
+    heroImage: z.string().optional(),
+    imageAlt: z.string().optional(),
+    relatedSlugs: z.array(z.string()).optional(),
     draft: z.boolean().default(false),
   }),
 });
