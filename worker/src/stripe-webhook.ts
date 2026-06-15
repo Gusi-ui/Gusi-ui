@@ -120,11 +120,11 @@ const markEventProcessed = async (
   await env.REVIEWS_KV.put(`stripe:event:${eventId}`, '1', { expirationTtl: 604800 });
 };
 
-const handleCheckoutCompleted = async (
+const handlePaidCheckoutSession = async (
   env: Record<string, string | undefined>,
   session: Stripe.Checkout.Session
 ): Promise<void> => {
-  if (session.payment_status !== 'paid' && session.status !== 'complete') return;
+  if (session.payment_status !== 'paid') return;
   await sendPaymentEmails(env, session);
 };
 
@@ -170,7 +170,8 @@ export const handleStripeWebhook = async (
   try {
     switch (event.type) {
       case 'checkout.session.completed':
-        await handleCheckoutCompleted(env, event.data.object as Stripe.Checkout.Session);
+      case 'checkout.session.async_payment_succeeded':
+        await handlePaidCheckoutSession(env, event.data.object as Stripe.Checkout.Session);
         break;
       case 'invoice.payment_failed':
         console.warn('[webhook] invoice payment failed', event.id);

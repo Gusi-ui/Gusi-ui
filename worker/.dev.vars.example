@@ -22,6 +22,7 @@ STRIPE_PRICE_BACKEND_APIS_ONETIME=price_xxx
 STRIPE_PRICE_MANTENIMIENTO_MONTHLY=price_xxxxxxxx
 
 # Webhook (Stripe Dashboard → Developers → Webhooks → Signing secret)
+# Eventos requeridos: checkout.session.completed, checkout.session.async_payment_succeeded
 # Local: stripe listen --forward-to localhost:8787/api/payments/webhook
 STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxx
 

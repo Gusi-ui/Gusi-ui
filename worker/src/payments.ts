@@ -92,10 +92,10 @@ export const handleCreateCheckout = async (
         billingPlan,
         productTitle: config.productTitle,
       },
-      ...(config.mode === 'payment'
-        ? { automatic_payment_methods: { enabled: true } }
-        : { payment_method_types: ['card'] }),
+      // Pagos únicos: métodos definidos en Stripe Dashboard (tarjeta, Bizum, etc.)
+      // Suscripciones: solo tarjeta
       ...(config.mode === 'subscription' && {
+        payment_method_types: ['card'],
         subscription_data: {
           metadata: { productSlug, billingPlan },
         },

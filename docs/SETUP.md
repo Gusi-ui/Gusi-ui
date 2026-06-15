@@ -72,13 +72,33 @@ El archivo `.dev.vars` está en `.gitignore` y no se sube a GitHub.
 
 ## Variables y secrets del Worker
 
+Ejecuta estos comandos **desde la raíz del repo** (no desde `worker/`), usando siempre `--config worker/wrangler.toml`:
+
 ```bash
-cd worker
-pnpm exec wrangler secret put RESEND_API_KEY
-pnpm exec wrangler secret put ADMIN_TOKEN
-pnpm exec wrangler secret put GOOGLE_API_KEY    # opcional
-pnpm exec wrangler secret put GOOGLE_PLACE_ID   # opcional
+pnpm exec wrangler secret put RESEND_API_KEY --config worker/wrangler.toml
+pnpm exec wrangler secret put ADMIN_TOKEN --config worker/wrangler.toml
+pnpm exec wrangler secret put GOOGLE_API_KEY --config worker/wrangler.toml    # opcional
+pnpm exec wrangler secret put GOOGLE_PLACE_ID --config worker/wrangler.toml   # opcional
+
+# Stripe — pasarela de pagos (obligatorio para checkout)
+pnpm exec wrangler secret put STRIPE_SECRET_KEY --config worker/wrangler.toml
+pnpm exec wrangler secret put STRIPE_WEBHOOK_SECRET --config worker/wrangler.toml
+pnpm exec wrangler secret put STRIPE_PRICE_DESARROLLO_WEB_ONETIME --config worker/wrangler.toml
+pnpm exec wrangler secret put STRIPE_PRICE_OPTIMIZACION_WEB_ONETIME --config worker/wrangler.toml
+pnpm exec wrangler secret put STRIPE_PRICE_BACKEND_APIS_ONETIME --config worker/wrangler.toml
+pnpm exec wrangler secret put STRIPE_PRICE_MANTENIMIENTO_MONTHLY --config worker/wrangler.toml
 ```
+
+Los `STRIPE_PRICE_*` deben ser Price IDs de Stripe (`price_...`):
+
+- Pagos únicos: precios con tipo **One time** (250 €, 190 €, 400 €).
+- Mantenimiento: precio con tipo **Recurring** (10 €/mes).
+
+En local, copia `worker/.dev.vars.example` a `worker/.dev.vars` y rellena los mismos valores.
+
+En Stripe Dashboard → Developers → Webhooks, el endpoint debe ser
+`https://alamia.es/api/payments/webhook` y debe escuchar al menos
+`checkout.session.completed` y `checkout.session.async_payment_succeeded`.
 
 ## Build
 
