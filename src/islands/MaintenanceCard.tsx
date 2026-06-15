@@ -52,6 +52,9 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
             {service.description}
           </p>
           <p className="maintenance-value-anchor">{service.valueAnchor}</p>
+          <a href={`/servicios/${service.slug}/`} className="service-card__detail-link">
+            Ver detalles del servicio
+          </a>
         </div>
       </div>
 

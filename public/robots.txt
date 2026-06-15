@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /checkout/
+Disallow: /gracias/
+Disallow: /mantenimiento/gestionar/
+Disallow: /proyectos-ejemplo/
 
 Sitemap: https://alamia.es/sitemap-index.xml

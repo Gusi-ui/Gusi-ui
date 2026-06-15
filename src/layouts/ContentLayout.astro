@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/ui/Header.astro';
+import Footer from '@/components/ui/Footer.astro';
+import WhatsAppFloat from '@/components/ui/WhatsAppFloat.astro';
+import { SITE_URL } from '@/lib/constants';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { title, description, canonical, noindex } = Astro.props;
+const pageCanonical = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+---
+
+<BaseLayout title={title} description={description} canonical={pageCanonical} noindex={noindex}>
+  <slot name="head" slot="head" />
+  <WhatsAppFloat />
+  <Header />
+  <main class="content-page">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>

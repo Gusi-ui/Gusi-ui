@@ -66,6 +66,10 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
         {service.description}
       </p>
 
+      <a href={`/servicios/${service.slug}/`} className="service-card__detail-link">
+        Ver detalles del servicio
+      </a>
+
       <div className="service-features">
         {service.features.map((feature) => (
           <div className="feature-item" key={feature}>

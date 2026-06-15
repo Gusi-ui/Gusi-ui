@@ -11,7 +11,16 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/admin/'),
+      filter: (page) => {
+        const noindexPaths = [
+          '/admin/',
+          '/checkout/',
+          '/gracias/',
+          '/mantenimiento/gestionar/',
+          '/proyectos-ejemplo/',
+        ];
+        return !noindexPaths.some((path) => page.includes(path));
+      },
     }),
     AstroPWA({
       registerType: 'autoUpdate',

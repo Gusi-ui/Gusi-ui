@@ -1,0 +1,190 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import ServiceSchema from '@/components/seo/ServiceSchema.astro';
+import ServiceCard from '@/islands/ServiceCard.tsx';
+import MaintenanceCard from '@/islands/MaintenanceCard.tsx';
+import type { ServiceLanding } from '@/data/service-landings';
+import type { MaintenanceService, ProjectService } from '@/data/services';
+import { WHATSAPP_URL } from '@/lib/constants';
+import { isStripeConfigured } from '@/lib/payments/stripe-client';
+
+interface RelatedPost {
+  slug: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  landing: ServiceLanding;
+  service: ProjectService | MaintenanceService;
+  relatedPosts?: RelatedPost[];
+}
+
+const { landing, service, relatedPosts = [] } = Astro.props;
+const stripeEnabled = isStripeConfigured();
+const isMaintenance = service.kind === 'maintenance';
+const priceSuffix = isMaintenance ? '/mes' : 'pago único';
+const billingPlan = isMaintenance ? 'monthly' : 'one_time';
+---
+
+<ServiceSchema
+  slot="head"
+  name={landing.h1}
+  description={landing.metaDescription}
+  slug={landing.slug}
+  price={service.price}
+  billingPlan={billingPlan}
+  faqs={landing.faqs}
+/>
+
+<div class="service-landing">
+  <section class="service-landing__hero">
+    <div class="container">
+      <nav class="service-landing__breadcrumb" aria-label="Migas de pan">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/servicios/">Servicios</a>
+        <span aria-hidden="true">/</span>
+        <span>{landing.siloLabel}</span>
+      </nav>
+
+      <h1 class="service-landing__title">{landing.h1}</h1>
+      <p class="service-landing__subtitle">{landing.heroSubtitle}</p>
+
+      <p class="service-landing__price-badge" aria-label={`Precio: ${service.price} euros ${priceSuffix}`}>
+        <span>€{service.price}</span>
+        <span>{priceSuffix}</span>
+      </p>
+
+      <div class="service-landing__cta-row">
+        <a href="#contratar" class="btn btn-primary" role="button">
+          <Icon name="credit-card" />
+          <span>Contratar ahora</span>
+        </a>
+        <a
+          href={WHATSAPP_URL}
+          class="btn btn-whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        >
+          <Icon name="whatsapp" />
+          <span>Consultar por WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="service-landing__section">
+    <div class="container">
+      <h2>{landing.problemTitle}</h2>
+      <p>{landing.problemText}</p>
+      <p style="margin-top: 1rem;">{landing.solutionText}</p>
+    </div>
+  </section>
+
+  <section class="service-landing__section">
+    <div class="container">
+      <h2>¿Qué incluye este servicio?</h2>
+      <div class="service-landing__grid service-landing__grid--4">
+        {
+          landing.includes.map((item) => (
+            <article class="service-landing__card">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="service-landing__section">
+    <div class="container">
+      <h2>Proceso de trabajo</h2>
+      <div class="service-landing__steps">
+        {
+          landing.process.map((step) => (
+            <article class="service-landing__step">
+              <span class="service-landing__step-number" aria-hidden="true">
+                {step.step}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="service-landing__section" id="contratar">
+    <div class="container">
+      <h2>Precio y contratación</h2>
+      <p>Contrata de forma segura con tarjeta o Bizum. Sin sorpresas en el precio.</p>
+      <div class="service-landing__checkout">
+        {
+          isMaintenance ? (
+            <MaintenanceCard client:visible service={service} stripeEnabled={stripeEnabled} />
+          ) : (
+            <ServiceCard client:visible service={service} stripeEnabled={stripeEnabled} />
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="service-landing__section">
+    <div class="container">
+      <h2>Preguntas frecuentes</h2>
+      <div class="service-landing__faq">
+        {
+          landing.faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    relatedPosts.length > 0 && (
+      <section class="service-landing__section">
+        <div class="container">
+          <h2>Artículos relacionados</h2>
+          <div class="service-landing__related">
+            {relatedPosts.map((post) => (
+              <a href={`/blog/${post.slug}/`}>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="service-landing__section">
+    <div class="container">
+      <h2>¿Listo para empezar?</h2>
+      <p>
+        Cuéntame tu proyecto y te respondo en menos de 24 horas. También puedes ver el resto de
+        <a href="/servicios/">servicios disponibles</a>.
+      </p>
+      <div class="service-landing__cta-row" style="margin-top: 1.5rem;">
+        <a href="/#contacto" class="btn btn-primary">
+          <Icon name="envelope" />
+          <span>Solicitar presupuesto</span>
+        </a>
+        <a href="/servicios/" class="btn btn-secondary">
+          <Icon name="arrow-left" />
+          <span>Ver todos los servicios</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>

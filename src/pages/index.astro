@@ -8,9 +8,13 @@ import Services from '@/components/sections/Services.astro';
 import Projects from '@/components/sections/Projects.astro';
 import Testimonials from '@/components/sections/Testimonials.astro';
 import Contact from '@/components/sections/Contact.astro';
+
+const title = 'Desarrollador Web Freelance desde 250€ | Jose Martínez | alamia.es';
+const description =
+  'Desarrollo web, backend/APIs y mantenimiento mensual para autónomos y PYMEs. +50 proyectos. Mataró, Barcelona. Servicio en toda España. Presupuesto sin compromiso.';
 ---
 
-<BaseLayout>
+<BaseLayout title={title} description={description}>
   <link
     slot="head"
     rel="preload"

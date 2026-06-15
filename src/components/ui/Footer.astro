@@ -1,5 +1,6 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
+import { getServiceLandingPath } from '@/data/service-landings';
 
 const currentYear = new Date().getFullYear();
 ---
@@ -33,10 +34,11 @@ const currentYear = new Date().getFullYear();
         <div class="footer-services">
           <h4>Servicios</h4>
           <ul>
-            <li>Desarrollo Web</li>
-            <li>Aplicaciones Móviles</li>
-            <li>E-Commerce</li>
-            <li>Mantenimiento</li>
+            <li><a href={getServiceLandingPath('desarrollo-web')}>Desarrollo Web</a></li>
+            <li><a href={getServiceLandingPath('backend-apis')}>Backend & APIs</a></li>
+            <li><a href={getServiceLandingPath('optimizacion-web')}>Optimización Web</a></li>
+            <li><a href={getServiceLandingPath('mantenimiento')}>Mantenimiento</a></li>
+            <li><a href="/blog/">Blog</a></li>
           </ul>
         </div>
 
@@ -58,10 +60,11 @@ const currentYear = new Date().getFullYear();
         <p>&copy; {currentYear} Jose Martínez (Gusi). Todos los derechos reservados.</p>
         <div class="footer-bottom-links">
           <div class="nav-links">
-            <a href="#inicio">Inicio</a>
-            <a href="#servicios">Servicios</a>
-            <a href="#proyectos">Proyectos</a>
-            <a href="#contacto">Contacto</a>
+            <a href="/#inicio">Inicio</a>
+            <a href="/servicios/">Servicios</a>
+            <a href="/blog/">Blog</a>
+            <a href="/#proyectos">Proyectos</a>
+            <a href="/#contacto">Contacto</a>
           </div>
           <div class="legal-links">
             <a href="/politica-privacidad/">Política de Privacidad</a>

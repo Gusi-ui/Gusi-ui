@@ -2,6 +2,7 @@
 @import '@fontsource/inter/latin-600.css';
 @import 'tailwindcss';
 @import './legacy.css';
+@import './seo-pages.css';
 
 @theme {
   --color-primary: #4f46e5;

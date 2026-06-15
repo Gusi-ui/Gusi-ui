@@ -3162,6 +3162,15 @@ select:focus,
     transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
+.footer-services li a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-services li a:hover {
+    color: var(--primary-color);
+}
+
 .footer-services li:hover {
     transform: translateX(5px);
     color: var(--primary-color);

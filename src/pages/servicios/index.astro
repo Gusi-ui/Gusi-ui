@@ -1,0 +1,59 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { serviceLandings, getServiceLandingPath } from '@/data/service-landings';
+import { projectServices, maintenanceService } from '@/data/services';
+
+const allServices = [...projectServices, maintenanceService];
+
+const title = 'Servicios de Desarrollo Web | alamia.es';
+const description =
+  'Desarrollo web desde 250€, backend y APIs desde 400€, optimización Core Web Vitals y mantenimiento mensual desde 10€. Servicios para autónomos y PYMEs en España.';
+---
+
+<ContentLayout title={title} description={description}>
+  <div class="container" style="padding-bottom: 4rem;">
+    <nav class="service-landing__breadcrumb" aria-label="Migas de pan">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span>Servicios</span>
+    </nav>
+
+    <h1 class="service-landing__title">Servicios de desarrollo web y programación</h1>
+    <p class="service-landing__subtitle">
+      Soluciones técnicas claras, con precio transparente y entrega rápida. Elige el servicio que
+      necesitas o consulta sin compromiso.
+    </p>
+
+    <div class="services-hub__grid">
+      {
+        serviceLandings.map((landing) => {
+          const service = allServices.find((s) => s.slug === landing.slug)!;
+          const priceLabel =
+            service.kind === 'maintenance'
+              ? `€${service.price}/mes`
+              : `€${service.price} pago único`;
+
+          return (
+            <a href={getServiceLandingPath(landing.slug)} class="services-hub__card">
+              <h2>{landing.siloLabel}</h2>
+              <p>{landing.heroSubtitle}</p>
+              <span class="services-hub__price">{priceLabel}</span>
+            </a>
+          );
+        })
+      }
+    </div>
+
+    <div class="service-landing__cta-row" style="margin-top: 3rem;">
+      <a href="/#contacto" class="btn btn-primary">
+        <Icon name="envelope" />
+        <span>Presupuesto personalizado</span>
+      </a>
+      <a href="/blog/" class="btn btn-secondary">
+        <Icon name="compass" />
+        <span>Leer el blog</span>
+      </a>
+    </div>
+  </div>
+</ContentLayout>

@@ -1,0 +1,35 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import ServiceLanding from '@/components/pages/ServiceLanding.astro';
+import { projectServices, maintenanceService } from '@/data/services';
+import { serviceLandings } from '@/data/service-landings';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  const allServices = [...projectServices, maintenanceService];
+
+  return serviceLandings.map((landing) => ({
+    params: { slug: landing.slug },
+    props: {
+      landing,
+      service: allServices.find((s) => s.slug === landing.slug)!,
+    },
+  }));
+}
+
+const { landing, service } = Astro.props;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = landing.relatedBlogSlugs
+  .map((slug) => allPosts.find((post) => post.id === slug))
+  .filter(Boolean)
+  .map((post) => ({
+    slug: post!.id,
+    title: post!.data.title,
+    description: post!.data.description,
+  }));
+---
+
+<ContentLayout title={landing.metaTitle} description={landing.metaDescription}>
+  <ServiceLanding landing={landing} service={service} relatedPosts={relatedPosts} />
+</ContentLayout>
