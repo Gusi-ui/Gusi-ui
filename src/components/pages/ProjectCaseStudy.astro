@@ -1,0 +1,270 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import type { ProjectCaseStudy } from '@/data/project-case-studies';
+import { WHATSAPP_URL, SITE_URL } from '@/lib/constants';
+import { isExternalDemo } from '@/lib/project-demo';
+
+interface RelatedProject {
+  id: string;
+  title: string;
+  hook: string;
+}
+
+interface Props {
+  project: ProjectCaseStudy;
+  relatedProjects: RelatedProject[];
+}
+
+const { project, relatedProjects } = Astro.props;
+const caseStudyUrl = `${SITE_URL}/proyectos/${project.id}/`;
+const whatsappHref = `${WHATSAPP_URL}?text=${encodeURIComponent(project.whatsappMessage)}`;
+const serviceHref = `/servicios/${project.serviceSlug}/`;
+const liveProject = isExternalDemo(project.demoUrl);
+const demoCtaLabel = liveProject ? 'Visitar sitio en vivo' : 'Ver demo en vivo';
+const portfolioBadge = liveProject ? 'Proyecto en producción' : 'Proyecto de demostración';
+---
+
+<article class="project-case" itemscope itemtype="https://schema.org/CreativeWork">
+  <meta itemprop="name" content={project.title} />
+  <meta itemprop="url" content={caseStudyUrl} />
+
+  <section class="project-case__hero">
+    <div class="container">
+      <nav class="project-case__breadcrumb" aria-label="Migas de pan">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/#proyectos">Proyectos</a>
+        <span aria-hidden="true">/</span>
+        <span>{project.title}</span>
+      </nav>
+
+      <p class="project-case__context">{project.context}</p>
+      <span class="project-case__demo-badge">{portfolioBadge}</span>
+
+      <h1 class="project-case__title" itemprop="headline">{project.title}</h1>
+      <p class="project-case__summary">{project.solutionSummary}</p>
+
+      <p class="project-case__price-badge" aria-label={`Servicio recomendado desde ${project.servicePrice} euros`}>
+        <span>{project.serviceLabel}</span>
+        <span>desde €{project.servicePrice}</span>
+      </p>
+
+      <div class="project-case__cta-row">
+        <a
+          href={project.demoUrl}
+          class="btn btn-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        >
+          <Icon name="eye" />
+          <span>{demoCtaLabel}</span>
+        </a>
+        <a
+          href={whatsappHref}
+          class="btn btn-whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        >
+          <Icon name="whatsapp" />
+          <span>Quiero algo similar</span>
+        </a>
+      </div>
+
+      <figure class="project-case__hero-image">
+        <picture>
+          {project.image.avif && <source srcset={`/${project.image.avif}`} type="image/avif" />}
+          {project.image.webp && <source srcset={`/${project.image.webp}`} type="image/webp" />}
+          <img
+            src={`/${project.image.jpg}`}
+            alt={project.image.alt}
+            width="1200"
+            height="630"
+            loading="eager"
+            itemprop="image"
+          />
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="project-case__section" aria-labelledby="problem-heading">
+    <div class="container">
+      <h2 id="problem-heading">El reto</h2>
+      {project.problem.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </section>
+
+  <section class="project-case__section" aria-labelledby="solution-heading">
+    <div class="container">
+      <h2 id="solution-heading">Cómo lo resolví</h2>
+
+      <div class="project-case__grid project-case__grid--2">
+        <div class="project-case__card">
+          <h3>Lo que ve el usuario</h3>
+          <p>{project.solution.frontend}</p>
+        </div>
+        {project.solution.backend && (
+          <div class="project-case__card">
+            <h3>Lo que hace por detrás</h3>
+            <p>{project.solution.backend}</p>
+          </div>
+        )}
+        {project.solution.integrations && (
+          <div class="project-case__card">
+            <h3>Integraciones</h3>
+            <p>{project.solution.integrations}</p>
+          </div>
+        )}
+        <div class="project-case__card">
+          <h3>Seguridad</h3>
+          <p>{project.solution.security}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="project-case__section" aria-labelledby="tech-heading">
+    <div class="container">
+      <h2 id="tech-heading">Por qué estas tecnologías</h2>
+      <div class="project-case__tech-table" role="table" aria-label="Decisiones técnicas y beneficios">
+        <div class="project-case__tech-row project-case__tech-row--head" role="row">
+          <span role="columnheader">Tecnología</span>
+          <span role="columnheader">Beneficio para el negocio</span>
+        </div>
+        {project.techDecisions.map((decision) => (
+          <div class="project-case__tech-row" role="row">
+            <span class="project-case__tech-name" role="cell">{decision.technology}</span>
+            <span role="cell">{decision.benefit}</span>
+          </div>
+        ))}
+      </div>
+      <div class="project-case__tags" aria-label="Stack técnico">
+        {project.tech.map((tech) => (
+          <span class="project-case__tag">{tech}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {
+    project.hasArchitectureDiagram && (
+      <section class="project-case__section" aria-labelledby="arch-heading">
+        <div class="container">
+          <h2 id="arch-heading">Arquitectura simplificada</h2>
+          <div class="project-case__flow" aria-hidden="true">
+            <div class="project-case__flow-node">Usuario</div>
+            <div class="project-case__flow-arrow">→</div>
+            <div class="project-case__flow-node">Frontend</div>
+            <div class="project-case__flow-arrow">→</div>
+            <div class="project-case__flow-node">API REST</div>
+            <div class="project-case__flow-arrow">→</div>
+            <div class="project-case__flow-node">Base de datos</div>
+          </div>
+          <p class="project-case__flow-note">
+            Flujo diseñado para escalar: puedes añadir app móvil, panel admin o nuevas integraciones sin
+            rehacer el núcleo.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="project-case__section" aria-labelledby="metrics-heading">
+    <div class="container">
+      <h2 id="metrics-heading">Resultados del proyecto</h2>
+      <div class="project-case__metrics-table" role="table" aria-label="Métricas antes y después">
+        <div class="project-case__metrics-row project-case__metrics-row--head" role="row">
+          <span role="columnheader">Indicador</span>
+          <span role="columnheader">Antes</span>
+          <span role="columnheader">Después</span>
+        </div>
+        {project.metrics.map((metric) => (
+          <div class="project-case__metrics-row" role="row">
+            <span class="project-case__metrics-label" role="cell">{metric.label}</span>
+            <span role="cell">{metric.before}</span>
+            <span class="project-case__metrics-after" role="cell">{metric.after}</span>
+          </div>
+        ))}
+      </div>
+      <p class="project-case__disclaimer">
+        {liveProject
+          ? 'Proyecto real en producción. Métricas basadas en objetivos de diseño y experiencia de uso.'
+          : 'Proyecto conceptual. Métricas basadas en objetivos de diseño y benchmarks del sector.'}
+      </p>
+    </div>
+  </section>
+
+  <section class="project-case__section project-case__section--cta" aria-labelledby="hire-heading">
+    <div class="container">
+      <h2 id="hire-heading">¿Te encaja este tipo de solución?</h2>
+      <p>
+        Puedo adaptar un proyecto como este a tu negocio. Código limpio, entrega en plazo y mantenimiento
+        opcional desde 10€/mes.
+      </p>
+
+      <ul class="project-case__trust-list">
+        <li>
+          <Icon name="check" />
+          <span>Entrega en 7–10 días (web) o 2–3 semanas (backend)</span>
+        </li>
+        <li>
+          <Icon name="check" />
+          <span>Código documentado y listo para crecer</span>
+        </li>
+        <li>
+          <Icon name="check" />
+          <span>Pago con tarjeta, Bizum o WhatsApp</span>
+        </li>
+      </ul>
+
+      <div class="project-case__cta-row">
+        <a href={serviceHref} class="btn btn-primary" role="button">
+          <Icon name="credit-card" />
+          <span>Contratar desde €{project.servicePrice}</span>
+        </a>
+        <a
+          href={whatsappHref}
+          class="btn btn-whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        >
+          <Icon name="whatsapp" />
+          <span>Hablar por WhatsApp</span>
+        </a>
+        <a
+          href={project.demoUrl}
+          class="btn btn-secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        >
+          <Icon name="external-link" />
+          <span>{demoCtaLabel}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {
+    relatedProjects.length > 0 && (
+      <section class="project-case__section" aria-labelledby="related-heading">
+        <div class="container">
+          <h2 id="related-heading">Otros proyectos</h2>
+          <div class="project-case__related">
+            {relatedProjects.map((related) => (
+              <a href={`/proyectos/${related.id}/`}>
+                <h3>{related.title}</h3>
+                <p>{related.hook}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</article>

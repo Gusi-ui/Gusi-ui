@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="50%" style="stop-color:#312e81"/>
+      <stop offset="100%" style="stop-color:#1a1d26"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1100" cy="530" r="200" fill="#7c3aed" opacity="0.12"/>
+  <g transform="translate(60, 130)">
+    <rect x="0" y="0" width="200" height="360" rx="10" fill="#252836" stroke="#3f3f50"/>
+    <rect x="0" y="0" width="200" height="40" rx="10" fill="#3b82f6" opacity="0.3"/>
+    <text x="15" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#93c5fd">NUEVO</text>
+    <rect x="15" y="55" width="170" height="65" rx="6" fill="#1a1d26"/>
+    <rect x="15" y="130" width="170" height="65" rx="6" fill="#1a1d26"/>
+  </g>
+  <g transform="translate(270, 130)">
+    <rect x="0" y="0" width="200" height="360" rx="10" fill="#252836" stroke="#3f3f50"/>
+    <rect x="0" y="0" width="200" height="40" rx="10" fill="#8b5cf6" opacity="0.3"/>
+    <text x="15" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#c4b5fd">CONTACTADO</text>
+    <rect x="15" y="55" width="170" height="65" rx="6" fill="#1a1d26"/>
+  </g>
+  <g transform="translate(480, 130)">
+    <rect x="0" y="0" width="200" height="360" rx="10" fill="#252836" stroke="#3f3f50"/>
+    <rect x="0" y="0" width="200" height="40" rx="10" fill="#f59e0b" opacity="0.3"/>
+    <text x="15" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#fcd34d">PROPUESTA</text>
+    <rect x="15" y="55" width="170" height="65" rx="6" fill="#1a1d26"/>
+  </g>
+  <g transform="translate(690, 130)">
+    <rect x="0" y="0" width="200" height="360" rx="10" fill="#252836" stroke="#3f3f50"/>
+    <rect x="0" y="0" width="200" height="40" rx="10" fill="#ec4899" opacity="0.3"/>
+    <text x="15" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#f9a8d4">NEGOCIACIÓN</text>
+    <rect x="15" y="55" width="170" height="65" rx="6" fill="#1a1d26"/>
+  </g>
+  <g transform="translate(900, 130)">
+    <rect x="0" y="0" width="200" height="360" rx="10" fill="#252836" stroke="#3f3f50"/>
+    <rect x="0" y="0" width="200" height="40" rx="10" fill="#10b981" opacity="0.3"/>
+    <text x="15" y="26" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#6ee7b7">GANADO</text>
+    <rect x="15" y="55" width="170" height="65" rx="6" fill="#1a1d26"/>
+  </g>
+  <text x="60" y="90" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#a78bfa" letter-spacing="2">CRM PIPELINE</text>
+  <text x="60" y="560" font-family="system-ui, sans-serif" font-size="56" font-weight="800" fill="#ffffff">LeadFlow CRM</text>
+  <text x="60" y="600" font-family="system-ui, sans-serif" font-size="22" fill="#a78bfa">Gestión de leads por etapas</text>
+</svg>

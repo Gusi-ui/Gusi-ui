@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c4a6e"/>
+      <stop offset="50%" style="stop-color:#075985"/>
+      <stop offset="100%" style="stop-color:#0e7490"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="150" cy="150" r="120" fill="#0ea5e9" opacity="0.15"/>
+  <circle cx="1050" cy="480" r="160" fill="#06b6d4" opacity="0.12"/>
+  <rect x="80" y="120" width="640" height="400" rx="16" fill="#0f172a" stroke="#164e63" stroke-width="2"/>
+  <rect x="110" y="150" width="280" height="24" rx="6" fill="url(#accent)"/>
+  <rect x="110" y="190" width="200" height="8" rx="4" fill="#334155"/>
+  <rect x="110" y="240" width="560" height="6" rx="3" fill="#1e293b"/>
+  <circle cx="130" cy="243" r="10" fill="#0ea5e9"/>
+  <rect x="110" y="280" width="24" height="24" rx="4" fill="#0ea5e9" opacity="0.8"/>
+  <rect x="150" y="284" width="200" height="16" rx="4" fill="#334155"/>
+  <rect x="110" y="320" width="24" height="24" rx="4" fill="#0ea5e9"/>
+  <rect x="150" y="324" width="180" height="16" rx="4" fill="#475569"/>
+  <rect x="110" y="360" width="24" height="24" rx="4" fill="#1e293b" stroke="#475569"/>
+  <rect x="150" y="364" width="220" height="16" rx="4" fill="#334155"/>
+  <rect x="760" y="120" width="360" height="400" rx="16" fill="#0f172a" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="790" y="180" font-family="system-ui, sans-serif" font-size="18" fill="#94a3b8">Tu presupuesto</text>
+  <text x="790" y="260" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#0ea5e9">2.150</text>
+  <text x="920" y="260" font-family="system-ui, sans-serif" font-size="28" fill="#64748b">¬</text>
+  <rect x="790" y="300" width="300" height="50" rx="10" fill="#0ea5e9"/>
+  <text x="870" y="332" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#fff">Copiar presupuesto</text>
+  <text x="80" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#67e8f9" letter-spacing="2">CALCULADORA WEB</text>
+  <text x="80" y="580" font-family="system-ui, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Presupuestador Web</text>
+  <text x="80" y="610" font-family="system-ui, sans-serif" font-size="22" fill="#67e8f9">Estimación en tiempo real</text>
+</svg>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore Online - Gadgets y Tecnología</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="demo-banner">Proyecto de demostración · alamia.es</div>
+    <header class="header">
+        <div class="container nav">
+            <h1 class="logo">TechStore</h1>
+            <nav class="nav-menu">
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <button type="button" class="cart-btn" onclick="toggleCart()" aria-label="Carrito">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container hero-content">
+            <h2>Gadgets que elevan tu setup</h2>
+            <p>Audio, periféricos y smart home con envío 24–48 h</p>
+            <button type="button" class="btn-primary" onclick="scrollToProducts()">Ver catálogo</button>
+        </div>
+    </section>
+
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Catálogo</h2>
+            <div class="filters">
+                <button type="button" class="filter-btn active" data-category="all">Todos</button>
+                <button type="button" class="filter-btn" data-category="audio">Audio</button>
+                <button type="button" class="filter-btn" data-category="perifericos">Periféricos</button>
+                <button type="button" class="filter-btn" data-category="smarthome">Smart Home</button>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact">
+        <div class="container">
+            <h2>¿Necesitas asesoramiento?</h2>
+            <p>Escríbenos y te ayudamos a montar tu setup ideal.</p>
+        </div>
+    </section>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Tu carrito</h3>
+                <button type="button" class="cart-close" aria-label="Cerrar">&times;</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-footer">
+                <strong>Total: <span id="cartTotal">0 €</span></strong>
+                <button type="button" class="btn-primary" onclick="checkout()">Pagar con Stripe</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

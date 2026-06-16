@@ -1,0 +1,13 @@
+---
+import ContentLayout from '@/layouts/ContentLayout.astro';
+import Projects from '@/components/sections/Projects.astro';
+import { SITE_URL } from '@/lib/constants';
+---
+
+<ContentLayout
+  title="Proyectos y casos de estudio | alamia.es"
+  description="Explora 15 proyectos con demos en vivo: ecommerce, dashboards, reservas, CRM, SaaS, gusi.dev y más."
+  canonical={`${SITE_URL}/proyectos/`}
+>
+  <Projects mode="all" />
+</ContentLayout>

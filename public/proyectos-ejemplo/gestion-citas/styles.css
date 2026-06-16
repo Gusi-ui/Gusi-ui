@@ -103,6 +103,10 @@ body {
     transition: var(--transition-normal);
 }
 
+.header .container {
+    position: relative;
+}
+
 .header.scrolled {
     box-shadow: var(--shadow-md);
     background: rgba(255, 255, 255, 0.95);
@@ -1785,6 +1789,24 @@ body {
 @media (max-width: 768px) {
     .nav {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--border-color);
+        padding: var(--spacing-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 100;
+    }
+
+    .nav.active {
+        display: block;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: var(--spacing-sm);
     }
     
     .mobile-menu-btn {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskBoard — Gestor de Tareas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo"><i class="fas fa-columns"></i> TaskBoard</div>
+            <button type="button" class="btn btn-primary" id="addTaskBtn"><i class="fas fa-plus"></i> Nueva tarea</button>
+        </div>
+    </header>
+
+    <main class="board-container">
+        <div class="board" id="board">
+            <div class="column" data-status="todo">
+                <div class="column-header">
+                    <h2><span class="dot todo"></span> Por hacer</h2>
+                    <span class="count" data-count="todo">0</span>
+                </div>
+                <div class="column-body" data-drop="todo"></div>
+            </div>
+            <div class="column" data-status="progress">
+                <div class="column-header">
+                    <h2><span class="dot progress"></span> En progreso</h2>
+                    <span class="count" data-count="progress">0</span>
+                </div>
+                <div class="column-body" data-drop="progress"></div>
+            </div>
+            <div class="column" data-status="done">
+                <div class="column-header">
+                    <h2><span class="dot done"></span> Hecho</h2>
+                    <span class="count" data-count="done">0</span>
+                </div>
+                <div class="column-body" data-drop="done"></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="taskModal" hidden>
+        <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nueva tarea</h3>
+                <button type="button" class="modal-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle">Título</label>
+                    <input type="text" id="taskTitle" required maxlength="80" placeholder="Ej: Diseñar landing page">
+                </div>
+                <div class="form-group">
+                    <label for="taskDesc">Descripción</label>
+                    <textarea id="taskDesc" rows="3" maxlength="200" placeholder="Detalles opcionales..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="taskPriority">Prioridad</label>
+                    <select id="taskPriority">
+                        <option value="low">Baja</option>
+                        <option value="medium" selected>Media</option>
+                        <option value="high">Alta</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost modal-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar tarea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

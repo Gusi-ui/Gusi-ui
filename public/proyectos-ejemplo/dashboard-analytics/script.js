@@ -261,10 +261,12 @@ function updateKPIs() {
 }
 
 function updateKPICard(kpiId, data) {
-    const card = document.querySelector(`[data-kpi="${kpiId}"]`);
+    const valueElement = document.getElementById(kpiId);
+    if (!valueElement) return;
+
+    const card = valueElement.closest('.kpi-card');
     if (!card) return;
-    
-    const valueElement = card.querySelector('.kpi-value');
+
     const changeElement = card.querySelector('.kpi-change');
     
     if (valueElement) {
@@ -467,19 +469,22 @@ function initializeTrafficChart() {
 }
 
 function initializeConversionChart() {
-    const ctx = document.getElementById('conversionChart');
+    const ctx = document.getElementById('productsChart');
     if (!ctx) return;
     
     const data = {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+        labels: ['Camisas', 'Pantalones', 'Zapatos', 'Accesorios', 'Chaquetas'],
         datasets: [{
-            label: 'Conversión',
-            data: [2.1, 2.8, 3.2, 2.9, 3.5, 3.8],
-            borderColor: config.chartColors.success,
-            backgroundColor: config.chartColors.success + '20',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.4
+            label: 'Unidades vendidas',
+            data: [420, 380, 290, 210, 175],
+            backgroundColor: [
+                config.chartColors.primary,
+                config.chartColors.success,
+                config.chartColors.warning,
+                config.chartColors.info,
+                config.chartColors.secondary
+            ],
+            borderRadius: 6
         }]
     };
     
@@ -487,42 +492,21 @@ function initializeConversionChart() {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleColor: '#fff',
-                bodyColor: '#fff',
-                callbacks: {
-                    label: function(context) {
-                        return 'Conversión: ' + context.parsed.y + '%';
-                    }
-                }
-            }
+            legend: { display: false }
         },
         scales: {
             y: {
                 beginAtZero: true,
-                grid: {
-                    color: '#f3f4f6'
-                },
-                ticks: {
-                    callback: function(value) {
-                        return value + '%';
-                    }
-                }
+                grid: { color: '#f3f4f6' }
             },
             x: {
-                grid: {
-                    display: false
-                }
+                grid: { display: false }
             }
         }
     };
     
-    appState.charts.conversion = new Chart(ctx, {
-        type: 'line',
+    appState.charts.products = new Chart(ctx, {
+        type: 'bar',
         data: data,
         options: options
     });
@@ -887,6 +871,57 @@ function debounce(func, wait) {
 }
 
 // Export para testing (si es necesario)
+function updateDateRange() {
+    const picker = document.getElementById('dateRange');
+    if (picker) handleDateRangeChange({ target: picker });
+}
+
+function refreshData() {
+    updateDashboardData();
+    showNotification('Datos actualizados correctamente', 'success');
+}
+
+function exportData() {
+    showNotification('Exportación simulada: informe descargado', 'info');
+}
+
+function generateReport() {
+    openModal('settingsModal');
+    showNotification('Generador de reportes abierto', 'info');
+}
+
+function toggleChartType(chartId) {
+    const chart = appState.charts[chartId.replace('Chart', '')] || appState.charts.revenue;
+    if (!chart) {
+        showNotification('Gráfico actualizado', 'info');
+        return;
+    }
+    chart.config.type = chart.config.type === 'line' ? 'bar' : 'line';
+    chart.update();
+    showNotification('Tipo de gráfico cambiado', 'success');
+}
+
+function showTrafficDetails() {
+    showNotification('Detalle de tráfico: 71% móvil, 29% escritorio', 'info');
+}
+
+function showProductDetails() {
+    showNotification('Top producto: Camisas (420 uds.)', 'info');
+}
+
+function showAllActivity() {
+    showNotification('Mostrando las 25 actividades más recientes', 'info');
+}
+
+function generateMonthlyReport() {
+    showNotification('Reporte mensual generado', 'success');
+}
+
+function changeTheme() {
+    document.body.classList.toggle('theme-alt');
+    showNotification('Tema actualizado', 'success');
+}
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         appState,

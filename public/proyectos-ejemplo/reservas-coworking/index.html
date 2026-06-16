@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoWork Hub — Reservas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo"><i class="fas fa-building"></i> CoWork Hub</div>
+            <button type="button" class="btn btn-ghost" id="viewBookingsBtn"><i class="fas fa-calendar-check"></i> Mis reservas</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container booking-layout">
+            <section class="booking-form">
+                <h1>Reserva tu espacio</h1>
+                <p class="subtitle">Elige tipo de espacio, fecha y horario disponible.</p>
+
+                <div class="form-section">
+                    <h2><span class="step">1</span> Tipo de espacio</h2>
+                    <div class="space-options" id="spaceOptions">
+                        <button type="button" class="space-card active" data-space="desk" data-price="15">
+                            <i class="fas fa-desktop"></i>
+                            <strong>Mesa individual</strong>
+                            <span>15 €/hora</span>
+                        </button>
+                        <button type="button" class="space-card" data-space="meeting" data-price="35">
+                            <i class="fas fa-users"></i>
+                            <strong>Sala de reuniones</strong>
+                            <span>35 €/hora · 6 personas</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2><span class="step">2</span> Fecha</h2>
+                    <div class="date-picker" id="datePicker"></div>
+                </div>
+
+                <div class="form-section">
+                    <h2><span class="step">3</span> Horario</h2>
+                    <div class="time-slots" id="timeSlots"></div>
+                    <p class="slots-hint" id="slotsHint">Selecciona una fecha para ver horarios</p>
+                </div>
+
+                <div class="form-section">
+                    <h2><span class="step">4</span> Tus datos</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="userName">Nombre</label>
+                            <input type="text" id="userName" required placeholder="Tu nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">Email</label>
+                            <input type="email" id="userEmail" required placeholder="tu@email.com">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="confirmBooking" disabled>
+                    <i class="fas fa-check"></i> Confirmar reserva
+                </button>
+
+                <div class="confirmation" id="confirmation" hidden>
+                    <div class="confirmation-icon"><i class="fas fa-circle-check"></i></div>
+                    <h3>¡Reserva confirmada!</h3>
+                    <p id="confirmationText"></p>
+                </div>
+            </section>
+
+            <aside class="summary-sidebar">
+                <div class="summary-card">
+                    <h2>Resumen</h2>
+                    <div class="summary-row"><span>Espacio</span><strong id="sumSpace">Mesa individual</strong></div>
+                    <div class="summary-row"><span>Fecha</span><strong id="sumDate">—</strong></div>
+                    <div class="summary-row"><span>Horario</span><strong id="sumTime">—</strong></div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <strong id="sumTotal">—</strong>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="bookingsModal" hidden>
+        <div class="modal" role="dialog" aria-labelledby="bookingsTitle" aria-modal="true">
+            <div class="modal-header">
+                <h2 id="bookingsTitle"><i class="fas fa-calendar-check"></i> Mis reservas</h2>
+                <button type="button" class="modal-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="bookingsList"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

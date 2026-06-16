@@ -1,69 +1,52 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
+import ProjectsShowcase from '@/islands/ProjectsShowcase';
 import ProjectFilter from '@/islands/ProjectFilter';
+import ProjectCard from '@/components/projects/ProjectCard.astro';
 import { projects } from '@/data/projects';
+import { toDisplayProjects } from '@/lib/projects-display';
 import { WHATSAPP_URL } from '@/lib/constants';
+
+interface Props {
+  mode?: 'rotating' | 'all';
+}
+
+const { mode = 'rotating' } = Astro.props;
+const displayProjects = toDisplayProjects(projects);
 ---
 
 <section id="proyectos" class="projects">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">Mis Proyectos</h2>
-      <p class="section-subtitle">Algunos de los trabajos que he realizado para mis clientes</p>
+      <p class="section-subtitle">
+        {
+          mode === 'rotating'
+            ? 'Casos de estudio con demos en vivo. Cada visita muestra una selección distinta para que descubras más soluciones.'
+            : 'Explora todos los casos de estudio con demos funcionales. Cada proyecto resuelve un problema real de negocio.'
+        }
+      </p>
       <div class="section-divider"></div>
     </div>
 
-    <ProjectFilter client:visible />
-
-    <div class="projects-grid" id="projects-grid">
-      {
-        projects.map((project) => (
-          <div class="project-card" data-project-type={project.type}>
-            <div class="project-image">
-              <picture>
-                {project.image.avif && (
-                  <source srcset={`/${project.image.avif}`} type="image/avif" />
-                )}
-                {project.image.webp && (
-                  <source srcset={`/${project.image.webp}`} type="image/webp" />
-                )}
-                <img
-                  src={`/${project.image.jpg}`}
-                  alt={project.image.alt}
-                  loading="lazy"
-                />
-              </picture>
-              <div class="project-overlay">
-                <div class="project-actions">
-                  <a href={project.demoUrl} class="project-btn" target="_blank" rel="noopener">
-                    <Icon name="eye" />
-                    <span>Ver Proyecto</span>
-                  </a>
-                  <a
-                    href={`${WHATSAPP_URL}?text=${encodeURIComponent(project.whatsappMessage)}`}
-                    class="project-btn project-btn-whatsapp"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    <Icon name="whatsapp" />
-                    <span>Contratar Similar</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="project-content">
-              <div class="project-badge">{project.badge}</div>
-              <h3 class="project-title">{project.title}</h3>
-              <p class="project-description">{project.description}</p>
-              <div class="project-tech">
-                {project.tech.map((tech) => (
-                  <span class="tech-tag">{tech}</span>
-                ))}
-              </div>
-            </div>
+    {
+      mode === 'rotating' ? (
+        <ProjectsShowcase
+          client:visible
+          projects={displayProjects}
+          whatsappUrl={WHATSAPP_URL}
+          visibleCount={3}
+          showViewAll={true}
+        />
+      ) : (
+        <>
+          <ProjectFilter client:visible />
+          <div class="projects-grid" id="projects-grid">
+            {projects.map((project) => (
+              <ProjectCard project={project} whatsappUrl={WHATSAPP_URL} />
+            ))}
           </div>
-        ))
-      }
-    </div>
+        </>
+      )
+    }
   </div>
 </section>

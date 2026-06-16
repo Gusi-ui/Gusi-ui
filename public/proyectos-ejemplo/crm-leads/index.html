@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadFlow — CRM de Leads</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo"><i class="fas fa-funnel-dollar"></i> LeadFlow</div>
+            <div class="header-actions">
+                <div class="source-filter">
+                    <label for="sourceFilter">Fuente:</label>
+                    <select id="sourceFilter">
+                        <option value="all">Todas</option>
+                        <option value="web">Web</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="referido">Referido</option>
+                        <option value="evento">Evento</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="addLeadBtn"><i class="fas fa-plus"></i> Nuevo lead</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pipeline-container">
+        <div class="pipeline" id="pipeline"></div>
+    </main>
+
+    <div class="modal-overlay" id="leadModal" hidden>
+        <div class="modal" role="dialog" aria-labelledby="leadModalTitle" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="leadModalTitle">Nuevo lead</h3>
+                <button type="button" class="modal-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="leadForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leadName">Nombre</label>
+                        <input type="text" id="leadName" required placeholder="Ana López">
+                    </div>
+                    <div class="form-group">
+                        <label for="leadCompany">Empresa</label>
+                        <input type="text" id="leadCompany" required placeholder="TechStart SL">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leadEmail">Email</label>
+                        <input type="email" id="leadEmail" required placeholder="ana@techstart.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="leadSource">Fuente</label>
+                        <select id="leadSource">
+                            <option value="web">Web</option>
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="referido">Referido</option>
+                            <option value="evento">Evento</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="leadValue">Valor estimado (€)</label>
+                    <input type="number" id="leadValue" min="0" step="100" value="5000" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost modal-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar lead</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
