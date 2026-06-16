@@ -196,13 +196,19 @@ const SAMPLE_DOCTORS = [
     }
 ];
 
+function offsetDate(days) {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0];
+}
+
 const SAMPLE_APPOINTMENTS = [
     {
         id: 1,
         doctorId: 1,
         doctorName: 'Dr. María González',
         specialty: 'Cardiología',
-        date: '2024-01-15',
+        date: offsetDate(2),
         time: '10:30',
         status: 'confirmed',
         notes: 'Control rutinario cardiovascular',
@@ -213,7 +219,7 @@ const SAMPLE_APPOINTMENTS = [
         doctorId: 3,
         doctorName: 'Dra. Ana Martínez',
         specialty: 'Pediatría',
-        date: '2024-01-18',
+        date: offsetDate(5),
         time: '09:00',
         status: 'pending',
         notes: 'Revisión de crecimiento',
@@ -224,7 +230,7 @@ const SAMPLE_APPOINTMENTS = [
         doctorId: 2,
         doctorName: 'Dr. Carlos Ruiz',
         specialty: 'Dermatología',
-        date: '2024-01-12',
+        date: offsetDate(-3),
         time: '16:00',
         status: 'completed',
         notes: 'Revisión de lunares',
@@ -1597,13 +1603,12 @@ const App = {
     },
 
     initNavigation() {
-        // Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navMenu = document.querySelector('.nav-menu');
+        const nav = document.querySelector('.nav');
         
-        if (mobileMenuBtn && navMenu) {
+        if (mobileMenuBtn && nav) {
             mobileMenuBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
+                nav.classList.toggle('active');
                 mobileMenuBtn.classList.toggle('active');
             });
         }
@@ -1622,7 +1627,7 @@ const App = {
                     });
                     
                     // Close mobile menu if open
-                    if (navMenu) navMenu.classList.remove('active');
+                    if (nav) nav.classList.remove('active');
                     if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
                 }
             });

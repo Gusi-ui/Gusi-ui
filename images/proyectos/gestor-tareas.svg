@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c4a6e"/>
+      <stop offset="50%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="col1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="col2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="col3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e"/>
+      <stop offset="100%" style="stop-color:#16a34a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1050" cy="500" r="200" fill="#3b82f6" opacity="0.1"/>
+  <rect x="80" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <rect x="440" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <rect x="800" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  <rect x="100" y="170" width="8" height="8" rx="4" fill="url(#col1)"/>
+  <text x="120" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">Por hacer</text>
+  <rect x="100" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="3"/>
+  <rect x="100" y="285" width="280" height="70" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
+  <rect x="460" y="170" width="8" height="8" rx="4" fill="url(#col2)"/>
+  <text x="480" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">En progreso</text>
+  <rect x="460" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
+  <rect x="820" y="170" width="8" height="8" rx="4" fill="url(#col3)"/>
+  <text x="840" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">Hecho</text>
+  <rect x="820" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
+  <rect x="820" y="285" width="280" height="70" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
+  <text x="80" y="90" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#94a3b8" letter-spacing="2">KANBAN</text>
+  <text x="80" y="580" font-family="system-ui, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Gestor de Tareas</text>
+  <text x="80" y="610" font-family="system-ui, sans-serif" font-size="22" fill="#60a5fa">Drag &amp; drop con prioridades</text>
+</svg>

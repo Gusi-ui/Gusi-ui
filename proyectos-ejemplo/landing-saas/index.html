@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetricFlow — Analytics SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <a href="#" class="logo"><i class="fas fa-chart-line"></i> MetricFlow</a>
+            <nav class="nav" aria-label="Principal">
+                <a href="#features">Funciones</a>
+                <a href="#pricing">Precios</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+            <button type="button" class="btn btn-primary btn-sm" data-scroll="trial">Prueba gratis</button>
+            <button type="button" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <span class="badge">Nuevo · Dashboards en tiempo real</span>
+                    <h1>Convierte datos en decisiones con <span class="gradient-text">MetricFlow</span></h1>
+                    <p>Plataforma de analytics para equipos de producto y marketing. Visualiza métricas, detecta tendencias y actúa antes que la competencia.</p>
+                    <div class="hero-actions">
+                        <button type="button" class="btn btn-primary btn-lg" data-scroll="trial">Empezar prueba de 14 días</button>
+                        <button type="button" class="btn btn-ghost btn-lg" data-scroll="features">Ver funciones</button>
+                    </div>
+                    <p class="hero-note"><i class="fas fa-check-circle"></i> Sin tarjeta · Cancela cuando quieras</p>
+                </div>
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="dashboard-mock">
+                        <div class="mock-bar"><span></span><span></span><span></span></div>
+                        <div class="mock-chart">
+                            <div class="bar" style="--h:60%"></div>
+                            <div class="bar" style="--h:85%"></div>
+                            <div class="bar" style="--h:45%"></div>
+                            <div class="bar" style="--h:92%"></div>
+                            <div class="bar" style="--h:70%"></div>
+                        </div>
+                        <div class="mock-stats">
+                            <div><strong>+34%</strong><small>Conversión</small></div>
+                            <div><strong>12.4k</strong><small>Usuarios</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section features">
+            <div class="container">
+                <h2 class="section-title">Todo lo que necesitas para crecer</h2>
+                <p class="section-sub">Herramientas potentes, interfaz intuitiva y resultados medibles desde el primer día.</p>
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Tiempo real</h3>
+                        <p>Monitoriza visitas, conversiones y eventos personalizados con latencia inferior a 2 segundos.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+                        <h3>Embudos visuales</h3>
+                        <p>Construye embudos de conversión arrastrando pasos y detecta dónde pierdes usuarios.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+                        <h3>Privacidad RGPD</h3>
+                        <p>Cumplimiento europeo, anonimización de IP y exportación de datos bajo demanda.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="section pricing">
+            <div class="container">
+                <h2 class="section-title">Planes transparentes</h2>
+                <div class="billing-toggle">
+                    <span class="billing-label" data-period="monthly">Mensual</span>
+                    <button type="button" class="toggle-switch" id="billingToggle" role="switch" aria-checked="false" aria-label="Alternar facturación anual">
+                        <span class="toggle-knob"></span>
+                    </button>
+                    <span class="billing-label" data-period="annual">Anual <em>-20%</em></span>
+                </div>
+                <div class="pricing-grid">
+                    <article class="price-card">
+                        <h3>Starter</h3>
+                        <p class="price-desc">Para proyectos personales</p>
+                        <div class="price-amount"><span class="currency">€</span><span class="amount" data-monthly="19" data-annual="15">19</span><span class="period">/mes</span></div>
+                        <ul>
+                            <li><i class="fas fa-check"></i> 10.000 eventos/mes</li>
+                            <li><i class="fas fa-check"></i> 3 dashboards</li>
+                            <li><i class="fas fa-check"></i> Soporte por email</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline btn-block" data-scroll="trial">Empezar</button>
+                    </article>
+                    <article class="price-card featured">
+                        <span class="popular">Más popular</span>
+                        <h3>Pro</h3>
+                        <p class="price-desc">Para equipos en crecimiento</p>
+                        <div class="price-amount"><span class="currency">€</span><span class="amount" data-monthly="49" data-annual="39">49</span><span class="period">/mes</span></div>
+                        <ul>
+                            <li><i class="fas fa-check"></i> 100.000 eventos/mes</li>
+                            <li><i class="fas fa-check"></i> Embudos ilimitados</li>
+                            <li><i class="fas fa-check"></i> API + webhooks</li>
+                        </ul>
+                        <button type="button" class="btn btn-primary btn-block" data-scroll="trial">Empezar</button>
+                    </article>
+                    <article class="price-card">
+                        <h3>Enterprise</h3>
+                        <p class="price-desc">Para grandes organizaciones</p>
+                        <div class="price-amount"><span class="amount-text">Personalizado</span></div>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Eventos ilimitados</li>
+                            <li><i class="fas fa-check"></i> SLA 99.9%</li>
+                            <li><i class="fas fa-check"></i> Account manager</li>
+                        </ul>
+                        <button type="button" class="btn btn-outline btn-block" data-scroll="trial">Contactar</button>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section faq">
+            <div class="container faq-container">
+                <h2 class="section-title">Preguntas frecuentes</h2>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <button type="button" class="accordion-trigger" aria-expanded="false">¿Necesito tarjeta para la prueba?</button>
+                        <div class="accordion-panel"><p>No. La prueba de 14 días es completamente gratuita y no requiere datos de pago.</p></div>
+                    </div>
+                    <div class="accordion-item">
+                        <button type="button" class="accordion-trigger" aria-expanded="false">¿Puedo cambiar de plan en cualquier momento?</button>
+                        <div class="accordion-panel"><p>Sí, puedes subir o bajar de plan cuando quieras. Los cambios se prorratean automáticamente.</p></div>
+                    </div>
+                    <div class="accordion-item">
+                        <button type="button" class="accordion-trigger" aria-expanded="false">¿Es compatible con mi stack?</button>
+                        <div class="accordion-panel"><p>Ofrecemos SDK para JavaScript, React, Node.js y una API REST. También integraciones con Segment y Zapier.</p></div>
+                    </div>
+                    <div class="accordion-item">
+                        <button type="button" class="accordion-trigger" aria-expanded="false">¿Dónde se almacenan mis datos?</button>
+                        <div class="accordion-panel"><p>En servidores de la UE (Frankfurt y Madrid) con cifrado en reposo y en tránsito.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trial" class="section trial">
+            <div class="container trial-grid">
+                <div class="trial-info">
+                    <h2>Empieza tu prueba gratuita</h2>
+                    <p>Únete a más de 2.000 equipos que ya confían en MetricFlow para tomar mejores decisiones.</p>
+                    <ul class="trial-benefits">
+                        <li><i class="fas fa-check"></i> Configuración en 5 minutos</li>
+                        <li><i class="fas fa-check"></i> Sin compromiso</li>
+                        <li><i class="fas fa-check"></i> Soporte en español</li>
+                    </ul>
+                </div>
+                <form class="trial-form" id="trialForm" novalidate>
+                    <div class="form-group">
+                        <label for="name">Nombre completo</label>
+                        <input type="text" id="name" name="name" autocomplete="name" required minlength="2" placeholder="María García">
+                        <span class="error-msg" id="nameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email corporativo</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required placeholder="maria@empresa.com">
+                        <span class="error-msg" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Empresa</label>
+                        <input type="text" id="company" name="company" required minlength="2" placeholder="Mi Startup SL">
+                        <span class="error-msg" id="companyError"></span>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span>Acepto los términos y la política de privacidad</span>
+                        </label>
+                        <span class="error-msg" id="termsError"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Crear cuenta gratis</button>
+                    <p class="form-success" id="formSuccess" hidden><i class="fas fa-circle-check"></i> ¡Cuenta creada! Revisa tu email para activarla.</p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 MetricFlow. Proyecto de demostración.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

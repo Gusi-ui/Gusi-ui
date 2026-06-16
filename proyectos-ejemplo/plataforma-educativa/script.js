@@ -182,8 +182,8 @@ function renderFeaturedCourses() {
     }
     
     const html = featuredCourses.map(course => createCourseCard(course)).join('');
-     container.innerHTML = html;
-     // console.log('Cursos destacados renderizados correctamente');
+    container.innerHTML = html;
+    addCourseCardListeners(container);
 }
 
 // Función para renderizar todos los cursos
@@ -804,6 +804,25 @@ function setupEventListeners() {
             }
         }
     });
+
+    ['contactForm', 'loginForm', 'registerForm'].forEach((formId) => {
+        const form = document.getElementById(formId);
+        if (!form) return;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('Formulario enviado correctamente (demo)', 'success');
+            form.reset();
+            const modal = form.closest('.modal');
+            if (modal) closeModal(modal.id);
+        });
+    });
+
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+            showNotification('Todos los cursos ya están visibles en esta demo', 'info');
+        });
+    }
 }
 
 // Función principal de inicialización

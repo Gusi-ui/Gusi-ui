@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c1a2b"/>
+      <stop offset="50%" style="stop-color:#0e2a47"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="160" cy="120" r="110" fill="#0ea5e9" opacity="0.12"/>
+  <circle cx="1060" cy="520" r="190" fill="#22d3ee" opacity="0.10"/>
+
+  <!-- Calendario -->
+  <rect x="80" y="150" width="500" height="370" rx="16" fill="#0f172a" stroke="#1e3a5f" stroke-width="2"/>
+  <rect x="80" y="150" width="500" height="64" rx="16" fill="#0e2a47"/>
+  <text x="110" y="192" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#e2e8f0">Junio 2026</text>
+  <g font-family="system-ui, sans-serif" font-size="13" fill="#64748b" text-anchor="middle">
+    <text x="135" y="250">L</text><text x="207" y="250">M</text><text x="279" y="250">X</text>
+    <text x="351" y="250">J</text><text x="423" y="250">V</text><text x="495" y="250">S</text>
+  </g>
+  <g font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94a3b8" text-anchor="middle">
+    <text x="135" y="300">9</text><text x="207" y="300">10</text><text x="279" y="300">11</text>
+    <text x="351" y="300">12</text><text x="423" y="300">13</text><text x="495" y="300">14</text>
+  </g>
+  <!-- Día seleccionado -->
+  <circle cx="207" cy="350" r="22" fill="url(#teal)"/>
+  <text x="207" y="356" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#06283d" text-anchor="middle">16</text>
+  <g font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#94a3b8" text-anchor="middle">
+    <text x="135" y="356">15</text><text x="279" y="356">17</text>
+    <text x="351" y="356">18</text><text x="423" y="356">19</text><text x="495" y="356">20</text>
+  </g>
+  <!-- Slots de horario -->
+  <text x="110" y="412" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#7dd3fc">Horarios disponibles</text>
+  <g transform="translate(110, 428)">
+    <rect x="0" y="0" width="100" height="40" rx="8" fill="#0e3a52" stroke="#22d3ee" stroke-width="2"/>
+    <rect x="115" y="0" width="100" height="40" rx="8" fill="#0f172a" stroke="#334155"/>
+    <rect x="230" y="0" width="100" height="40" rx="8" fill="#0f172a" stroke="#334155" opacity="0.4"/>
+    <rect x="345" y="0" width="100" height="40" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="50" y="26" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#7dd3fc" text-anchor="middle">10:00</text>
+    <text x="165" y="26" font-family="system-ui, sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle">11:00</text>
+    <text x="280" y="26" font-family="system-ui, sans-serif" font-size="14" fill="#64748b" text-anchor="middle" text-decoration="line-through">12:00</text>
+    <text x="395" y="26" font-family="system-ui, sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle">13:00</text>
+  </g>
+
+  <!-- Panel de cita confirmada -->
+  <rect x="620" y="150" width="500" height="370" rx="16" fill="#0f172a" stroke="#1e3a5f" stroke-width="2"/>
+  <text x="650" y="200" font-family="system-ui, sans-serif" font-size="20" font-weight="700" fill="#7dd3fc">Detalle de la cita</text>
+  <text x="650" y="258" font-family="system-ui, sans-serif" font-size="15" fill="#64748b">Profesional: Dra. López</text>
+  <text x="650" y="296" font-family="system-ui, sans-serif" font-size="15" fill="#64748b">Servicio: Fisioterapia</text>
+  <text x="650" y="334" font-family="system-ui, sans-serif" font-size="15" fill="#64748b">Fecha: 16/06/2026 · 10:00</text>
+  <line x1="650" y1="364" x2="1090" y2="364" stroke="#1e3a5f" stroke-width="1"/>
+  <g transform="translate(650, 392)">
+    <circle cx="12" cy="12" r="12" fill="#0e3a52"/>
+    <path d="M6 12 l4 4 l8 -8" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="36" y="17" font-family="system-ui, sans-serif" font-size="15" fill="#94a3b8">Sin solapamientos</text>
+  </g>
+  <g transform="translate(650, 430)">
+    <circle cx="12" cy="12" r="12" fill="#0e3a52"/>
+    <path d="M6 12 l4 4 l8 -8" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="36" y="17" font-family="system-ui, sans-serif" font-size="15" fill="#94a3b8">Recordatorio automatico</text>
+  </g>
+  <rect x="650" y="468" width="440" height="50" rx="10" fill="url(#teal)"/>
+  <text x="870" y="500" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#06283d" text-anchor="middle">Confirmar cita</text>
+
+  <!-- Branding -->
+  <text x="80" y="100" font-family="system-ui, sans-serif" font-size="26" font-weight="600" fill="#7dd3fc" letter-spacing="2">AGENDA</text>
+  <text x="80" y="575" font-family="system-ui, sans-serif" font-size="52" font-weight="800" fill="#ffffff">Gestión de Citas</text>
+  <text x="80" y="608" font-family="system-ui, sans-serif" font-size="21" fill="#22d3ee">Reserva online sin solapamientos</text>
+</svg>

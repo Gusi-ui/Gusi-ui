@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Aurora — Menú Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="brand">
+                <span class="brand-icon">☕</span>
+                <div>
+                    <h1>Café Aurora</h1>
+                    <p>Menú digital · Madrid</p>
+                </div>
+            </div>
+            <button type="button" class="cart-btn" id="cartBtn" aria-label="Ver carrito">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <nav class="categories" id="categories" aria-label="Categorías"></nav>
+
+            <div class="filters">
+                <span class="filters-label"><i class="fas fa-filter"></i> Alérgenos:</span>
+                <div class="allergen-filters" id="allergenFilters">
+                    <button type="button" class="filter-chip" data-allergen="gluten">Sin gluten</button>
+                    <button type="button" class="filter-chip" data-allergen="lacteos">Sin lácteos</button>
+                    <button type="button" class="filter-chip" data-allergen="frutos">Sin frutos secos</button>
+                    <button type="button" class="filter-chip active" data-allergen="all">Todos</button>
+                </div>
+            </div>
+
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="cartModal" hidden>
+        <div class="modal" role="dialog" aria-labelledby="cartTitle" aria-modal="true">
+            <div class="modal-header">
+                <h2 id="cartTitle"><i class="fas fa-shopping-bag"></i> Tu pedido</h2>
+                <button type="button" class="modal-close" aria-label="Cerrar"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="cartItems"></div>
+            <div class="modal-footer">
+                <div class="cart-total">
+                    <span>Total</span>
+                    <strong id="cartTotal">0,00 €</strong>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" id="confirmOrder">Confirmar pedido</button>
+                <p class="order-note" id="orderNote" hidden><i class="fas fa-check-circle"></i> Pedido enviado a cocina (demo)</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

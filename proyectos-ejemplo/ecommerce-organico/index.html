@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMercado - Productos Ecológicos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="demo-banner">Proyecto de demostración · alamia.es</div>
+    <header class="header">
+        <div class="container nav">
+            <h1 class="logo">🌿 EcoMercado</h1>
+            <button type="button" class="cart-btn" onclick="toggleCart()">Cesta (<span id="cartCount">0</span>)</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Productos ecológicos de proximidad</h2>
+            <p>Pedido semanal · Recogida o entrega el sábado</p>
+        </div>
+    </section>
+
+    <section class="products">
+        <div class="container">
+            <div class="filters">
+                <button type="button" class="filter-btn active" data-category="all">Todos</button>
+                <button type="button" class="filter-btn" data-category="fruta">Fruta y verdura</button>
+                <button type="button" class="filter-btn" data-category="despensa">Despensa</button>
+                <button type="button" class="filter-btn" data-category="higiene">Higiene</button>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Tu cesta semanal</h3>
+                <button type="button" class="cart-close">&times;</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-footer">
+                <strong>Total: <span id="cartTotal">0 €</span></strong>
+                <button type="button" class="btn-primary" onclick="checkout()">Confirmar pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

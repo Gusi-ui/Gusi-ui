@@ -567,7 +567,7 @@ const UIRenderer = {
             <div class="property-card" data-property-id="${property.id}">
                 <div class="property-image">
                     <i class="fas fa-home"></i>
-                    <div class="property-badge ${property.type}">${property.type === 'venta' ? 'Venta' : 'Alquiler'}</div>
+                    <div class="property-badge ${property.type === 'venta' ? 'sale' : 'rent'}">${property.type === 'venta' ? 'Venta' : 'Alquiler'}</div>
                     <button class="property-favorite ${isFavorite ? 'active' : ''}" data-property-id="${property.id}">
                         <i class="fas fa-heart"></i>
                     </button>
@@ -795,6 +795,13 @@ const UIRenderer = {
 
 // Filter Manager
 const FilterManager = {
+    resolveLocationFilter: (input) => {
+        const value = input.trim().toLowerCase();
+        if (!value) return '';
+        const cities = ['madrid', 'barcelona', 'valencia', 'sevilla', 'bilbao'];
+        return cities.find((city) => value.includes(city)) || '';
+    },
+
     init: () => {
         // Search form filters
         const searchForm = document.querySelector('.search-filters');
@@ -843,7 +850,7 @@ const FilterManager = {
         AppState.currentFilters = {
             type: AppState.searchType,
             propertyType: form.querySelector('#property-type').value,
-            location: '', // Location search is text-based, would need geocoding
+            location: FilterManager.resolveLocationFilter(form.querySelector('#location')?.value || ''),
             price: form.querySelector('#price-range').value,
             bedrooms: form.querySelector('#bedrooms').value,
             sort: 'newest'
@@ -1339,6 +1346,7 @@ const UserManager = {
         
         // Re-attach modal event listeners
         App.attachModalEventListeners();
+        App.initMobileMenu();
     },
     
     logout: () => {
@@ -1392,15 +1400,19 @@ const App = {
         });
         
         // Mobile menu toggle
+        App.initMobileMenu();
+    },
+
+    initMobileMenu: () => {
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navMenu = document.querySelector('.nav-menu');
-        
-        if (mobileMenuBtn && navMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                mobileMenuBtn.classList.toggle('active');
-            });
-        }
+
+        if (!mobileMenuBtn || !navMenu) return;
+
+        mobileMenuBtn.onclick = () => {
+            navMenu.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        };
     },
     
     attachModalEventListeners: () => {

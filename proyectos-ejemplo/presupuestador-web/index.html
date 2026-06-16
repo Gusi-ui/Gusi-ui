@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuestador Web — Calculadora de Proyectos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="demo-banner" role="banner">
+        <span><strong>Proyecto de demostración</strong> · <a href="https://alamia.es" target="_blank" rel="noopener noreferrer">alamia.es</a></span>
+    </div>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo"><i class="fas fa-calculator"></i> WebQuote</div>
+            <p class="tagline">Calcula el presupuesto de tu web en segundos</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container layout">
+            <section class="config-panel">
+                <h1>Configura tu proyecto</h1>
+                <p class="intro">Selecciona las opciones que necesitas y obtén una estimación al instante.</p>
+
+                <div class="config-block">
+                    <div class="block-header">
+                        <label for="pagesSlider">Número de páginas</label>
+                        <span class="value-badge" id="pagesValue">5</span>
+                    </div>
+                    <input type="range" id="pagesSlider" min="1" max="10" value="5" aria-valuemin="1" aria-valuemax="10" aria-valuenow="5">
+                    <div class="range-labels"><span>1</span><span>10</span></div>
+                </div>
+
+                <div class="config-block">
+                    <h2>Funcionalidades</h2>
+                    <div class="features-list" id="featuresList">
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="400" data-label="Blog / Noticias" checked>
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Blog / Noticias</strong><small>+400 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="1200" data-label="E-commerce">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>E-commerce</strong><small>+1.200 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="350" data-label="SEO avanzado" checked>
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>SEO avanzado</strong><small>+350 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="250" data-label="Formulario de contacto">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Formulario de contacto</strong><small>+250 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="500" data-label="Multiidioma">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Multiidioma</strong><small>+500 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="300" data-label="Integración CRM">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Integración CRM</strong><small>+300 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="200" data-label="Chat en vivo">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Chat en vivo</strong><small>+200 €</small></span>
+                        </label>
+                        <label class="feature-check">
+                            <input type="checkbox" data-price="450" data-label="Área de clientes">
+                            <span class="check-box"></span>
+                            <span class="feature-info"><strong>Área de clientes</strong><small>+450 €</small></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="config-block">
+                    <h2>Tipo de diseño</h2>
+                    <div class="design-options">
+                        <label class="design-option">
+                            <input type="radio" name="design" value="0" checked>
+                            <span>Plantilla adaptada</span>
+                        </label>
+                        <label class="design-option">
+                            <input type="radio" name="design" value="800">
+                            <span>Diseño personalizado (+800 €)</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="summary-panel" id="summaryPanel">
+                <div class="summary-card">
+                    <h2>Tu presupuesto</h2>
+                    <div class="total-display">
+                        <span class="total-amount" id="totalAmount">2.150</span>
+                        <span class="total-currency">€</span>
+                    </div>
+                    <p class="total-note">Estimación orientativa · IVA no incluido</p>
+
+                    <div class="breakdown" id="breakdown">
+                        <div class="breakdown-item"><span>Base (5 páginas)</span><span>1.400 €</span></div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-block" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copiar presupuesto
+                    </button>
+                    <p class="copy-feedback" id="copyFeedback" hidden><i class="fas fa-check"></i> ¡Copiado al portapapeles!</p>
+
+                    <div class="summary-footer">
+                        <p><i class="fas fa-clock"></i> Entrega estimada: <strong id="deliveryTime">3-4 semanas</strong></p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
