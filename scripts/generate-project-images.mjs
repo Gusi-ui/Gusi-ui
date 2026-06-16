@@ -12,9 +12,12 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = resolve(__dirname, '../public/images/proyectos');
+// PNG raster 1200×630 para og:image (las vistas previas sociales no soportan SVG).
+const OG_DIR = resolve(__dirname, '../public/images/og');
 
 const FONT = 'system-ui, -apple-system, Segoe UI, sans-serif';
 
@@ -420,9 +423,24 @@ const render = (p) => {
 };
 
 mkdirSync(OUT_DIR, { recursive: true });
-let count = 0;
-for (const p of PROJECTS) {
-  writeFileSync(resolve(OUT_DIR, `${p.id}.svg`), render(p), 'utf8');
-  count++;
-}
-console.log(`✓ Generadas ${count} imágenes SVG en public/images/proyectos/`);
+mkdirSync(OG_DIR, { recursive: true });
+
+const run = async () => {
+  let count = 0;
+  for (const p of PROJECTS) {
+    const svg = render(p);
+    writeFileSync(resolve(OUT_DIR, `${p.id}.svg`), svg, 'utf8');
+    // Versión raster para og:image (compartir en WhatsApp, redes, etc.).
+    await sharp(Buffer.from(svg))
+      .resize(1200, 630)
+      .png({ quality: 90 })
+      .toFile(resolve(OG_DIR, `${p.id}.png`));
+    count++;
+  }
+  console.log(`✓ Generadas ${count} imágenes SVG (proyectos/) y ${count} PNG OG (og/).`);
+};
+
+run().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

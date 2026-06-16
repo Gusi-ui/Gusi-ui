@@ -18,7 +18,9 @@ const relatedProjects = getRelatedProjects(project.id).map((item) => ({
   hook: item.hook,
 }));
 const canonical = `${SITE_URL}/proyectos/${project.id}/`;
-const ogImage = `/${project.image.jpg}`;
+// El mockup se muestra como SVG, pero og:image usa el PNG raster
+// (las vistas previas sociales no renderizan SVG).
+const ogImage = `/images/og/${project.id}.png`;
 ---
 
 <ContentLayout

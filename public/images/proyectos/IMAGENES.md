@@ -25,18 +25,29 @@ image: {
 
 ## Generador
 
-Las 15 imágenes se generan con un script reproducible. Para regenerarlas
+Las imágenes se generan con un script reproducible. Para regenerarlas
 (p. ej. tras editar título, subtítulo, color de acento o el mockup de un
 proyecto):
 
 ```bash
-node scripts/generate-project-images.mjs
+pnpm images:projects   # = node scripts/generate-project-images.mjs
 ```
+
+Cada ejecución produce **dos** salidas por proyecto:
+
+- `public/images/proyectos/{id}.svg` — mockup vectorial usado en la web
+  (tarjetas y hero de cada caso de estudio).
+- `public/images/og/{id}.png` — versión raster 1200×630 usada como
+  `og:image`, porque las vistas previas sociales (WhatsApp, redes) no
+  renderizan SVG. El cableado está en `src/pages/proyectos/[slug].astro`.
 
 La configuración de cada proyecto (acento, arquetipo de mockup y textos) vive
 en el array `PROJECTS` dentro de `scripts/generate-project-images.mjs`.
 Arquetipos disponibles: `dashboard`, `kanban`, `ecommerce`, `calendar`,
 `landing`, `listView`, `formView`, `realestate`, `terminal`.
+
+> La generación de los PNG requiere `sharp` (devDependency). La web no lo
+> necesita en runtime.
 
 ## IDs actuales (15 proyectos)
 
