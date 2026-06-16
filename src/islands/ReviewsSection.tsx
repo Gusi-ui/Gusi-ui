@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import Icon from '@/components/ui/Icon';
-import { fetchReviews, updateSchemaOrg, generateStars, type Review } from '@/lib/reviews';
+import { fetchReviews, generateStars, type Review } from '@/lib/reviews';
 import { getReviewsApi } from '@/lib/constants';
 import { isValidEmail } from '@/lib/utils';
 import { showNotification } from '@/lib/notifications';
@@ -21,7 +21,6 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
     try {
       const data = await fetchReviews();
       setReviews(data);
-      updateSchemaOrg(data);
     } catch {
       setReviews([]);
     } finally {

@@ -26,7 +26,7 @@ const CONFIG = {
 const getRateLimitKv = (env) => env.RATE_LIMIT || env.REVIEWS_KV;
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env, _ctx) {
     const url = new URL(request.url);
     
     // CORS Preflight - DEBE ser lo primero, sin ninguna validación
@@ -40,7 +40,7 @@ export default {
           try {
             const originUrl = new URL(origin);
             allowedOrigin = originUrl.origin;
-          } catch (e) {
+          } catch {
             // Si falla, usar el origin tal cual
             allowedOrigin = origin.includes('://') ? origin.split('/').slice(0, 3).join('/') : origin;
           }
@@ -185,7 +185,7 @@ async function handleContacto(request, env) {
       service: servicio
     }, 200, request);
 
-  } catch (error) {
+  } catch {
     // Log error para debugging (solo en producción, no expone detalles al cliente)
     return jsonError('Error al procesar el formulario', 500, request);
   }
@@ -243,7 +243,7 @@ async function obtenerResenas(kv, request, env) {
         google: googleReviews.length
       }
     }, 200, request);
-  } catch (error) {
+  } catch {
     return jsonError('Error al obtener reseñas', 500, request);
   }
 }
@@ -390,7 +390,7 @@ async function crearResena(request, env) {
       requiresApproval: CONFIG.moderacionActivada && !review.approved
     }, 200, request);
 
-  } catch (error) {
+  } catch {
     return jsonError('Error al procesar la reseña', 500, request);
   }
 }
@@ -474,7 +474,7 @@ async function verificarRateLimitResenas(ip, kv) {
     const enviosRecientes = data.envios.filter(t => now - t < hora);
     return enviosRecientes.length < CONFIG.maxResenasPorHora;
 
-  } catch (error) {
+  } catch {
     // En caso de error, permitir la acción (fail-open)
     return true;
   }
@@ -491,7 +491,7 @@ async function registrarResena(ip, kv) {
     data.envios = data.envios.filter(t => now - t < hora);
 
     await kv.put(key, JSON.stringify(data), { expirationTtl: 3600 });
-  } catch (error) {
+  } catch {
     // Error silencioso - no crítico para la funcionalidad
   }
 }
@@ -539,7 +539,7 @@ async function obtenerTodasResenas(kv, request) {
         pending: pending.length
       }
     }, 200, request);
-  } catch (error) {
+  } catch {
     return jsonError('Error al obtener reseñas', 500, request);
   }
 }
@@ -600,7 +600,7 @@ async function moderarResena(request, env) {
       review: reviews[reviewIndex]
     }, 200, request);
     
-  } catch (error) {
+  } catch {
     return jsonError('Error al moderar reseña', 500, request);
   }
 }
@@ -626,7 +626,7 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
 
     const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `${CONFIG.nombreRemitente} <${CONFIG.emailRemitente}>`,
       to: [CONFIG.emailDestino],
       reply_to: `${nombreUsuario} <${emailUsuario}>`,
@@ -640,7 +640,7 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
 
     return true;
 
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -705,25 +705,6 @@ function generarEmailHTML(nombre, email, servicio, mensaje, fecha, ip) {
 }
 
 // ===== FUNCIONES DE VALIDACIÓN =====
-function validarOrigen(request) {
-  const origin = request.headers.get('Origin');
-  const referer = request.headers.get('Referer');
-
-  const permitidos = [
-    `https://${CONFIG.dominio}`,
-    'http://localhost',
-    'http://127.0.0.1',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://localhost:3000',
-    'http://127.0.0.1:3000'
-  ];
-
-  return permitidos.some(p =>
-    origin?.startsWith(p) || referer?.startsWith(p)
-  );
-}
-
 function validarFormulario(datos) {
   const errores = [];
 
@@ -773,7 +754,7 @@ async function verificarRateLimit(ip, kv) {
     const enviosRecientes = data.envios.filter(t => now - t < hora);
     return enviosRecientes.length < CONFIG.maxEnviosPorHora;
 
-  } catch (error) {
+  } catch {
     // En caso de error, permitir la acción (fail-open)
     return true;
   }
@@ -790,7 +771,7 @@ async function registrarEnvio(ip, kv) {
     data.envios = data.envios.filter(t => now - t < hora);
 
     await kv.put(key, JSON.stringify(data), { expirationTtl: 3600 });
-  } catch (error) {
+  } catch {
     // Error silencioso - no crítico para la funcionalidad
   }
 }
@@ -835,56 +816,13 @@ function getCORSOrigin(request) {
           refererOrigin === `https://${CONFIG.dominio}`) {
         return refererOrigin;
       }
-    } catch (e) {
+    } catch {
       // Si falla al parsear, continuar
     }
   }
-  
+
   // Por defecto, devolver el dominio de producción
   return `https://${CONFIG.dominio}`;
-}
-
-function handleCORS(request) {
-  const origin = request.headers.get('Origin');
-  const referer = request.headers.get('Referer');
-  
-  // Determinar el origen permitido
-  let allowedOrigin = `https://${CONFIG.dominio}`;
-  
-  if (origin) {
-    // Permitir cualquier localhost
-    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-      allowedOrigin = origin;
-    } else if (origin === `https://${CONFIG.dominio}`) {
-      allowedOrigin = origin;
-    }
-  } else if (referer) {
-    // Si no hay origin, extraer del referer
-    try {
-      const refererUrl = new URL(referer);
-      const refererOrigin = refererUrl.origin;
-      if (refererOrigin.startsWith('http://localhost') || 
-          refererOrigin.startsWith('http://127.0.0.1')) {
-        allowedOrigin = refererOrigin;
-      }
-    } catch (e) {
-      // Ignorar errores de parsing
-    }
-  }
-  
-  // Headers CORS completos
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'false',
-    'Access-Control-Max-Age': '86400'
-  };
-  
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders
-  });
 }
 
 function jsonSuccess(data, status = 200, request = null) {

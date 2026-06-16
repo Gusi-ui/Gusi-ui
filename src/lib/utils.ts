@@ -2,6 +2,7 @@ export const sanitizeText = (text: string | null | undefined): string => {
   if (!text) return '';
   return String(text)
     .replace(/[\uD800-\uDFFF]/g, '')
+    // eslint-disable-next-line no-control-regex -- intencional: elimina caracteres de control
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
     .trim();
 };

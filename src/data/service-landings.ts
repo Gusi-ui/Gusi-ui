@@ -1,5 +1,3 @@
-import type { IconName } from '@/lib/icons';
-
 export type ServiceSlug =
   | 'desarrollo-web'
   | 'optimizacion-web'
