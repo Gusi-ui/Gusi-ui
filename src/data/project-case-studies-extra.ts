@@ -37,7 +37,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Desarrollo Web',
     servicePrice: 250,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/landing-saas.jpg', alt: 'Landing page SaaS MetricFlow' },
+    image: { jpg: 'images/proyectos/landing-saas.svg', alt: 'Landing page SaaS MetricFlow' },
     demoUrl: '/proyectos-ejemplo/landing-saas/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "MetricFlow SaaS" y me interesa algo similar.\n\nMi negocio: startup SaaS\nNecesito: landing con pricing y formulario\nPresupuesto orientativo: 250€ web\n\n¿Tienes disponibilidad esta semana?',
@@ -81,7 +81,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Desarrollo Web',
     servicePrice: 250,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/gestor-tareas.jpg', alt: 'Gestor de tareas Kanban' },
+    image: { jpg: 'images/proyectos/gestor-tareas.svg', alt: 'Gestor de tareas Kanban' },
     demoUrl: '/proyectos-ejemplo/gestor-tareas/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "Gestor de Tareas" y me interesa algo similar.\n\nMi negocio: agencia / equipo\nNecesito: tablero Kanban de tareas\nPresupuesto orientativo: 250€ web\n\n¿Tienes disponibilidad esta semana?',
@@ -125,7 +125,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Desarrollo Web',
     servicePrice: 250,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/presupuestador-web.jpg', alt: 'Presupuestador web interactivo' },
+    image: { jpg: 'images/proyectos/presupuestador-web.svg', alt: 'Presupuestador web interactivo' },
     demoUrl: '/proyectos-ejemplo/presupuestador-web/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "Presupuestador Web" y me interesa algo similar.\n\nMi negocio: freelance / agencia\nNecesito: calculadora de presupuestos\nPresupuesto orientativo: 250€ web\n\n¿Tienes disponibilidad esta semana?',
@@ -169,7 +169,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Desarrollo Web',
     servicePrice: 250,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/menu-qr-cafe.jpg', alt: 'Menú digital QR para cafetería' },
+    image: { jpg: 'images/proyectos/menu-qr-cafe.svg', alt: 'Menú digital QR para cafetería' },
     demoUrl: '/proyectos-ejemplo/menu-qr-cafe/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "Menú QR Café" y me interesa algo similar.\n\nMi negocio: cafetería / bar\nNecesito: carta digital con QR\nPresupuesto orientativo: 250€ web\n\n¿Tienes disponibilidad esta semana?',
@@ -213,7 +213,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Backend & APIs',
     servicePrice: 400,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/crm-leads.jpg', alt: 'CRM de leads con pipeline Kanban' },
+    image: { jpg: 'images/proyectos/crm-leads.svg', alt: 'CRM de leads con pipeline Kanban' },
     demoUrl: '/proyectos-ejemplo/crm-leads/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "CRM de Leads" y me interesa algo similar.\n\nMi negocio: ventas / inmobiliaria\nNecesito: CRM con pipeline de leads\nPresupuesto orientativo: 400€ backend\n\n¿Tienes disponibilidad esta semana?',
@@ -259,7 +259,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
     serviceLabel: 'Backend & APIs',
     servicePrice: 400,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
-    image: { jpg: 'images/proyectos/reservas-coworking.jpg', alt: 'Sistema de reservas para coworking' },
+    image: { jpg: 'images/proyectos/reservas-coworking.svg', alt: 'Sistema de reservas para coworking' },
     demoUrl: '/proyectos-ejemplo/reservas-coworking/index.html',
     whatsappMessage:
       'Hola Gusi, he visto tu proyecto "Reservas Coworking" y me interesa algo similar.\n\nMi negocio: coworking / espacio flexible\nNecesito: reservas de escritorios y salas\nPresupuesto orientativo: 400€ backend\n\n¿Tienes disponibilidad esta semana?',

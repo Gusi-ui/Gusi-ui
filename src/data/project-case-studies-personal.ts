@@ -40,7 +40,7 @@ export const personalProjectCaseStudies: ProjectCaseStudy[] = [
     servicePrice: 250,
     tech: ['Astro', 'TypeScript', 'CSS3'],
     image: {
-      jpg: 'images/proyectos/gusi-dev.jpg',
+      jpg: 'images/proyectos/gusi-dev.svg',
       alt: 'gusi.dev - Terminal cyberpunk interactiva',
     },
     demoUrl: 'https://gusi.dev',

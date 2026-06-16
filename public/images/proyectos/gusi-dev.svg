@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="gusi.dev">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1a"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="150" cy="110" r="130" fill="#22c55e" opacity="0.1"/>
+  <circle cx="1080" cy="540" r="200" fill="#4ade80" opacity="0.08"/>
+  <text x="120" y="96" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="22" font-weight="700" fill="#4ade80" text-anchor="start" letter-spacing="3">PROYECTO PERSONAL</text>
+  <rect x="120" y="128" width="960" height="344" rx="18" fill="#0d1424" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="120" y="128" width="960" height="44" rx="18" fill="#111a2e"/>
+  <rect x="120" y="154" width="960" height="18" rx="0" fill="#111a2e"/>
+  <circle cx="146" cy="150" r="6" fill="#ef4444"/>
+  <circle cx="168" cy="150" r="6" fill="#f59e0b"/>
+  <circle cx="190" cy="150" r="6" fill="#22c55e"/>
+  <rect x="216" y="140" width="830" height="20" rx="10" fill="#0b1220"/>
+  <text x="236" y="154" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#475569" text-anchor="start">alamia.es/proyectos/gusi-dev</text>
+  <rect x="148" y="184" width="904" height="260" rx="12" fill="#05140a" stroke="#22c55e55" stroke-width="1"/><text x="168" y="218" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#22c55e" text-anchor="start">$</text><text x="188" y="218" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#4ade80" text-anchor="start">whoami</text><text x="168" y="248" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#4ade80" text-anchor="start">jose martinez · freelance dev</text><text x="168" y="278" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#22c55e" text-anchor="start">$</text><text x="188" y="278" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#4ade80" text-anchor="start">menu --list</text><text x="168" y="308" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#3f6f4f" text-anchor="start">games · news · nasa-apod · chat</text><text x="168" y="338" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#22c55e" text-anchor="start">$</text><text x="188" y="338" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="600" fill="#4ade80" text-anchor="start">launch nexus-7</text><text x="168" y="368" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="700" fill="#22c55e" text-anchor="start">$</text><rect x="186" y="354" width="11" height="18" rx="0" fill="#4ade80"/>
+  <text x="120" y="545" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="50" font-weight="800" fill="#ffffff" text-anchor="start">gusi.dev</text>
+  <text x="120" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="400" fill="#94a3b8" text-anchor="start">Terminal cyberpunk interactiva en producción</text>
+  <text x="1080" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="700" fill="#4ade80" text-anchor="end">alamia.es</text>
+</svg>

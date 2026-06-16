@@ -39,7 +39,7 @@ export const ecommerceProjectCaseStudies: ProjectCaseStudy[] = [
     servicePrice: 400,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
     image: {
-      jpg: 'images/proyectos/ecommerce-tech.jpg',
+      jpg: 'images/proyectos/ecommerce-tech.svg',
       alt: 'TechStore Online - E-commerce de gadgets',
     },
     demoUrl: '/proyectos-ejemplo/ecommerce-tech/index.html',
@@ -87,7 +87,7 @@ export const ecommerceProjectCaseStudies: ProjectCaseStudy[] = [
     servicePrice: 400,
     tech: ['HTML5', 'CSS3', 'JavaScript'],
     image: {
-      jpg: 'images/proyectos/ecommerce-organico.jpg',
+      jpg: 'images/proyectos/ecommerce-organico.svg',
       alt: 'EcoMercado - Tienda online de productos ecológicos',
     },
     demoUrl: '/proyectos-ejemplo/ecommerce-organico/index.html',

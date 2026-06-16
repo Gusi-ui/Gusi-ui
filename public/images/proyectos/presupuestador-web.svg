@@ -1,36 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Presupuestador Web">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0c4a6e"/>
-      <stop offset="50%" style="stop-color:#075985"/>
-      <stop offset="100%" style="stop-color:#0e7490"/>
+      <stop offset="0%" stop-color="#0a0f1a"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0b1220"/>
     </linearGradient>
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#22d3ee"/>
-      <stop offset="100%" style="stop-color:#0ea5e9"/>
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#34d399"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="150" cy="150" r="120" fill="#0ea5e9" opacity="0.15"/>
-  <circle cx="1050" cy="480" r="160" fill="#06b6d4" opacity="0.12"/>
-  <rect x="80" y="120" width="640" height="400" rx="16" fill="#0f172a" stroke="#164e63" stroke-width="2"/>
-  <rect x="110" y="150" width="280" height="24" rx="6" fill="url(#accent)"/>
-  <rect x="110" y="190" width="200" height="8" rx="4" fill="#334155"/>
-  <rect x="110" y="240" width="560" height="6" rx="3" fill="#1e293b"/>
-  <circle cx="130" cy="243" r="10" fill="#0ea5e9"/>
-  <rect x="110" y="280" width="24" height="24" rx="4" fill="#0ea5e9" opacity="0.8"/>
-  <rect x="150" y="284" width="200" height="16" rx="4" fill="#334155"/>
-  <rect x="110" y="320" width="24" height="24" rx="4" fill="#0ea5e9"/>
-  <rect x="150" y="324" width="180" height="16" rx="4" fill="#475569"/>
-  <rect x="110" y="360" width="24" height="24" rx="4" fill="#1e293b" stroke="#475569"/>
-  <rect x="150" y="364" width="220" height="16" rx="4" fill="#334155"/>
-  <rect x="760" y="120" width="360" height="400" rx="16" fill="#0f172a" stroke="#0ea5e9" stroke-width="2"/>
-  <text x="790" y="180" font-family="system-ui, sans-serif" font-size="18" fill="#94a3b8">Tu presupuesto</text>
-  <text x="790" y="260" font-family="system-ui, sans-serif" font-size="64" font-weight="800" fill="#0ea5e9">2.150</text>
-  <text x="920" y="260" font-family="system-ui, sans-serif" font-size="28" fill="#64748b">�</text>
-  <rect x="790" y="300" width="300" height="50" rx="10" fill="#0ea5e9"/>
-  <text x="870" y="332" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#fff">Copiar presupuesto</text>
-  <text x="80" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#67e8f9" letter-spacing="2">CALCULADORA WEB</text>
-  <text x="80" y="580" font-family="system-ui, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Presupuestador Web</text>
-  <text x="80" y="610" font-family="system-ui, sans-serif" font-size="22" fill="#67e8f9">Estimaci�n en tiempo real</text>
+  <circle cx="150" cy="110" r="130" fill="#059669" opacity="0.1"/>
+  <circle cx="1080" cy="540" r="200" fill="#34d399" opacity="0.08"/>
+  <text x="120" y="96" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="22" font-weight="700" fill="#34d399" text-anchor="start" letter-spacing="3">HERRAMIENTA</text>
+  <rect x="120" y="128" width="960" height="344" rx="18" fill="#0d1424" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="120" y="128" width="960" height="44" rx="18" fill="#111a2e"/>
+  <rect x="120" y="154" width="960" height="18" rx="0" fill="#111a2e"/>
+  <circle cx="146" cy="150" r="6" fill="#ef4444"/>
+  <circle cx="168" cy="150" r="6" fill="#f59e0b"/>
+  <circle cx="190" cy="150" r="6" fill="#22c55e"/>
+  <rect x="216" y="140" width="830" height="20" rx="10" fill="#0b1220"/>
+  <text x="236" y="154" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#475569" text-anchor="start">alamia.es/proyectos/presupuestador-web</text>
+  <text x="148" y="198" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#64748b" text-anchor="start">Tipo de proyecto</text><rect x="148" y="206" width="506.24000000000007" height="34" rx="8" fill="#0b1220" stroke="#059669" stroke-width="1"/><rect x="162" y="217" width="151.872" height="10" rx="5" fill="#1e293b"/><text x="148" y="256" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#64748b" text-anchor="start">Número de páginas</text><rect x="148" y="264" width="506.24000000000007" height="34" rx="8" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="162" y="275" width="227.80800000000002" height="10" rx="5" fill="#1e293b"/><text x="148" y="314" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#64748b" text-anchor="start">Funcionalidades</text><rect x="148" y="322" width="506.24000000000007" height="34" rx="8" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="162" y="333" width="303.744" height="10" rx="5" fill="#1e293b"/><rect x="678.24" y="184" width="373.75999999999993" height="260" rx="14" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><text x="700.24" y="224" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="400" fill="#64748b" text-anchor="start">Presupuesto estimado</text><text x="865.12" y="294" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="40" font-weight="800" fill="#34d399" text-anchor="middle">€1.450</text><line x1="700.24" y1="318" x2="1030" y2="318" stroke="#1e293b"/><rect x="700.24" y="396" width="329.75999999999993" height="36" rx="8" fill="#059669"/><text x="865.12" y="420" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#06121f" text-anchor="middle">Solicitar</text>
+  <text x="120" y="545" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="50" font-weight="800" fill="#ffffff" text-anchor="start">Presupuestador Web</text>
+  <text x="120" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="400" fill="#94a3b8" text-anchor="start">Cálculo de presupuesto en tiempo real</text>
+  <text x="1080" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="700" fill="#34d399" text-anchor="end">alamia.es</text>
 </svg>

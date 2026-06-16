@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="EcoMercado">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1a"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="150" cy="110" r="130" fill="#16a34a" opacity="0.1"/>
+  <circle cx="1080" cy="540" r="200" fill="#4ade80" opacity="0.08"/>
+  <text x="120" y="96" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="22" font-weight="700" fill="#4ade80" text-anchor="start" letter-spacing="3">E-COMMERCE</text>
+  <rect x="120" y="128" width="960" height="344" rx="18" fill="#0d1424" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="120" y="128" width="960" height="44" rx="18" fill="#111a2e"/>
+  <rect x="120" y="154" width="960" height="18" rx="0" fill="#111a2e"/>
+  <circle cx="146" cy="150" r="6" fill="#ef4444"/>
+  <circle cx="168" cy="150" r="6" fill="#f59e0b"/>
+  <circle cx="190" cy="150" r="6" fill="#22c55e"/>
+  <rect x="216" y="140" width="830" height="20" rx="10" fill="#0b1220"/>
+  <text x="236" y="154" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#475569" text-anchor="start">alamia.es/proyectos/ecommerce-organico</text>
+  <rect x="148" y="184" width="212.5" height="150" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="162" y="198" width="184.5" height="78" rx="8" fill="#16a34a22"/><circle cx="254.25" cy="237" r="22" fill="#16a34a" opacity="0.55"/><rect x="162" y="286" width="162.5" height="9" rx="4" fill="#1e293b"/><text x="162" y="322" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="16" font-weight="800" fill="#16a34a" text-anchor="start">€19</text><rect x="378.5" y="184" width="212.5" height="150" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="392.5" y="198" width="184.5" height="78" rx="8" fill="#4ade8022"/><circle cx="484.75" cy="237" r="22" fill="#4ade80" opacity="0.55"/><rect x="392.5" y="286" width="162.5" height="9" rx="4" fill="#1e293b"/><text x="392.5" y="322" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="16" font-weight="800" fill="#4ade80" text-anchor="start">€29</text><rect x="609" y="184" width="212.5" height="150" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="623" y="198" width="184.5" height="78" rx="8" fill="#16a34a22"/><circle cx="715.25" cy="237" r="22" fill="#16a34a" opacity="0.55"/><rect x="623" y="286" width="162.5" height="9" rx="4" fill="#1e293b"/><text x="623" y="322" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="16" font-weight="800" fill="#16a34a" text-anchor="start">€39</text><rect x="839.5" y="184" width="212.5" height="150" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><rect x="853.5" y="198" width="184.5" height="78" rx="8" fill="#4ade8022"/><circle cx="945.75" cy="237" r="22" fill="#4ade80" opacity="0.55"/><rect x="853.5" y="286" width="162.5" height="9" rx="4" fill="#1e293b"/><text x="853.5" y="322" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="16" font-weight="800" fill="#4ade80" text-anchor="start">€49</text><rect x="148" y="358" width="904" height="56" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><text x="168" y="393" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="15" font-weight="400" fill="#94a3b8" text-anchor="start">Cesta · 5 productos</text><rect x="884" y="370" width="152" height="32" rx="8" fill="#16a34a"/><text x="960" y="391" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#06121f" text-anchor="middle">Tramitar</text>
+  <text x="120" y="545" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="50" font-weight="800" fill="#ffffff" text-anchor="start">EcoMercado</text>
+  <text x="120" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="400" fill="#94a3b8" text-anchor="start">Tienda de producto ecológico y de proximidad</text>
+  <text x="1080" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="700" fill="#4ade80" text-anchor="end">alamia.es</text>
+</svg>

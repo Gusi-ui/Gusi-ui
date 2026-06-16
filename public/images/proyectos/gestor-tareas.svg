@@ -1,40 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Gestor de Tareas">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0c4a6e"/>
-      <stop offset="50%" style="stop-color:#1e3a5f"/>
-      <stop offset="100%" style="stop-color:#0f172a"/>
+      <stop offset="0%" stop-color="#0a0f1a"/>
+      <stop offset="55%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0b1220"/>
     </linearGradient>
-    <linearGradient id="col1" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6"/>
-      <stop offset="100%" style="stop-color:#1d4ed8"/>
-    </linearGradient>
-    <linearGradient id="col2" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#f59e0b"/>
-      <stop offset="100%" style="stop-color:#d97706"/>
-    </linearGradient>
-    <linearGradient id="col3" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#22c55e"/>
-      <stop offset="100%" style="stop-color:#16a34a"/>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="1050" cy="500" r="200" fill="#3b82f6" opacity="0.1"/>
-  <rect x="80" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
-  <rect x="440" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
-  <rect x="800" y="140" width="320" height="380" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
-  <rect x="100" y="170" width="8" height="8" rx="4" fill="url(#col1)"/>
-  <text x="120" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">Por hacer</text>
-  <rect x="100" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="3"/>
-  <rect x="100" y="285" width="280" height="70" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-  <rect x="460" y="170" width="8" height="8" rx="4" fill="url(#col2)"/>
-  <text x="480" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">En progreso</text>
-  <rect x="460" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
-  <rect x="820" y="170" width="8" height="8" rx="4" fill="url(#col3)"/>
-  <text x="840" y="180" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#94a3b8">Hecho</text>
-  <rect x="820" y="200" width="280" height="70" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
-  <rect x="820" y="285" width="280" height="70" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="3"/>
-  <text x="80" y="90" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#94a3b8" letter-spacing="2">KANBAN</text>
-  <text x="80" y="580" font-family="system-ui, sans-serif" font-size="56" font-weight="800" fill="#ffffff">Gestor de Tareas</text>
-  <text x="80" y="610" font-family="system-ui, sans-serif" font-size="22" fill="#60a5fa">Drag &amp; drop con prioridades</text>
+  <circle cx="150" cy="110" r="130" fill="#3b82f6" opacity="0.1"/>
+  <circle cx="1080" cy="540" r="200" fill="#60a5fa" opacity="0.08"/>
+  <text x="120" y="96" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="22" font-weight="700" fill="#60a5fa" text-anchor="start" letter-spacing="3">PRODUCTIVIDAD</text>
+  <rect x="120" y="128" width="960" height="344" rx="18" fill="#0d1424" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="120" y="128" width="960" height="44" rx="18" fill="#111a2e"/>
+  <rect x="120" y="154" width="960" height="18" rx="0" fill="#111a2e"/>
+  <circle cx="146" cy="150" r="6" fill="#ef4444"/>
+  <circle cx="168" cy="150" r="6" fill="#f59e0b"/>
+  <circle cx="190" cy="150" r="6" fill="#22c55e"/>
+  <rect x="216" y="140" width="830" height="20" rx="10" fill="#0b1220"/>
+  <text x="236" y="154" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="400" fill="#475569" text-anchor="start">alamia.es/proyectos/gestor-tareas</text>
+  <rect x="148" y="184" width="289.3333333333333" height="260" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><text x="164" y="214" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#3b82f6" text-anchor="start">Por hacer</text><rect x="393.3333333333333" y="200" width="28" height="20" rx="6" fill="#1e293b"/><text x="407.3333333333333" y="215" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">3</text><rect x="162" y="232" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="162" y="232" width="4" height="48" rx="2" fill="#3b82f6"/><text x="176" y="254" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">Diseño home</text><rect x="176" y="264" width="70" height="8" rx="4" fill="#1e293b"/><rect x="162" y="292" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="162" y="292" width="4" height="48" rx="2" fill="#60a5fa"/><text x="176" y="314" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">Wireframes</text><rect x="176" y="324" width="70" height="8" rx="4" fill="#1e293b"/><rect x="162" y="352" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="162" y="352" width="4" height="48" rx="2" fill="#3b82f6"/><text x="176" y="374" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">Copy landing</text><rect x="176" y="384" width="70" height="8" rx="4" fill="#1e293b"/><rect x="455.3333333333333" y="184" width="289.3333333333333" height="260" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><text x="471.3333333333333" y="214" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#60a5fa" text-anchor="start">En curso</text><rect x="700.6666666666666" y="200" width="28" height="20" rx="6" fill="#1e293b"/><text x="714.6666666666666" y="215" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">2</text><rect x="469.3333333333333" y="232" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="469.3333333333333" y="232" width="4" height="48" rx="2" fill="#3b82f6"/><text x="483.3333333333333" y="254" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">API pedidos</text><rect x="483.3333333333333" y="264" width="70" height="8" rx="4" fill="#1e293b"/><rect x="469.3333333333333" y="292" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="469.3333333333333" y="292" width="4" height="48" rx="2" fill="#60a5fa"/><text x="483.3333333333333" y="314" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">Tests e2e</text><rect x="483.3333333333333" y="324" width="70" height="8" rx="4" fill="#1e293b"/><rect x="762.6666666666666" y="184" width="289.3333333333333" height="260" rx="12" fill="#0b1220" stroke="#1e293b" stroke-width="1"/><text x="778.6666666666666" y="214" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#94a3b8" text-anchor="start">Hecho</text><rect x="1008" y="200" width="28" height="20" rx="6" fill="#1e293b"/><text x="1022" y="215" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">2</text><rect x="776.6666666666666" y="232" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="776.6666666666666" y="232" width="4" height="48" rx="2" fill="#3b82f6"/><text x="790.6666666666666" y="254" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">Setup repo</text><rect x="790.6666666666666" y="264" width="70" height="8" rx="4" fill="#1e293b"/><rect x="776.6666666666666" y="292" width="261.3333333333333" height="48" rx="8" fill="#111827" stroke="#1e293b" stroke-width="1"/><rect x="776.6666666666666" y="292" width="4" height="48" rx="2" fill="#60a5fa"/><text x="790.6666666666666" y="314" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#cbd5e1" text-anchor="start">CI/CD</text><rect x="790.6666666666666" y="324" width="70" height="8" rx="4" fill="#1e293b"/>
+  <text x="120" y="545" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="50" font-weight="800" fill="#ffffff" text-anchor="start">Gestor de Tareas</text>
+  <text x="120" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="21" font-weight="400" fill="#94a3b8" text-anchor="start">Tablero Kanban para equipos</text>
+  <text x="1080" y="586" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="18" font-weight="700" fill="#60a5fa" text-anchor="end">alamia.es</text>
 </svg>
