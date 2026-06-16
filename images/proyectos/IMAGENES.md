@@ -1,37 +1,53 @@
 # Imágenes del portafolio
 
-Coloca aquí las capturas de cada proyecto. El **id** del proyecto en `src/data/project-case-studies*.ts` define el nombre del archivo.
+Cada proyecto usa una imagen **SVG de mockup de interfaz** generada de forma
+consistente (1200 × 630, tema oscuro + color de acento propio). El **id** del
+proyecto en `src/data/project-case-studies*.ts` define el nombre del archivo.
 
-## Ruta obligatoria (fallback)
-
-```
-public/images/proyectos/{id}.jpg
-```
-
-Ejemplo: `public/images/proyectos/gusi-dev.jpg`
-
-## Rutas opcionales (mejor rendimiento)
+## Ruta
 
 ```
-public/images/optimizadas/{id}.webp
-public/images/optimizadas/{id}.avif
+public/images/proyectos/{id}.svg
 ```
 
-Si añades WebP/AVIF, actualiza el objeto `image` del proyecto en datos:
+Ejemplo: `public/images/proyectos/gusi-dev.svg`
+
+En los datos del proyecto, el campo `image.jpg` apunta al SVG (el nombre del
+campo se mantiene como `jpg` por compatibilidad con el tipo, pero el valor es
+el `.svg`):
 
 ```ts
 image: {
-  avif: 'images/optimizadas/mi-proyecto.avif',
-  webp: 'images/optimizadas/mi-proyecto.webp',
-  jpg: 'images/proyectos/mi-proyecto.jpg',
+  jpg: 'images/proyectos/mi-proyecto.svg',
   alt: 'Descripción para accesibilidad',
 },
 ```
 
-## Tamaño recomendado
+## Generador
 
-- **1200 × 630 px** (ratio 1.91:1, ideal para tarjetas y Open Graph)
-- Formato JPG calidad 80–85 % o WebP
+Las imágenes se generan con un script reproducible. Para regenerarlas
+(p. ej. tras editar título, subtítulo, color de acento o el mockup de un
+proyecto):
+
+```bash
+pnpm images:projects   # = node scripts/generate-project-images.mjs
+```
+
+Cada ejecución produce **dos** salidas por proyecto:
+
+- `public/images/proyectos/{id}.svg` — mockup vectorial usado en la web
+  (tarjetas y hero de cada caso de estudio).
+- `public/images/og/{id}.png` — versión raster 1200×630 usada como
+  `og:image`, porque las vistas previas sociales (WhatsApp, redes) no
+  renderizan SVG. El cableado está en `src/pages/proyectos/[slug].astro`.
+
+La configuración de cada proyecto (acento, arquetipo de mockup y textos) vive
+en el array `PROJECTS` dentro de `scripts/generate-project-images.mjs`.
+Arquetipos disponibles: `dashboard`, `kanban`, `ecommerce`, `calendar`,
+`landing`, `listView`, `formView`, `realestate`, `terminal`.
+
+> La generación de los PNG requiere `sharp` (devDependency). La web no lo
+> necesita en runtime.
 
 ## IDs actuales (15 proyectos)
 
@@ -61,5 +77,3 @@ Los datos viven en:
 - `src/data/project-case-studies-extra.ts`
 - `src/data/project-case-studies-ecommerce.ts`
 - `src/data/project-case-studies-personal.ts`
-
-Tras sustituir una imagen, no hace falta tocar código si mantienes el mismo `{id}.jpg`.
