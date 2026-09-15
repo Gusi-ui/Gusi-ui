@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
 import { showNotification } from '@/lib/notifications';
 
-const getInitialTheme = (): boolean => {
-  const stored = localStorage.getItem('site-theme');
-  if (stored === 'dark') return true;
-  if (stored === 'light') return false;
-  if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) return true;
-  const hour = new Date().getHours();
-  return hour >= 20 || hour < 7;
-};
+// Lee el tema que el script inline de BaseLayout ya aplicó antes del pintado,
+// en lugar de volver a decidirlo, para que el botón no pueda desincronizarse
+// de lo que se está mostrando.
+const getInitialTheme = (): boolean => document.documentElement.classList.contains('dark');
 
 const applyTheme = (isDark: boolean): void => {
   document.documentElement.classList.toggle('dark', isDark);
