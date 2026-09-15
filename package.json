@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/apply-csp.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "deploy:worker": "wrangler deploy --config worker/wrangler.toml",
@@ -19,7 +19,8 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,astro}\" \"worker/src/**/*.ts\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "images:projects": "node scripts/generate-project-images.mjs"
+    "images:projects": "node scripts/generate-project-images.mjs",
+    "csp": "node scripts/apply-csp.mjs"
   },
   "pnpm": {
     "peerDependencyRules": {
