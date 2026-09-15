@@ -12,7 +12,7 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/apply-csp.mjs",
     "preview": "astro preview",
-    "preview:csp": "CSP_API_LOCAL=1 astro build && node scripts/apply-csp.mjs && astro preview",
+    "preview:csp": "CSP_API_LOCAL=1 pnpm run build && astro preview",
     "astro": "astro",
     "deploy:worker": "wrangler deploy --config worker/wrangler.toml",
     "worker:dev": "wrangler dev --config worker/wrangler.toml",
