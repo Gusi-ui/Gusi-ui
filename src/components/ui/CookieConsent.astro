@@ -1,0 +1,84 @@
+---
+// Aviso de cookies. Google Analytics no se carga hasta que hay consentimiento
+// explícito: la LSSI-CE y el RGPD exigen consentimiento previo para cookies
+// analíticas, y hasta ahora GA se cargaba en cuanto se abría la página.
+//
+// El script no lleva is:inline a propósito: Astro lo emite como módulo externo,
+// que la CSP cubre con 'self' sin necesidad de hash.
+import { GA_ID } from '@/lib/constants';
+---
+
+<div
+  id="cookie-consent"
+  class="cookie-consent"
+  role="dialog"
+  aria-labelledby="cookie-consent-title"
+  aria-describedby="cookie-consent-text"
+  hidden
+>
+  <div class="cookie-consent__body">
+    <h2 id="cookie-consent-title" class="cookie-consent__title">Cookies de análisis</h2>
+    <p id="cookie-consent-text" class="cookie-consent__text">
+      Uso Google Analytics para saber qué páginas resultan útiles. No se carga nada hasta que lo
+      aceptes, y puedes cambiar de opinión cuando quieras.
+      <a href="/politica-cookies/">Ver política de cookies</a>
+    </p>
+  </div>
+  <div class="cookie-consent__actions">
+    <button type="button" class="btn btn-secondary" data-consent="denied">Rechazar</button>
+    <button type="button" class="btn btn-primary" data-consent="granted">Aceptar</button>
+  </div>
+</div>
+
+<script define:vars={{ gaId: GA_ID }}>
+  const CLAVE = 'cookie-consent';
+  const esEntornoLocal =
+    location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
+  const cargarAnalytics = () => {
+    if (esEntornoLocal || window.dataLayer) return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+    document.head.appendChild(script);
+
+    window.gtag('js', new Date());
+    window.gtag('config', gaId, { transport_type: 'beacon', anonymize_ip: 1 });
+  };
+
+  const banner = document.getElementById('cookie-consent');
+
+  const guardar = (decision) => {
+    try {
+      localStorage.setItem(CLAVE, decision);
+    } catch {
+      // Navegación privada o almacenamiento bloqueado: se respeta la decisión
+      // en esta visita aunque no se pueda recordar para la siguiente.
+    }
+    if (banner) banner.hidden = true;
+    if (decision === 'granted') cargarAnalytics();
+  };
+
+  banner?.querySelectorAll('[data-consent]').forEach((boton) => {
+    boton.addEventListener('click', () => guardar(boton.dataset.consent));
+  });
+
+  let decisionPrevia = null;
+  try {
+    decisionPrevia = localStorage.getItem(CLAVE);
+  } catch {
+    // Sin acceso al almacenamiento se vuelve a preguntar.
+  }
+
+  if (decisionPrevia === 'granted') {
+    cargarAnalytics();
+  } else if (decisionPrevia !== 'denied' && banner) {
+    banner.hidden = false;
+  }
+</script>
