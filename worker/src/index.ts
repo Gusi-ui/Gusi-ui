@@ -11,6 +11,8 @@
 import { Resend } from 'resend';
 import { handleCreateCheckout, handleVerifySession, handleCustomerPortal } from './payments';
 import { handleStripeWebhook } from './stripe-webhook';
+import { matchAllowedOrigin, resolveCorsOrigin } from './origins';
+import { toPublicReview } from './reviews-public';
 
 const CONFIG = {
   emailDestino: 'info@alamia.es',
@@ -31,28 +33,10 @@ export default {
     
     // CORS Preflight - DEBE ser lo primero, sin ninguna validación
     if (request.method === 'OPTIONS') {
-      const origin = request.headers.get('Origin') || request.headers.get('Referer');
-      let allowedOrigin = `https://${CONFIG.dominio}`;
-      
-      if (origin) {
-        if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-          // Extraer el origin completo del string
-          try {
-            const originUrl = new URL(origin);
-            allowedOrigin = originUrl.origin;
-          } catch {
-            // Si falla, usar el origin tal cual
-            allowedOrigin = origin.includes('://') ? origin.split('/').slice(0, 3).join('/') : origin;
-          }
-        } else if (origin === `https://${CONFIG.dominio}`) {
-          allowedOrigin = `https://${CONFIG.dominio}`;
-        }
-      }
-      
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': allowedOrigin,
+          'Access-Control-Allow-Origin': resolveCorsOrigin(request),
           'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           'Access-Control-Max-Age': '86400'
@@ -60,29 +44,11 @@ export default {
       });
     }
 
-    // Para requests reales, validar origen (más permisivo para desarrollo)
+    // Para requests reales, validar origen contra la allowlist por host exacto.
+    // Sin cabecera Origin no se rechaza: las llamadas servidor a servidor (webhook
+    // de Stripe) no la envían y su autenticidad se comprueba por firma.
     const origin = request.headers.get('Origin');
-    const referer = request.headers.get('Referer');
-    
-    // Permitir localhost en desarrollo (cualquier puerto)
-    const isLocalhostOrigin = origin && (
-      origin.startsWith('http://localhost') || 
-      origin.startsWith('http://127.0.0.1')
-    );
-    
-    // Permitir cualquier puerto localhost
-    const isLocalhostPort = origin && origin.includes('localhost:');
-    
-    const isProduction = origin === `https://${CONFIG.dominio}`;
-    
-    // También permitir si el referer es localhost (cualquier puerto)
-    const isLocalhostReferer = referer && (
-      referer.startsWith('http://localhost') || 
-      referer.startsWith('http://127.0.0.1')
-    );
-    
-    // Si no es localhost ni producción, rechazar (pero permitir si no hay origin header)
-    if (origin && !isLocalhostOrigin && !isLocalhostPort && !isProduction && !isLocalhostReferer) {
+    if (origin && !matchAllowedOrigin(origin)) {
       return jsonError('Origen no autorizado', 403, request);
     }
 
@@ -227,8 +193,8 @@ async function obtenerResenas(kv, request, env) {
     }
 
     // 3. Combinar (Locales + Google)
-    // Añadimos propiedad 'source' si no la tienen
-    const formattedLocal = localReviews.map(r => ({ ...r, source: 'web' }));
+    // Proyección explícita: nunca exponer email, ip ni userAgent del autor
+    const formattedLocal = localReviews.map(toPublicReview);
     
     // Combinar y ordenar por fecha (más recientes primero)
     const allReviews = [...formattedLocal, ...googleReviews].sort((a, b) => {
@@ -386,7 +352,7 @@ async function crearResena(request, env) {
 
     return jsonSuccess({
       message: successMessage,
-      review: review,
+      review: toPublicReview(review),
       requiresApproval: CONFIG.moderacionActivada && !review.approved
     }, 200, request);
 
@@ -777,56 +743,8 @@ async function registrarEnvio(ip, kv) {
 }
 
 // ===== RESPUESTAS =====
-function getCORSOrigin(request) {
-  const origin = request.headers.get('Origin');
-  const referer = request.headers.get('Referer');
-  
-  // Lista de orígenes permitidos
-  const allowedOrigins = [
-    `https://${CONFIG.dominio}`,
-    'http://localhost',
-    'http://127.0.0.1',
-    'http://localhost:8000',
-    'http://localhost:3000',
-    'http://127.0.0.1:8000',
-    'http://127.0.0.1:3000'
-  ];
-  
-  // Si hay origin y está en la lista permitida, usarlo
-  if (origin) {
-    const matched = allowedOrigins.find(allowed => origin.startsWith(allowed));
-    if (matched) {
-      return origin;
-    }
-    
-    // Si el origin es localhost (cualquier puerto), permitirlo
-    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-      return origin;
-    }
-  }
-  
-  // Si no hay origin, intentar extraer del referer
-  if (referer) {
-    try {
-      const refererUrl = new URL(referer);
-      const refererOrigin = refererUrl.origin;
-      
-      if (refererOrigin.startsWith('http://localhost') || 
-          refererOrigin.startsWith('http://127.0.0.1') ||
-          refererOrigin === `https://${CONFIG.dominio}`) {
-        return refererOrigin;
-      }
-    } catch {
-      // Si falla al parsear, continuar
-    }
-  }
-
-  // Por defecto, devolver el dominio de producción
-  return `https://${CONFIG.dominio}`;
-}
-
 function jsonSuccess(data, status = 200, request = null) {
-  const origin = request ? getCORSOrigin(request) : `https://${CONFIG.dominio}`;
+  const origin = resolveCorsOrigin(request);
   return new Response(JSON.stringify({ success: true, ...data }), {
     status,
     headers: {
@@ -839,7 +757,7 @@ function jsonSuccess(data, status = 200, request = null) {
 }
 
 function jsonError(message, status = 400, request = null) {
-  const origin = request ? getCORSOrigin(request) : `https://${CONFIG.dominio}`;
+  const origin = resolveCorsOrigin(request);
   return new Response(JSON.stringify({ success: false, message }), {
     status,
     headers: {

@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import { PRODUCTION_ORIGIN, matchAllowedOrigin, resolveCorsOrigin } from './origins';
 import {
   isValidBillingPlan,
   isValidProductSlug,
@@ -7,7 +8,7 @@ import {
   type BillingPlan,
 } from './catalog';
 
-const SITE_URL = 'https://alamia.es';
+const SITE_URL = PRODUCTION_ORIGIN;
 
 const isPlaceholderSecret = (value?: string): boolean =>
   !value ||
@@ -17,13 +18,12 @@ const isPlaceholderSecret = (value?: string): boolean =>
   value.includes('placeholder') ||
   value.includes('price_...');
 
-const getSiteUrl = (request: Request | null): string => {
-  const origin = request?.headers.get('Origin');
-  if (origin?.startsWith('http://localhost') || origin?.startsWith('http://127.0.0.1')) {
-    return origin;
-  }
-  return SITE_URL;
-};
+// Las URLs de retorno de Stripe (success_url, cancel_url, return_url del portal)
+// solo pueden apuntar a un origen de la allowlist. Derivarlas del Origin sin
+// validar convertía el checkout en una redirección abierta que filtraba el
+// session_id al dominio del atacante.
+const getSiteUrl = (request: Request | null): string =>
+  matchAllowedOrigin(request?.headers.get('Origin')) ?? SITE_URL;
 
 const getStripe = (secretKey: string) =>
   new Stripe(secretKey, {
@@ -115,9 +115,10 @@ export const handleCreateCheckout = async (
       corsRequest
     );
   } catch (error) {
+    // El detalle queda en los logs del worker; al cliente solo un mensaje genérico,
+    // porque los errores de Stripe pueden incluir información de configuración.
     console.error('[checkout]', error);
-    const stripeMessage = error instanceof Error ? error.message : 'Error al iniciar el pago';
-    return jsonError(stripeMessage, 500, corsRequest);
+    return jsonError('No se pudo iniciar el pago. Inténtalo de nuevo.', 500, corsRequest);
   }
 };
 
@@ -267,17 +268,8 @@ export const handleCustomerPortal = async (
     return jsonSuccess({ url: portalSession.url }, 200, corsRequest);
   } catch (error) {
     console.error('[customer-portal]', error);
-    const message = error instanceof Error ? error.message : 'Error al abrir el portal';
-    return jsonError(message, 500, corsRequest);
+    return jsonError('No se pudo abrir el portal de gestión. Inténtalo de nuevo.', 500, corsRequest);
   }
-};
-
-const getCORSOrigin = (request: Request | null) => {
-  const origin = request?.headers.get('Origin');
-  if (origin?.startsWith('http://localhost') || origin?.startsWith('http://127.0.0.1')) {
-    return origin;
-  }
-  return SITE_URL;
 };
 
 const jsonSuccess = (data: Record<string, unknown>, status = 200, request: Request | null = null) =>
@@ -285,7 +277,7 @@ const jsonSuccess = (data: Record<string, unknown>, status = 200, request: Reque
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': getCORSOrigin(request),
+      'Access-Control-Allow-Origin': resolveCorsOrigin(request),
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -296,7 +288,7 @@ const jsonError = (message: string, status = 400, request: Request | null = null
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': getCORSOrigin(request),
+      'Access-Control-Allow-Origin': resolveCorsOrigin(request),
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

@@ -3,7 +3,6 @@ import { getReviewsApi } from '@/lib/constants';
 export type Review = {
   id?: string;
   name: string;
-  email?: string;
   company?: string | null;
   rating: number;
   message: string;
