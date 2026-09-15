@@ -1,5 +1,13 @@
 import Stripe from 'stripe';
+import { Resend } from 'resend';
 import { PRODUCTION_ORIGIN, matchAllowedOrigin, resolveCorsOrigin } from './origins';
+import {
+  PORTAL_TOKEN_TTL_SECONDS,
+  createPortalToken,
+  hashPortalToken,
+  isWellFormedPortalToken,
+  portalTokenKey,
+} from './portal-tokens';
 import {
   isValidBillingPlan,
   isValidProductSlug,
@@ -185,20 +193,17 @@ const isPortalRateLimited = async (
   return false;
 };
 
-const resolvePortalCustomerId = async (
+/** Cliente asociado a una sesión de checkout. El session_id solo lo conoce quien acaba de pagar. */
+const customerIdFromSession = async (
   stripe: Stripe,
-  sessionId?: string,
-  email?: string
+  sessionId: string
 ): Promise<string | null> => {
-  if (sessionId?.startsWith('cs_')) {
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-    const customerId =
-      typeof session.customer === 'string' ? session.customer : session.customer?.id;
-    if (customerId) return customerId;
-  }
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  return typeof session.customer === 'string' ? session.customer : session.customer?.id ?? null;
+};
 
-  if (!email) return null;
-
+/** Cliente con suscripción gestionable para un email. Solo se usa al enviar el enlace, nunca para dar acceso. */
+const customerIdFromEmail = async (stripe: Stripe, email: string): Promise<string | null> => {
   const customers = await stripe.customers.list({ email: normalizeEmail(email), limit: 10 });
 
   for (const customer of customers.data) {
@@ -218,6 +223,130 @@ const resolvePortalCustomerId = async (
   return null;
 };
 
+const PORTAL_EMAIL_REMITENTE = 'Alamia <info@alamia.es>';
+
+const esEmailValido = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+const emailEnlacePortalHTML = (enlace: string): string => `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"></head>
+<body style="font-family:sans-serif;line-height:1.6;color:#1e293b;background:#f8fafc;padding:20px;">
+  <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;">
+    <h1 style="margin:0 0 16px;font-size:20px;">Gestiona tu mantenimiento</h1>
+    <p>Abre este enlace para ver tus facturas, cambiar la tarjeta o cancelar la suscripción:</p>
+    <p style="margin:24px 0;">
+      <a href="${enlace}" style="background:#4f46e5;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;display:inline-block;">Abrir portal de gestión</a>
+    </p>
+    <p style="font-size:14px;color:#64748b;">
+      El enlace caduca en 15 minutos y solo funciona una vez.
+      Si no lo has pedido tú, ignora este mensaje: no se ha tocado nada de tu cuenta.
+    </p>
+    <p style="margin-top:24px;">— Jose Martínez · <a href="https://alamia.es">alamia.es</a></p>
+  </div>
+</body>
+</html>`.trim();
+
+/**
+ * Envía por email un enlace de un solo uso al portal de facturación.
+ *
+ * La respuesta es siempre la misma exista o no una suscripción con ese email:
+ * si distinguiese ambos casos, el endpoint serviría para averiguar quién es
+ * cliente.
+ */
+export const handlePortalRequest = async (
+  request: Request,
+  env: Record<string, string | undefined>,
+  corsRequest: Request
+) => {
+  if (request.method !== 'POST') {
+    return jsonError('Método no permitido', 405, corsRequest);
+  }
+
+  if (!env.STRIPE_SECRET_KEY || isPlaceholderSecret(env.STRIPE_SECRET_KEY)) {
+    return jsonError('Pasarela de pago no configurada', 503, corsRequest);
+  }
+
+  if (!env.REVIEWS_KV || !env.RESEND_API_KEY) {
+    return jsonError('El envío de enlaces no está disponible ahora mismo', 503, corsRequest);
+  }
+
+  const respuestaGenerica = jsonSuccess(
+    {
+      message:
+        'Si hay una suscripción activa con ese email, recibirás un enlace de acceso en unos minutos.',
+    },
+    200,
+    corsRequest
+  );
+
+  try {
+    const body = (await request.json()) as { email?: string };
+    const email = body.email?.trim();
+
+    if (!email || !esEmailValido(email)) {
+      return jsonError('Introduce un email válido', 400, corsRequest);
+    }
+
+    if (await isPortalRateLimited(env, email)) {
+      return jsonError(
+        'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.',
+        429,
+        corsRequest
+      );
+    }
+
+    const stripe = getStripe(env.STRIPE_SECRET_KEY);
+    const customerId = await customerIdFromEmail(stripe, email);
+
+    // Sin suscripción no se envía nada, pero la respuesta no lo delata.
+    if (!customerId) return respuestaGenerica;
+
+    const token = createPortalToken();
+    await env.REVIEWS_KV.put(
+      portalTokenKey(await hashPortalToken(token)),
+      JSON.stringify({ customerId }),
+      { expirationTtl: PORTAL_TOKEN_TTL_SECONDS }
+    );
+
+    const enlace = `${getSiteUrl(corsRequest)}/mantenimiento/gestionar/?token=${token}`;
+    await new Resend(env.RESEND_API_KEY).emails.send({
+      from: PORTAL_EMAIL_REMITENTE,
+      to: [normalizeEmail(email)],
+      subject: 'Tu enlace para gestionar el mantenimiento',
+      html: emailEnlacePortalHTML(enlace),
+    });
+
+    return respuestaGenerica;
+  } catch (error) {
+    console.error('[portal-request]', error);
+    return jsonError('No se pudo enviar el enlace. Inténtalo de nuevo.', 500, corsRequest);
+  }
+};
+
+/** Canjea el token (un solo uso) o el session_id de una compra recién hecha. */
+const resolvePortalCustomerId = async (
+  stripe: Stripe,
+  env: Record<string, string | undefined>,
+  token?: string,
+  sessionId?: string
+): Promise<string | null> => {
+  if (isWellFormedPortalToken(token) && env.REVIEWS_KV) {
+    const key = portalTokenKey(await hashPortalToken(token));
+    const guardado = await env.REVIEWS_KV.get(key, 'json');
+    // Se invalida antes de usarlo: un enlace reenviado o reutilizado ya no sirve.
+    await env.REVIEWS_KV.delete(key);
+    const customerId = (guardado as { customerId?: string } | null)?.customerId;
+    if (customerId) return customerId;
+  }
+
+  if (sessionId?.startsWith('cs_')) {
+    return customerIdFromSession(stripe, sessionId);
+  }
+
+  return null;
+};
+
 export const handleCustomerPortal = async (
   request: Request,
   env: Record<string, string | undefined>,
@@ -232,25 +361,25 @@ export const handleCustomerPortal = async (
   }
 
   try {
-    const body = (await request.json()) as { email?: string; sessionId?: string };
-    const email = body.email?.trim();
+    const body = (await request.json()) as { token?: string; sessionId?: string };
+    const token = body.token?.trim();
     const sessionId = body.sessionId?.trim();
 
-    if (!email && !sessionId) {
-      return jsonError('Indica el email de tu suscripción o abre esta página desde tu confirmación de pago', 400, corsRequest);
-    }
-
-    if (email && (await isPortalRateLimited(env, email))) {
-      return jsonError('Demasiados intentos. Espera unos minutos e inténtalo de nuevo.', 429, corsRequest);
+    if (!token && !sessionId) {
+      return jsonError(
+        'Pide un enlace de acceso o abre esta página desde tu confirmación de pago',
+        400,
+        corsRequest
+      );
     }
 
     const stripe = getStripe(env.STRIPE_SECRET_KEY);
-    const customerId = await resolvePortalCustomerId(stripe, sessionId, email);
+    const customerId = await resolvePortalCustomerId(stripe, env, token, sessionId);
 
     if (!customerId) {
       return jsonError(
-        'No encontramos una suscripción activa con esos datos. Usa el mismo email del pago.',
-        404,
+        'El enlace ha caducado o ya se ha usado. Pide uno nuevo desde esta página.',
+        401,
         corsRequest
       );
     }
@@ -258,7 +387,7 @@ export const handleCustomerPortal = async (
     const siteUrl = getSiteUrl(corsRequest);
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      return_url: `${siteUrl}/mantenimiento/gestionar/`,
+      return_url: `${siteUrl}/mantenimiento/gestionar/?portal=return`,
     });
 
     if (!portalSession.url) {
