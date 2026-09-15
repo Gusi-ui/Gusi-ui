@@ -54,11 +54,17 @@ hay que mantenerlos a mano.
 Para comprobarla tras un cambio:
 
 ```bash
-pnpm run build && pnpm preview
+pnpm run preview:csp
 ```
 
 y revisar la consola del navegador: cualquier recurso bloqueado aparece como
-`Refused to load...`. Si añades un servicio externo (un chat, un mapa, otra
+`Refused to load...`.
+
+`preview:csp` añade `http://localhost:8787` a `connect-src`, porque en local la
+web llama al worker de desarrollo mientras que en producción la API está en el
+mismo origen. Sin eso la consola se llenaría de errores que no ocurren en
+producción y las reseñas no cargarían. **Ese build no debe publicarse**; el
+`pnpm run build` normal genera la política estricta. Si añades un servicio externo (un chat, un mapa, otra
 pasarela), hay que declarar su origen en `construirCsp` o dejará de cargar.
 
 ### Pendiente en Cloudflare

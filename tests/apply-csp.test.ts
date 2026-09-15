@@ -65,6 +65,25 @@ describe('construirCsp', () => {
   });
 });
 
+describe('worker local en connect-src', () => {
+  it('no aparece en la política por defecto, que es la que se publica', () => {
+    expect(construirCsp([])).not.toContain('localhost');
+  });
+
+  it('solo aparece cuando se pide explícitamente', () => {
+    const csp = construirCsp([], { apiLocal: true });
+    expect(csp).toContain("connect-src 'self' http://localhost:8787");
+  });
+
+  it('no relaja ninguna otra directiva al activarlo', () => {
+    const porDefecto = construirCsp([]).split('; ').filter((d) => !d.startsWith('connect-src'));
+    const conLocal = construirCsp([], { apiLocal: true })
+      .split('; ')
+      .filter((d) => !d.startsWith('connect-src'));
+    expect(conLocal).toEqual(porDefecto);
+  });
+});
+
 describe('insertarCsp', () => {
   it('coloca la meta dentro del head', () => {
     const resultado = insertarCsp(pagina('<title>x</title>'));

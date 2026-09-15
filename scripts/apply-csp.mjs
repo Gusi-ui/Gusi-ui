@@ -33,7 +33,13 @@ export const hashesDeScriptsInline = (html) => {
   return [...hashes];
 };
 
-export const construirCsp = (hashes) =>
+/**
+ * `apiLocal` añade el worker de desarrollo a connect-src. En preview las
+ * llamadas van a http://localhost:8787 mientras que en producción son al mismo
+ * origen, así que sin esto la consola llenaría de errores que no existen en
+ * producción y las reseñas no cargarían. La CSP publicada nunca lo lleva.
+ */
+export const construirCsp = (hashes, { apiLocal = false } = {}) =>
   [
     "default-src 'self'",
     // googletagmanager solo se descarga si el visitante acepta cookies.
@@ -44,7 +50,7 @@ export const construirCsp = (hashes) =>
     "img-src 'self' data: https://*.googleusercontent.com https://*.google-analytics.com https://www.googletagmanager.com",
     "font-src 'self'",
     // GA4 reparte la recogida entre varios subdominios regionales.
-    "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.stripe.com",
+    `connect-src 'self'${apiLocal ? ' http://localhost:8787' : ''} https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.stripe.com`,
     'frame-src https://js.stripe.com https://hooks.stripe.com',
     "object-src 'none'",
     "base-uri 'self'",
@@ -54,8 +60,8 @@ export const construirCsp = (hashes) =>
 
 const META_EXISTENTE = /<meta http-equiv="Content-Security-Policy"[^>]*>\s*/i;
 
-export const insertarCsp = (html) => {
-  const csp = construirCsp(hashesDeScriptsInline(html));
+export const insertarCsp = (html, opciones) => {
+  const csp = construirCsp(hashesDeScriptsInline(html), opciones);
   const meta = `<meta http-equiv="Content-Security-Policy" content="${csp}">`;
 
   const limpio = html.replace(META_EXISTENTE, '');
@@ -78,6 +84,7 @@ const ficherosHtml = async (directorio) => {
 };
 
 const main = async () => {
+  const apiLocal = process.env.CSP_API_LOCAL === '1';
   const paginas = await ficherosHtml(DIST);
 
   if (paginas.length === 0) {
@@ -87,11 +94,14 @@ const main = async () => {
   await Promise.all(
     paginas.map(async (pagina) => {
       const html = await readFile(pagina, 'utf8');
-      await writeFile(pagina, insertarCsp(html), 'utf8');
+      await writeFile(pagina, insertarCsp(html, { apiLocal }), 'utf8');
     })
   );
 
-  console.log(`CSP aplicada a ${paginas.length} páginas`);
+  console.log(
+    `CSP aplicada a ${paginas.length} páginas` +
+      (apiLocal ? ' (con el worker local permitido: NO publicar este build)' : '')
+  );
 };
 
 if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
