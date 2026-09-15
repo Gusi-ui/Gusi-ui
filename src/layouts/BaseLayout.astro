@@ -49,23 +49,23 @@ const {
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/freelancer-icon-optimizado.png" />
 
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <!-- Una sola meta, sin media: la gestiona el script de tema de abajo.
+         Con dos metas atadas a prefers-color-scheme, el JS escribía sobre la
+         variante clara y la barra del navegador ignoraba la elección manual. -->
+    <meta name="theme-color" content="#ffffff" />
 
     <script is:inline>
+      // Único punto donde se decide el tema, antes del primer pintado.
+      // La hoja de estilos ya no tiene @media (prefers-color-scheme), así que
+      // la clase .dark de <html> es la referencia para tokens y componentes.
       (function () {
         try {
           const stored = localStorage.getItem('site-theme');
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const hour = new Date().getHours();
-          const isNightTime = hour >= 20 || hour < 7;
-          if (stored === 'dark') {
-            document.documentElement.classList.add('dark');
-          } else if (stored === 'light') {
-            document.documentElement.classList.remove('dark');
-          } else if (prefersDark || isNightTime) {
-            document.documentElement.classList.add('dark');
-          }
+          const isDark = stored ? stored === 'dark' : prefersDark;
+          document.documentElement.classList.toggle('dark', isDark);
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', isDark ? '#0f172a' : '#ffffff');
         } catch (e) {}
       })();
     </script>
