@@ -9,7 +9,12 @@
  */
 
 import { Resend } from 'resend';
-import { handleCreateCheckout, handleVerifySession, handleCustomerPortal } from './payments';
+import {
+  handleCreateCheckout,
+  handleVerifySession,
+  handleCustomerPortal,
+  handlePortalRequest,
+} from './payments';
 import { handleStripeWebhook } from './stripe-webhook';
 import { matchAllowedOrigin, resolveCorsOrigin } from './origins';
 import { toPublicReview } from './reviews-public';
@@ -74,6 +79,11 @@ export default {
       url.pathname.endsWith('/api/payments/webhook')
     ) {
       return handleStripeWebhook(request, env);
+    } else if (
+      url.pathname === '/api/payments/portal-request' ||
+      url.pathname.endsWith('/api/payments/portal-request')
+    ) {
+      return handlePortalRequest(request, env, request);
     } else if (
       url.pathname === '/api/payments/customer-portal' ||
       url.pathname.endsWith('/api/payments/customer-portal')
