@@ -63,6 +63,13 @@ describe('construirCsp', () => {
     expect(csp).toContain('https://www.googletagmanager.com');
     expect(csp).toContain('https://api.stripe.com');
   });
+
+  it('permite el beacon que Cloudflare inyecta en la zona', () => {
+    // Detectado en producción: sin esto, Cloudflare Web Analytics deja de
+    // registrar visitas y el bloqueo solo aparece en la consola.
+    expect(csp).toContain('https://static.cloudflareinsights.com');
+    expect(csp).toContain('https://cloudflareinsights.com');
+  });
 });
 
 describe('worker local en connect-src', () => {
