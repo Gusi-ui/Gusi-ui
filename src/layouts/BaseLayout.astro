@@ -1,7 +1,8 @@
 ---
 import '@/styles/global.css';
 import SchemaOrg from '@/components/seo/SchemaOrg.astro';
-import { SITE_URL, SITE_NAME, GA_ID } from '@/lib/constants';
+import CookieConsent from '@/components/ui/CookieConsent.astro';
+import { SITE_URL, SITE_NAME } from '@/lib/constants';
 
 interface Props {
   title?: string;
@@ -70,28 +71,12 @@ const {
       })();
     </script>
 
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-
-    <script is:inline define:vars={{ gaId: GA_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-        const s = document.createElement('script');
-        s.async = 1;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
-        document.head.appendChild(s);
-        gtag('js', new Date());
-        gtag('config', gaId, { transport_type: 'beacon', anonymize_ip: 1 });
-      }
-    </script>
-
     <SchemaOrg />
     <slot name="head" />
   </head>
   <body>
     <slot />
+    <CookieConsent />
     <script>
       import '@/scripts/site-init';
     </script>

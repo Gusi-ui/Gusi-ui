@@ -1089,7 +1089,9 @@ select:focus,
 .stat-number {
     font-size: var(--font-size-2xl);
     font-weight: 700;
-    color: var(--accent-color);
+    /* El cian --accent-color daba 1,97:1 sobre el gradiente claro del hero.
+       --primary-text cumple el 3:1 de texto grande en ambos temas. */
+    color: var(--primary-text);
     display: block;
 }
 
@@ -2792,37 +2794,11 @@ select:focus,
     transform: rotate(45deg);
 }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-2xl);
-    position: relative;
-    z-index: 2;
-}
-
-.stat-item {
-    padding: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.stat-item .stat-number {
-    font-size: var(--font-size-4xl);
-    font-weight: 800;
-    color: var(--text-white);
-    margin-bottom: var(--spacing-xs);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.stat-item .stat-label {
-    font-size: var(--font-size-base);
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+/* Las reglas de .stats-grid vivían aquí sin acotar a ese contenedor. El
+   componente no existe en ningún marcado, pero sus selectores .stat-item,
+   .stat-number y .stat-label se filtraban al hero y lo pintaban en blanco
+   sobre el gradiente claro: 1,23:1 de contraste, prácticamente ilegible.
+   Se eliminan; el hero recupera sus reglas base. */
 
 /* Botones de acción para reseñas */
 .testimonials-actions {
@@ -3993,5 +3969,71 @@ html {
 
     .services-grid--projects .service-card {
         padding: var(--spacing-xl) var(--spacing-md);
+    }
+}
+/* ===== AVISO DE COOKIES ===== */
+.cookie-consent {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom, 0px));
+    background: var(--bg-card);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
+}
+
+.dark .cookie-consent {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.cookie-consent[hidden] {
+    display: none;
+}
+
+.cookie-consent__body {
+    flex: 1 1 22rem;
+    min-width: 0;
+}
+
+.cookie-consent__title {
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.cookie-consent__text {
+    max-width: 60ch;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.cookie-consent__text a {
+    color: var(--primary-text);
+    text-decoration: underline;
+}
+
+.cookie-consent__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.cookie-consent__actions .btn {
+    flex: 1 1 auto;
+    white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+    .cookie-consent {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
