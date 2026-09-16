@@ -80,7 +80,7 @@ const CheckoutSuccess = () => {
     return (
       <div className="checkout-status checkout-status-error">
         <Icon name="exclamation-circle" />
-        <h2>No pudimos confirmar el pago</h2>
+        <h1>No pudimos confirmar el pago</h1>
         <p>Si crees que es un error, contáctanos y revisaremos tu caso.</p>
         <a href="/#contacto" className="btn btn-primary">
           Contactar
@@ -93,7 +93,7 @@ const CheckoutSuccess = () => {
     return (
       <div className="checkout-status checkout-status-pending">
         <Icon name="clock" />
-        <h2>Pago en proceso</h2>
+        <h1>Pago en proceso</h1>
         <p>Estamos confirmando tu transacción. Recibirás un email cuando se complete.</p>
       </div>
     );
@@ -108,7 +108,7 @@ const CheckoutSuccess = () => {
   return (
     <div className="checkout-status checkout-status-success">
       <Icon name="check-circle" />
-      <h2>{isSubscription ? '¡Suscripción activada!' : '¡Pago confirmado!'}</h2>
+      <h1>{isSubscription ? 'Suscripción activada' : 'Pago confirmado'}</h1>
       {details?.productTitle && (
         <p className="checkout-product">
           <strong>{details.productTitle}</strong>

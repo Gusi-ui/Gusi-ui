@@ -52,7 +52,7 @@ const billingPlan = isMaintenance ? 'monthly' : 'one_time';
       <p class="service-landing__subtitle">{landing.heroSubtitle}</p>
 
       <p class="service-landing__price-badge" aria-label={`Precio: ${service.price} euros ${priceSuffix}`}>
-        <span>€{service.price}</span>
+        <span>{service.price} €</span>
         <span>{priceSuffix}</span>
       </p>
 

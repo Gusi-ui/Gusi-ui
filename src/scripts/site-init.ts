@@ -9,20 +9,14 @@ const initNavigation = (): void => {
     navToggle.classList.toggle('active', isOpen);
     navMenu.classList.toggle('active', isOpen);
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
   };
 
   navToggle.addEventListener('click', () => {
     updateMenuState(!navMenu.classList.contains('active'));
   });
 
-  navToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      navToggle.click();
-    }
-  });
-
-  navMenu.querySelectorAll('.nav-link').forEach((link) => {
+  navMenu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setTimeout(() => updateMenuState(false), 10));
   });
 
@@ -32,16 +26,23 @@ const initNavigation = (): void => {
     }
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+      updateMenuState(false);
+      navToggle.focus();
+    }
+  });
+
   window.addEventListener('resize', () => updateMenuState(false));
   updateMenuState(false);
 };
 
 const initHeaderScroll = (): void => {
-  const header = document.querySelector('.header');
+  const header = document.querySelector('.cabecera');
   if (!header) return;
   let ticking = false;
   const update = () => {
-    header.classList.toggle('scrolled', window.scrollY > 100);
+    header.classList.toggle('scrolled', window.scrollY > 8);
     ticking = false;
   };
   window.addEventListener(
@@ -56,45 +57,8 @@ const initHeaderScroll = (): void => {
   );
 };
 
-const initScrollAnimations = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in-up');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-  );
-
-  [
-    '.section-header',
-    '.services-grid__cell',
-    '.maintenance-band__cell',
-    '.project-card',
-    '.contact-item',
-    '.hero-text',
-    '.hero-visual',
-  ].forEach((selector) => {
-    document.querySelectorAll(selector).forEach((el, index) => {
-      if (
-        selector === '.services-grid__cell' ||
-        selector === '.maintenance-band__cell' ||
-        selector === '.project-card'
-      ) {
-        (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-      }
-      observer.observe(el);
-    });
-  });
-};
-
 const initSmoothScrolling = (): void => {
-  const headerHeight = 80;
+  const headerHeight = 68;
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
@@ -108,26 +72,24 @@ const initSmoothScrolling = (): void => {
   });
 };
 
-const initParallaxEffect = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+const initWhatsAppFlotante = (): void => {
+  // La portada y el pie ya tienen su botón de WhatsApp: mientras alguno está a
+  // la vista, el flotante sobra (y en móvil tapaba el chat y los enlaces legales).
+  const flotante = document.querySelector('.whatsapp-float');
+  const zonas = document.querySelectorAll('.portada, .pie');
+  if (!flotante || zonas.length === 0 || !('IntersectionObserver' in window)) return;
 
-  const heroPattern = document.querySelector('.hero-pattern');
-  if (!heroPattern) return;
-  window.addEventListener(
-    'scroll',
-    () => {
-      const rate = window.pageYOffset * -0.5;
-      (heroPattern as HTMLElement).style.transform = `translateY(${rate}px)`;
+  const visibles = new Set<Element>();
+  const observer = new IntersectionObserver(
+    (entradas) => {
+      entradas.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+      const ocultar = visibles.size > 0;
+      flotante.classList.toggle('whatsapp-float--oculto', ocultar);
+      flotante.toggleAttribute('inert', ocultar);
     },
-    { passive: true }
+    { threshold: 0.15 }
   );
-};
-
-const addLoadAnimations = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  document.querySelector('.hero-text')?.classList.add('slide-in-left');
-  document.querySelector('.hero-visual')?.classList.add('slide-in-right');
+  zonas.forEach((zona) => observer.observe(zona));
 };
 
 const initWebVitals = (): void => {
@@ -152,10 +114,8 @@ const initWebVitals = (): void => {
 const init = (): void => {
   initNavigation();
   initHeaderScroll();
-  initScrollAnimations();
   initSmoothScrolling();
-  initParallaxEffect();
-  addLoadAnimations();
+  initWhatsAppFlotante();
   initWebVitals();
 };
 
@@ -165,7 +125,6 @@ if (document.readyState === 'loading') {
   init();
 }
 
-window.addEventListener('load', addLoadAnimations);
 
 declare global {
   function gtag(...args: unknown[]): void;

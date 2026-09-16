@@ -54,6 +54,22 @@ import { GA_ID } from '@/lib/constants';
 
   const banner = document.getElementById('cookie-consent');
 
+  // Retirar el consentimiento debe ser tan fácil como darlo: se borran las
+  // cookies de Google Analytics y, si ya se había cargado, se recarga la página
+  // para que deje de medir en esta visita.
+  const borrarCookiesAnalytics = () => {
+    const dominios = ['', location.hostname, '.' + location.hostname.replace(/^www\./, '')];
+    document.cookie.split(';').forEach((cookie) => {
+      const nombre = cookie.split('=')[0].trim();
+      if (!nombre.startsWith('_ga')) return;
+      dominios.forEach((dominio) => {
+        document.cookie =
+          nombre + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' +
+          (dominio ? '; domain=' + dominio : '');
+      });
+    });
+  };
+
   const guardar = (decision) => {
     try {
       localStorage.setItem(CLAVE, decision);
@@ -62,8 +78,21 @@ import { GA_ID } from '@/lib/constants';
       // en esta visita aunque no se pueda recordar para la siguiente.
     }
     if (banner) banner.hidden = true;
-    if (decision === 'granted') cargarAnalytics();
+    if (decision === 'granted') {
+      cargarAnalytics();
+      return;
+    }
+    borrarCookiesAnalytics();
+    if (window.dataLayer) location.reload();
   };
+
+  document.querySelectorAll('[data-abrir-cookies]').forEach((boton) => {
+    boton.addEventListener('click', () => {
+      if (!banner) return;
+      banner.hidden = false;
+      banner.querySelector('[data-consent]')?.focus();
+    });
+  });
 
   banner?.querySelectorAll('[data-consent]').forEach((boton) => {
     boton.addEventListener('click', () => guardar(boton.dataset.consent));

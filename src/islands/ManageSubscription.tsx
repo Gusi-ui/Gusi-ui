@@ -58,7 +58,7 @@ const ManageSubscription = () => {
     <div className="checkout-status checkout-status-manage">
       <Icon name="shield-halved" />
 
-      <h2>Gestionar tu mantenimiento</h2>
+      <h1>Gestionar tu mantenimiento</h1>
 
       {vista === 'vueltaDelPortal' && (
         <p className="checkout-manage-return">

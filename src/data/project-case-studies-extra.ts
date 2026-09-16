@@ -159,7 +159,7 @@ export const extraProjectCaseStudies: ProjectCaseStudy[] = [
       { technology: 'JavaScript vanilla', benefit: 'Carga instantánea al escanear el QR.' },
     ],
     metrics: [
-      { label: 'Coste de impresión cartas', before: 'Cada cambio de precio', after: '€0 (digital)' },
+      { label: 'Coste de impresión cartas', before: 'Cada cambio de precio', after: '0 € (digital)' },
       { label: 'Consultas de alérgenos', before: '~15/día al personal', after: 'Autogestionadas' },
       { label: 'Actualización de precios', before: 'Reimprimir carta', after: 'Cambio en segundos' },
       { label: 'Tiempo de carga', before: 'N/A', after: '< 1.5 s objetivo' },

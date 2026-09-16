@@ -2,44 +2,44 @@
 import ThemeToggle from '@/islands/ThemeToggle';
 ---
 
-<header class="header">
-  <nav class="nav">
-    <div class="nav-brand">
+<header class="cabecera">
+  <div class="cabecera__barra">
+    <a href="/" class="cabecera__marca">
       <picture>
         <source srcset="/images/optimizadas/freelancer-icon.avif" type="image/avif" />
         <source srcset="/images/optimizadas/freelancer-icon.webp" type="image/webp" />
         <img
           src="/freelancer-icon-optimizado.png"
-          alt="alamia.es - Desarrollador Freelance"
-          class="brand-logo"
-          width="40"
-          height="40"
+          alt=""
+          width="36"
+          height="36"
           decoding="async"
         />
       </picture>
-      <span class="brand-text">alamia.es</span>
+      <span>alamia.es</span>
+    </a>
+
+    <nav id="nav-menu" class="cabecera__menu" aria-label="Navegación principal">
+      <a href="/#proyectos">Proyectos</a>
+      <a href="/servicios/">Precios</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#contacto">Contacto</a>
+    </nav>
+
+    <div class="cabecera__acciones">
       <ThemeToggle client:load />
+      <button
+        id="nav-toggle"
+        class="cabecera__abrir"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"></path>
+        </svg>
+      </button>
     </div>
-    <div class="nav-menu" id="nav-menu" role="navigation" aria-label="Navegación principal">
-      <a href="/#inicio" class="nav-link" role="menuitem">Inicio</a>
-      <a href="/servicios/" class="nav-link" role="menuitem">Servicios</a>
-      <a href="/blog/" class="nav-link" role="menuitem">Blog</a>
-      <a href="/#proyectos" class="nav-link" role="menuitem">Proyectos</a>
-      <a href="/#testimonios" class="nav-link" role="menuitem">Testimonios</a>
-      <a href="/#contacto" class="nav-link" role="menuitem">Contacto</a>
-    </div>
-    <div
-      class="nav-toggle"
-      id="nav-toggle"
-      aria-label="Menú de navegación"
-      aria-expanded="false"
-      aria-controls="nav-menu"
-      role="button"
-      tabindex="0"
-    >
-      <span class="bar" aria-hidden="true"></span>
-      <span class="bar" aria-hidden="true"></span>
-      <span class="bar" aria-hidden="true"></span>
-    </div>
-  </nav>
+  </div>
 </header>

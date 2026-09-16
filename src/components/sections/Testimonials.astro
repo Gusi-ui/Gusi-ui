@@ -3,13 +3,12 @@ import ReviewsSection from '@/islands/ReviewsSection';
 import { GOOGLE_REVIEWS_URL } from '@/lib/constants';
 ---
 
-<section id="testimonios" class="testimonials">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Lo que dicen mis clientes</h2>
-      <p class="section-subtitle">Experiencias reales de proyectos exitosos</p>
-      <div class="section-divider"></div>
-    </div>
+<section id="testimonios" class="apartado opiniones" aria-labelledby="opiniones-titulo">
+  <div class="apartado__contenido">
+    <header class="apartado__cabeza">
+      <h2 id="opiniones-titulo" class="apartado__titulo">Lo que cuentan de trabajar conmigo</h2>
+      <p class="apartado__entrada">Reseñas de clientes, publicadas en Google y en esta web.</p>
+    </header>
 
     <ReviewsSection client:visible googleReviewsUrl={GOOGLE_REVIEWS_URL} />
   </div>

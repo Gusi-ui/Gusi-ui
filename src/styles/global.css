@@ -1,15 +1,19 @@
-@import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/figtree/latin-400.css';
+@import '@fontsource/figtree/latin-500.css';
+@import '@fontsource/figtree/latin-600.css';
+@import '@fontsource/figtree/latin-700.css';
+@import '@fontsource/figtree/latin-800.css';
 @import 'tailwindcss';
 @import './legacy.css';
 @import './seo-pages.css';
+@import './conversacion.css';
 
 @theme {
-  --color-primary: #4f46e5;
-  --color-primary-dark: #3730a3;
-  --color-primary-light: #818cf8;
-  --color-accent: #06b6d4;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-primary: #1d5b9e;
+  --color-primary-dark: #154577;
+  --color-primary-light: #5b8fcc;
+  --color-accent: #1d5b9e;
+  --font-sans: 'Figtree', system-ui, sans-serif;
 }
 
 .icon {

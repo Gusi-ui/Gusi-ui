@@ -33,71 +33,64 @@ const MaintenanceCard = ({ service, stripeEnabled }: MaintenanceCardProps) => {
 
   return (
     <article
-      className="maintenance-band"
+      className="mantenimiento"
       itemScope
       itemType="https://schema.org/Service"
       aria-labelledby={service.id}
     >
-      <span className="maintenance-badge">Suscripción mensual</span>
-
-      <div className="maintenance-band__intro">
-        <div className="maintenance-band__icon" aria-hidden="true">
-          <Icon name={service.icon} />
-        </div>
-        <div className="maintenance-band__headings">
-          <h3 className="service-title" itemProp="name" id={service.id}>
-            {service.title}
-          </h3>
-          <p className="service-description" itemProp="description">
-            {service.description}
-          </p>
-          <p className="maintenance-value-anchor">{service.valueAnchor}</p>
-          <a href={`/servicios/${service.slug}/`} className="service-card__detail-link">
-            Ver detalles del servicio
-          </a>
-        </div>
+      <div className="mantenimiento__texto">
+        <h3 className="mantenimiento__nombre" itemProp="name" id={service.id}>
+          {service.title}
+        </h3>
+        <p className="mantenimiento__resumen" itemProp="description">
+          {service.description}
+        </p>
+        <a href={`/servicios/${service.slug}/`} className="tarifa__detalle">
+          Ver qué incluye
+        </a>
       </div>
 
-      <ul className="maintenance-band__features">
+      <ul className="mantenimiento__incluye">
         {service.features.map((feature) => (
-          <li className="maintenance-feature" key={feature}>
+          <li key={feature}>
             <Icon name="check" />
             <span itemProp="serviceType">{feature}</span>
           </li>
         ))}
       </ul>
 
-      <div className="maintenance-band__pricing">
-        <div
-          className="service-price maintenance-price"
+      <div className="mantenimiento__compra">
+        <p
+          className="tarifa__precio"
           itemProp="offers"
           itemScope
           itemType="https://schema.org/Offer"
         >
           <meta itemProp="priceCurrency" content="EUR" />
-          <span itemProp="priceCurrency">€</span>
-          <span itemProp="price">{service.price}</span>
-          <span className="price-period">/mes</span>
-        </div>
-        <p className="price-hint">{service.priceHint}</p>
+          <span itemProp="price" content={String(service.price)}>
+            {service.price}
+          </span>{' '}
+          € <span className="tarifa__periodo">al mes</span>
+        </p>
+        <p className="tarifa__pago">
+          {service.priceHint}. {service.valueAnchor}.
+        </p>
 
         <button
           type="button"
-          className="service-btn service-btn-primary maintenance-cta"
+          className="btn btn-primary tarifa__boton"
           onClick={handleCheckout}
           onMouseEnter={prefetchStripe}
           onFocus={prefetchStripe}
           disabled={isCheckingOut}
-          aria-label={
-            isCheckingOut ? 'Procesando pago...' : `Activar ${service.title}`
-          }
+          aria-label={isCheckingOut ? 'Procesando pago...' : `Activar ${service.title}`}
         >
-          <Icon name={isCheckingOut ? 'spinner' : 'credit-card'} spin={isCheckingOut} />
-          <span>{isCheckingOut ? 'Procesando...' : 'Activar mantenimiento'}</span>
+          {isCheckingOut && <Icon name="spinner" spin />}
+          <span>{isCheckingOut ? 'Procesando...' : 'Activar'}</span>
         </button>
 
-        <a href="/mantenimiento/gestionar/" className="maintenance-manage-link">
-          ¿Ya eres cliente? Gestionar o cancelar suscripción
+        <a href="/mantenimiento/gestionar/" className="mantenimiento__gestionar">
+          ¿Ya eres cliente? Gestiona o cancela tu suscripción
         </a>
       </div>
     </article>

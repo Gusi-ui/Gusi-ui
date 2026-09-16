@@ -53,7 +53,7 @@ const {
     <!-- Una sola meta, sin media: la gestiona el script de tema de abajo.
          Con dos metas atadas a prefers-color-scheme, el JS escribía sobre la
          variante clara y la barra del navegador ignoraba la elección manual. -->
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#e9f0f6" />
 
     <script is:inline>
       // Único punto donde se decide el tema, antes del primer pintado.
@@ -66,7 +66,7 @@ const {
           const isDark = stored ? stored === 'dark' : prefersDark;
           document.documentElement.classList.toggle('dark', isDark);
           const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', isDark ? '#0f172a' : '#ffffff');
+          if (meta) meta.setAttribute('content', isDark ? '#0e1726' : '#e9f0f6');
         } catch (e) {}
       })();
     </script>
