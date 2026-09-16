@@ -57,37 +57,6 @@ const initHeaderScroll = (): void => {
   );
 };
 
-const initScrollAnimations = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('fade-in-up');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-  );
-
-  [
-    '.section-header',
-    '.project-card',
-    '.contact-item',
-  ].forEach((selector) => {
-    document.querySelectorAll(selector).forEach((el, index) => {
-      if (
-        selector === '.project-card'
-      ) {
-        (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-      }
-      observer.observe(el);
-    });
-  });
-};
-
 const initSmoothScrolling = (): void => {
   const headerHeight = 68;
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
@@ -104,21 +73,23 @@ const initSmoothScrolling = (): void => {
 };
 
 const initWhatsAppFlotante = (): void => {
-  // En la home, la portada ya tiene su botón de WhatsApp: el flotante solo
-  // aparece cuando la portada deja de verse, y en móvil no tapa el chat.
+  // La portada y el pie ya tienen su botón de WhatsApp: mientras alguno está a
+  // la vista, el flotante sobra (y en móvil tapaba el chat y los enlaces legales).
   const flotante = document.querySelector('.whatsapp-float');
-  const portada = document.querySelector('.portada');
-  if (!flotante || !portada || !('IntersectionObserver' in window)) return;
+  const zonas = document.querySelectorAll('.portada, .pie');
+  if (!flotante || zonas.length === 0 || !('IntersectionObserver' in window)) return;
 
+  const visibles = new Set<Element>();
   const observer = new IntersectionObserver(
-    ([entrada]) => {
-      const visible = entrada.isIntersecting;
-      flotante.classList.toggle('whatsapp-float--oculto', visible);
-      flotante.toggleAttribute('inert', visible);
+    (entradas) => {
+      entradas.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+      const ocultar = visibles.size > 0;
+      flotante.classList.toggle('whatsapp-float--oculto', ocultar);
+      flotante.toggleAttribute('inert', ocultar);
     },
     { threshold: 0.15 }
   );
-  observer.observe(portada);
+  zonas.forEach((zona) => observer.observe(zona));
 };
 
 const initWebVitals = (): void => {
@@ -143,7 +114,6 @@ const initWebVitals = (): void => {
 const init = (): void => {
   initNavigation();
   initHeaderScroll();
-  initScrollAnimations();
   initSmoothScrolling();
   initWhatsAppFlotante();
   initWebVitals();

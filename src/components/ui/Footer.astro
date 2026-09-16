@@ -1,78 +1,94 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
-import { getServiceLandingPath } from '@/data/service-landings';
+import { projectServices, maintenanceService } from '@/data/services';
+import { CONTACT_EMAIL, WHATSAPP_PHONE, WHATSAPP_URL } from '@/lib/constants';
 
 const currentYear = new Date().getFullYear();
+
+// Los precios salen de los datos de servicios, igual que en «Lo que cuesta».
+const carta = [
+  ...projectServices.map((s) => ({
+    nombre: s.title,
+    precio: `${s.price} €`,
+    href: `/servicios/${s.slug}/`,
+  })),
+  {
+    nombre: maintenanceService.title,
+    precio: `${maintenanceService.price} €/mes`,
+    href: `/servicios/${maintenanceService.slug}/`,
+  },
+];
 ---
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <h3>alamia.es</h3>
-        <p>
-          Desarrollador Freelance especializado en soluciones digitales modernas. Transformo ideas en
-          experiencias digitales excepcionales.
+<footer class="pie">
+  <div class="pie__contenido">
+    <section class="pie__cierre" aria-labelledby="pie-titulo">
+      <div>
+        <h2 id="pie-titulo" class="pie__titulo">¿Te ha quedado alguna duda?</h2>
+        <p class="pie__entrada">
+          Pregunta sin compromiso. Te contesto yo, con precio y plazo si ya sabes lo que quieres.
         </p>
-        <div class="footer-contact">
-          <div class="contact-item">
-            <Icon name="envelope" />
-            <span>info@alamia.es</span>
-          </div>
-          <div class="contact-item">
-            <Icon name="whatsapp" />
-            <span>+34 619 027 645</span>
-          </div>
-          <div class="contact-item">
-            <Icon name="location" />
-            <span>Mataró, Barcelona</span>
-          </div>
-        </div>
+      </div>
+      <div class="pie__cierre-acciones">
+        <a class="pie__whatsapp" href={WHATSAPP_URL} target="_blank" rel="noopener">
+          Escribir por WhatsApp
+        </a>
+        <a class="pie__email" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </div>
+    </section>
+
+    <div class="pie__columnas">
+      <div class="pie__marca">
+        <a href="/" class="pie__logo">
+          <img src="/freelancer-icon-optimizado.png" alt="" width="36" height="36" loading="lazy" />
+          <span>alamia.es</span>
+        </a>
+        <p>Webs para negocios pequeños, hechas en Mataró por Jose Martínez.</p>
       </div>
 
-      <div class="footer-services-technologies">
-        <div class="footer-services">
-          <h4>Servicios</h4>
-          <ul>
-            <li><a href={getServiceLandingPath('desarrollo-web')}>Desarrollo Web</a></li>
-            <li><a href={getServiceLandingPath('backend-apis')}>Backend & APIs</a></li>
-            <li><a href={getServiceLandingPath('optimizacion-web')}>Optimización Web</a></li>
-            <li><a href={getServiceLandingPath('mantenimiento')}>Mantenimiento</a></li>
-            <li><a href="/blog/">Blog</a></li>
-          </ul>
-        </div>
+      <nav class="pie__bloque" aria-labelledby="pie-precios">
+        <h3 id="pie-precios">Precios</h3>
+        <ul class="pie__carta">
+          {
+            carta.map((linea) => (
+              <li>
+                <a href={linea.href}>
+                  <span class="pie__carta-nombre">{linea.nombre}</span>
+                  <span class="pie__carta-puntos" aria-hidden="true" />
+                  <span class="pie__carta-precio">{linea.precio}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
 
-        <div class="footer-technologies">
-          <h4>Tecnologías</h4>
-          <div class="tech-tags">
-            <span class="tech-tag"><Icon name="react" /> React</span>
-            <span class="tech-tag"><Icon name="node-js" /> Node.js</span>
-            <span class="tech-tag"><Icon name="react" /> React Native</span>
-            <span class="tech-tag"><Icon name="bolt" /> Astro</span>
-            <span class="tech-tag"><Icon name="database" /> MongoDB</span>
-            <span class="tech-tag"><Icon name="database" /> PostgreSQL</span>
-          </div>
-        </div>
+      <nav class="pie__bloque" aria-labelledby="pie-explora">
+        <h3 id="pie-explora">Explora</h3>
+        <ul>
+          <li><a href="/#proyectos">Proyectos</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/#testimonios">Opiniones</a></li>
+          <li><a href="/mantenimiento/gestionar/">Gestionar mi suscripción</a></li>
+        </ul>
+      </nav>
+
+      <div class="pie__bloque">
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href={WHATSAPP_URL} target="_blank" rel="noopener">WhatsApp {WHATSAPP_PHONE}</a></li>
+          <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+          <li>Mataró, Barcelona</li>
+        </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-bottom-content">
-        <p>&copy; {currentYear} Jose Martínez (Gusi). Todos los derechos reservados.</p>
-        <div class="footer-bottom-links">
-          <div class="nav-links">
-            <a href="/#inicio">Inicio</a>
-            <a href="/servicios/">Servicios</a>
-            <a href="/blog/">Blog</a>
-            <a href="/#proyectos">Proyectos</a>
-            <a href="/#contacto">Contacto</a>
-          </div>
-          <div class="legal-links">
-            <a href="/politica-privacidad/">Política de Privacidad</a>
-            <a href="/terminos-servicio/">Términos de Servicio</a>
-            <a href="/politica-cookies/">Cookies</a>
-          </div>
-        </div>
-      </div>
+
+    <div class="pie__legal">
+      <p>© {currentYear} Jose Martínez (Gusi)</p>
+      <ul>
+        <li><a href="/politica-privacidad/">Privacidad</a></li>
+        <li><a href="/terminos-servicio/">Términos</a></li>
+        <li><a href="/politica-cookies/">Cookies</a></li>
+      </ul>
     </div>
   </div>
 </footer>

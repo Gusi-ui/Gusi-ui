@@ -1,54 +1,39 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
 import ContactForm from '@/islands/ContactForm';
 import { CONTACT_EMAIL, WHATSAPP_URL, WHATSAPP_PHONE } from '@/lib/constants';
 ---
 
-<section id="contacto" class="contact">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">¿Listo para Empezar?</h2>
-      <p class="section-subtitle">Contáctame y hablemos sobre tu proyecto</p>
-      <div class="section-divider"></div>
-    </div>
+<section id="contacto" class="apartado contacto" aria-labelledby="contacto-titulo">
+  <div class="apartado__contenido contacto__contenido">
+    <div class="contacto__vias">
+      <header class="apartado__cabeza">
+        <h2 id="contacto-titulo" class="apartado__titulo">¿Hablamos de lo tuyo?</h2>
+        <p class="apartado__entrada">
+          Lo más rápido es WhatsApp. Si prefieres contarlo con calma, usa el formulario o escríbeme
+          un email.
+        </p>
+      </header>
 
-    <div class="contact-content">
-      <div class="contact-info">
-        <div class="contact-item">
-          <div class="contact-icon">
-            <Icon name="whatsapp" />
-          </div>
-          <div class="contact-details">
-            <h3>WhatsApp</h3>
-            <p>Respuesta inmediata</p>
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener">{WHATSAPP_PHONE}</a>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">
-            <Icon name="envelope" />
-          </div>
-          <div class="contact-details">
-            <h3>Email</h3>
-            <p>Respuesta en 24h</p>
-            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">
-            <Icon name="location" />
-          </div>
-          <div class="contact-details">
-            <h3>Ubicación</h3>
-            <p>Trabajo remoto</p>
-            <span>Mataró, Barcelona, España</span>
-          </div>
-        </div>
+      <div class="contacto__whatsapp">
+        <p>Escríbeme como le escribirías a un conocido: qué negocio tienes y qué te gustaría resolver.</p>
+        <a class="portada__whatsapp" href={WHATSAPP_URL} target="_blank" rel="noopener">
+          Escribir por WhatsApp
+        </a>
+        <span class="contacto__telefono">{WHATSAPP_PHONE}</span>
       </div>
 
-      <ContactForm client:visible />
+      <dl class="contacto__datos">
+        <div>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></dd>
+        </div>
+        <div>
+          <dt>Dónde</dt>
+          <dd>Mataró (Barcelona). Trabajo en remoto con negocios de toda España.</dd>
+        </div>
+      </dl>
     </div>
+
+    <ContactForm client:visible />
   </div>
 </section>

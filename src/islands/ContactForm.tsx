@@ -26,12 +26,12 @@ const ContactForm = () => {
     const message = sanitizeText(formData.get('message') as string);
 
     if (!name || !email || !service || !message) {
-      showNotification('Por favor, completa todos los campos', 'error');
+      showNotification('Completa todos los campos para poder responderte', 'error');
       return;
     }
 
     if (!isValidEmail(email)) {
-      showNotification('Por favor, introduce un email válido', 'error');
+      showNotification('Revisa el email: no parece válido', 'error');
       return;
     }
 
@@ -109,60 +109,49 @@ const ContactForm = () => {
   };
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit} aria-labelledby="contacto-titulo">
-      <div style={{ display: 'none' }} aria-hidden="true">
+    <form className="formulario contacto__formulario" onSubmit={handleSubmit} aria-labelledby="formulario-titulo">
+      <h3 id="formulario-titulo" className="formulario__titulo">
+        Cuéntamelo por escrito
+      </h3>
+      <div hidden aria-hidden="true">
         <label>
           No llenar este campo: <input name="_gotcha" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
-      <div className="form-group">
-        <label htmlFor="name" className="sr-only">
-          Nombre
-        </label>
-        <input type="text" id="name" name="name" placeholder="Tu nombre" required aria-required="true" />
+      <div className="formulario__campo">
+        <label htmlFor="name">Nombre</label>
+        <input type="text" id="name" name="name" autoComplete="name" required />
       </div>
-      <div className="form-group">
-        <label htmlFor="email" className="sr-only">
-          Email
-        </label>
-        <input type="email" id="email" name="email" placeholder="Tu email" required aria-required="true" />
+      <div className="formulario__campo">
+        <label htmlFor="email">Email</label>
+        <input type="email" id="email" name="email" autoComplete="email" required />
       </div>
-      <div className="form-group">
-        <label htmlFor="service" className="sr-only">
-          Servicio
-        </label>
-        <select id="service" name="service" required aria-required="true" defaultValue="">
+      <div className="formulario__campo">
+        <label htmlFor="service">¿Qué necesitas?</label>
+        <select id="service" name="service" required defaultValue="">
           <option value="" disabled>
-            Selecciona un servicio
+            Elige una opción
           </option>
-          <option value="web">Desarrollo Web</option>
-          <option value="mobile">App Móvil</option>
-          <option value="ecommerce">E-Commerce</option>
-          <option value="maintenance">Mantenimiento</option>
-          <option value="other">Otro</option>
+          <option value="web">Una web</option>
+          <option value="ecommerce">Una tienda online</option>
+          <option value="mobile">Una app móvil</option>
+          <option value="maintenance">Mantenimiento de mi web</option>
+          <option value="other">Otra cosa</option>
         </select>
       </div>
-      <div className="form-group">
-        <label htmlFor="message" className="sr-only">
-          Mensaje
-        </label>
+      <div className="formulario__campo">
+        <label htmlFor="message">Tu mensaje</label>
         <textarea
           id="message"
           name="message"
-          placeholder="Cuéntame sobre tu proyecto..."
+          placeholder="Qué negocio tienes y qué te gustaría conseguir"
           rows={5}
           required
-          aria-required="true"
         />
       </div>
-      <button
-        type="submit"
-        className="btn btn-primary btn-full"
-        aria-label="Enviar mensaje de contacto"
-        disabled={isSubmitting}
-      >
-        <Icon name={isSubmitting ? 'spinner' : 'paper-plane'} spin={isSubmitting} />
-        <span>{isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}</span>
+      <button type="submit" className="btn btn-primary btn-full" disabled={isSubmitting}>
+        {isSubmitting && <Icon name="spinner" spin />}
+        <span>{isSubmitting ? 'Enviando…' : 'Enviar mensaje'}</span>
       </button>
     </form>
   );
