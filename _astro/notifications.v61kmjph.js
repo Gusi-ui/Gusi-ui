@@ -16,4 +16,4 @@ const e={code:{viewBox:"0 0 640 512",path:"M392.8 1.2c-17-4.9-34.7 5-39.6 22l-12
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     max-width: 300px;
-  `,document.body.appendChild(c),setTimeout(()=>{c.style.transform="translateX(0)"},100),setTimeout(()=>{c.style.transform="translateX(100%)",setTimeout(()=>c.remove(),300)},5e3)};export{e as I,a as i,i as s};
+  `,document.body.appendChild(c),setTimeout(()=>{c.style.transform="translateX(0)"},100),setTimeout(()=>{c.style.transform="translateX(100%)",setTimeout(()=>c.remove(),300)},5e3)};export{e as I,i as s};
