@@ -43,14 +43,16 @@ export const construirCsp = (hashes, { apiLocal = false } = {}) =>
   [
     "default-src 'self'",
     // googletagmanager solo se descarga si el visitante acepta cookies.
-    `script-src 'self' ${hashes.join(' ')} https://www.googletagmanager.com https://js.stripe.com`,
+    // cloudflareinsights sirve el beacon que Cloudflare inyecta en la zona;
+    // es analítica sin cookies, así que no depende del consentimiento.
+    `script-src 'self' ${hashes.join(' ')} https://www.googletagmanager.com https://js.stripe.com https://static.cloudflareinsights.com`,
     // React y Astro escriben atributos style; sin 'unsafe-inline' no pintan.
     "style-src 'self' 'unsafe-inline'",
     // googleusercontent sirve las fotos de autor de las reseñas de Google.
     "img-src 'self' data: https://*.googleusercontent.com https://*.google-analytics.com https://www.googletagmanager.com",
     "font-src 'self'",
     // GA4 reparte la recogida entre varios subdominios regionales.
-    `connect-src 'self'${apiLocal ? ' http://localhost:8787' : ''} https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.stripe.com`,
+    `connect-src 'self'${apiLocal ? ' http://localhost:8787' : ''} https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://api.stripe.com https://cloudflareinsights.com`,
     'frame-src https://js.stripe.com https://hooks.stripe.com',
     "object-src 'none'",
     "base-uri 'self'",
