@@ -98,8 +98,12 @@ conoce:
   `construirCsp`.
 - **JavaScript Detections** (`/cdn-cgi/challenge-platform/...`): un script
   inline cuyo contenido cambia en cada petición, así que no admite hash. La CSP
-  lo bloquea. Solo alimenta la detección de bots de Cloudflare; si se quiere,
-  se desactiva en Seguridad → Bots.
+  lo bloquea. Solo alimenta la detección de bots de Cloudflare y no afecta a
+  los visitantes. **En el plan Free no se puede desactivar**: sigue inyectándose
+  aunque se apague Bot Fight Mode (comprobado el 2026-09-16), y la única
+  solución que da Cloudflare es un `nonce` en cabecera HTTP, que GitHub Pages no
+  permite. Se acepta el error en consola; no relajar la CSP con
+  `'unsafe-inline'` por esto. Bot Fight Mode se deja activado.
 
 ## Cookies y analítica
 
