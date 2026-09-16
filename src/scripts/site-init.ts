@@ -9,20 +9,14 @@ const initNavigation = (): void => {
     navToggle.classList.toggle('active', isOpen);
     navMenu.classList.toggle('active', isOpen);
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
   };
 
   navToggle.addEventListener('click', () => {
     updateMenuState(!navMenu.classList.contains('active'));
   });
 
-  navToggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      navToggle.click();
-    }
-  });
-
-  navMenu.querySelectorAll('.nav-link').forEach((link) => {
+  navMenu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => setTimeout(() => updateMenuState(false), 10));
   });
 
@@ -32,16 +26,23 @@ const initNavigation = (): void => {
     }
   });
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+      updateMenuState(false);
+      navToggle.focus();
+    }
+  });
+
   window.addEventListener('resize', () => updateMenuState(false));
   updateMenuState(false);
 };
 
 const initHeaderScroll = (): void => {
-  const header = document.querySelector('.header');
+  const header = document.querySelector('.cabecera');
   if (!header) return;
   let ticking = false;
   const update = () => {
-    header.classList.toggle('scrolled', window.scrollY > 100);
+    header.classList.toggle('scrolled', window.scrollY > 8);
     ticking = false;
   };
   window.addEventListener(
@@ -77,8 +78,6 @@ const initScrollAnimations = (): void => {
     '.maintenance-band__cell',
     '.project-card',
     '.contact-item',
-    '.hero-text',
-    '.hero-visual',
   ].forEach((selector) => {
     document.querySelectorAll(selector).forEach((el, index) => {
       if (
@@ -94,7 +93,7 @@ const initScrollAnimations = (): void => {
 };
 
 const initSmoothScrolling = (): void => {
-  const headerHeight = 80;
+  const headerHeight = 68;
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
@@ -106,28 +105,6 @@ const initSmoothScrolling = (): void => {
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
-};
-
-const initParallaxEffect = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const heroPattern = document.querySelector('.hero-pattern');
-  if (!heroPattern) return;
-  window.addEventListener(
-    'scroll',
-    () => {
-      const rate = window.pageYOffset * -0.5;
-      (heroPattern as HTMLElement).style.transform = `translateY(${rate}px)`;
-    },
-    { passive: true }
-  );
-};
-
-const addLoadAnimations = (): void => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  document.querySelector('.hero-text')?.classList.add('slide-in-left');
-  document.querySelector('.hero-visual')?.classList.add('slide-in-right');
 };
 
 const initWebVitals = (): void => {
@@ -154,8 +131,6 @@ const init = (): void => {
   initHeaderScroll();
   initScrollAnimations();
   initSmoothScrolling();
-  initParallaxEffect();
-  addLoadAnimations();
   initWebVitals();
 };
 
@@ -165,7 +140,6 @@ if (document.readyState === 'loading') {
   init();
 }
 
-window.addEventListener('load', addLoadAnimations);
 
 declare global {
   function gtag(...args: unknown[]): void;
