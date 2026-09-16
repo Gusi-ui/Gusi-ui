@@ -67,20 +67,39 @@ producción y las reseñas no cargarían. **Ese build no debe publicarse**; el
 `pnpm run build` normal genera la política estricta. Si añades un servicio externo (un chat, un mapa, otra
 pasarela), hay que declarar su origen en `construirCsp` o dejará de cargar.
 
-### Pendiente en Cloudflare
+### Cabeceras desde Cloudflare
 
-Los navegadores **ignoran** estas directivas en `<meta>`, así que requieren una
-Transform Rule de respuesta en el panel de Cloudflare (Rules → Transform Rules →
-Modify Response Header), aplicada a `alamia.es/*`:
+Los navegadores **ignoran** estas directivas en `<meta>`, así que las pone una
+Transform Rule de respuesta en el panel de Cloudflare (zona `alamia.es` →
+Reglas → Regla de transformación de encabezado de respuesta), con
+*Establecer estático*. Aplicada y verificada el 2026-09-16:
 
 | Cabecera | Valor |
 | --- | --- |
 | `Content-Security-Policy` | `frame-ancestors 'none'` |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
+| `X-Frame-Options` | `DENY` (equivalente para navegadores antiguos) |
 
-`X-Frame-Options: DENY` es equivalente a `frame-ancestors 'none'` y puede
-añadirse también para navegadores antiguos.
+Esta CSP convive con la del `<meta>`: el navegador aplica ambas, y esta solo
+restringe quién puede incrustar la web en un iframe. Si cambias la regla, no
+hay nada en el repo que lo refleje; actualiza esta tabla. Para comprobarla:
+
+```bash
+curl -sI https://alamia.es/ | grep -iE 'content-security|referrer|permissions|x-frame'
+```
+
+### Scripts que inyecta Cloudflare
+
+Cloudflare añade al HTML scripts que no salen del build, así que la CSP no los
+conoce:
+
+- **Web Analytics** (`static.cloudflareinsights.com`): permitido en
+  `construirCsp`.
+- **JavaScript Detections** (`/cdn-cgi/challenge-platform/...`): un script
+  inline cuyo contenido cambia en cada petición, así que no admite hash. La CSP
+  lo bloquea. Solo alimenta la detección de bots de Cloudflare; si se quiere,
+  se desactiva en Seguridad → Bots.
 
 ## Cookies y analítica
 
