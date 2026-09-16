@@ -7,14 +7,13 @@ import { WHATSAPP_URL } from '@/lib/constants';
 const productSlug = Astro.url.searchParams.get('product');
 const allServices = [...projectServices, maintenanceService];
 const product = allServices.find((s) => s.slug === productSlug);
-const year = new Date().getFullYear();
 ---
 
 <SimplePageLayout title="Pago cancelado | alamia.es" noindex>
   <div class="container checkout-page">
     <div class="checkout-status checkout-status-cancel">
       <Icon name="times-circle" />
-      <h2>Pago cancelado</h2>
+      <h1>Pago cancelado</h1>
       <p>No se ha realizado ningún cargo. Puedes volver a intentarlo cuando quieras.</p>
       {
         product && (
@@ -31,7 +30,6 @@ const year = new Date().getFullYear();
           <Icon name="whatsapp" /> Consultar por WhatsApp
         </a>
       </div>
-      <p class="checkout-footer">&copy; {year} Jose Martínez (Gusi) — alamia.es</p>
     </div>
   </div>
 </SimplePageLayout>

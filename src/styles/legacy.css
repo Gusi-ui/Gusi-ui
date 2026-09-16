@@ -39,6 +39,13 @@
     /* Color de marca cuando se usa como texto o enlace, no como fondo. */
     --primary-text: #1d5b9e;
 
+    /* Alias que usa seo-pages.css. No existían, así que siempre caían en
+       su valor de reserva (colores de modo claro) y en oscuro las páginas
+       de blog, servicios y proyectos mostraban texto gris sobre gris. */
+    --border-color: var(--rule);
+    --text-muted: var(--text-light);
+    --card-bg: var(--bg-card);
+
     /* Conversación del hero */
     --burbuja-cliente: #ffffff;
     --burbuja-jose: #cfe3f7;
@@ -339,53 +346,114 @@ select:focus {
 
 /* ===== CHECKOUT PAGES ===== */
 .checkout-page {
-    padding: 6rem 1rem 4rem;
+    padding-block: calc(var(--cabecera-alto) + 2rem) 4rem;
     min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Aviso de estado: pago, gracias, error, 404 y gestión de suscripción. */
 .checkout-status {
-    max-width: 520px;
+    max-width: 34rem;
     width: 100%;
     margin: 0 auto;
-    padding: var(--spacing-3xl) var(--spacing-2xl);
+    padding: clamp(1.75rem, 5vw, 2.75rem);
     background: var(--bg-card);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--rule);
+    border-radius: 1.25rem;
     text-align: center;
+    color: var(--text-primary);
 }
 
-.checkout-status > i {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-lg);
-    display: block;
+.checkout-status > .icon {
+    display: inline-grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 1.25rem;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    background: color-mix(in srgb, var(--primary-text) 12%, transparent);
+    color: var(--primary-text);
 }
 
-.checkout-status-success > i {
-    color: var(--success-color);
+.checkout-status-success > .icon {
+    background: color-mix(in srgb, var(--whatsapp-boton) 14%, transparent);
+    color: var(--whatsapp-boton);
 }
 
-.checkout-status-error > i,
-.checkout-status-cancel > i {
-    color: var(--error-color, #ef4444);
+.checkout-status-error > .icon,
+.checkout-status-cancel > .icon {
+    background: color-mix(in srgb, #b42318 12%, transparent);
+    color: #b42318;
 }
 
-.checkout-status-pending > i,
-.checkout-status-loading > i {
-    color: var(--primary-color);
+.dark .checkout-status-success > .icon {
+    color: #4fbf85;
 }
 
+.dark .checkout-status-error > .icon,
+.dark .checkout-status-cancel > .icon {
+    color: #f97066;
+}
+
+.checkout-status h1,
 .checkout-status h2 {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.6rem, 4vw, 2rem);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
     color: var(--text-primary);
 }
 
 .checkout-status p {
     color: var(--text-secondary);
     margin-bottom: var(--spacing-md);
+    line-height: 1.55;
+}
+
+.checkout-pasos {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    text-align: left;
+}
+
+.checkout-siguiente {
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.checkout-status .checkout-siguiente h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.checkout-pasos li {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--rule);
+    color: var(--text-primary);
+    line-height: 1.45;
+}
+
+.checkout-pasos li .icon {
+    flex: none;
+    margin-top: 0.2rem;
+    color: var(--whatsapp-boton);
+}
+
+.dark .checkout-pasos li .icon {
+    color: #4fbf85;
+}
+
+.checkout-detalle {
+    font-size: var(--font-size-sm);
+    overflow-wrap: anywhere;
 }
 
 .checkout-product {
@@ -405,10 +473,6 @@ select:focus {
     margin-top: var(--spacing-xl);
 }
 
-.checkout-status-manage > i {
-    color: var(--primary-color);
-}
-
 .checkout-manage-form {
     margin-top: var(--spacing-xl);
     text-align: left;
@@ -425,8 +489,8 @@ select:focus {
 .checkout-manage-input {
     width: 100%;
     padding: var(--spacing-md);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--rule);
+    border-radius: 0.75rem;
     font-size: var(--font-size-base);
     margin-bottom: var(--spacing-md);
     background: var(--bg-primary);
@@ -455,12 +519,6 @@ select:focus {
     display: inline-flex;
 }
 
-.checkout-footer {
-    margin-top: var(--spacing-2xl);
-    font-size: var(--font-size-sm);
-    color: var(--text-light);
-}
-
 /* Small Mobile (320px - 480px) */
 @media (max-width: 480px) {
     html {
@@ -474,7 +532,7 @@ select:focus {
     }
     .container {
         max-width: 100%;
-        padding: 0 8px;
+        padding-inline: 1rem;
         box-sizing: border-box;
     }
     img, video {

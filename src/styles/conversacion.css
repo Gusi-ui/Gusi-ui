@@ -1397,3 +1397,146 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ----- Páginas legales -----
+   El HTML viene de src/assets/legal/ y sus clases policy-* no tenían estilos. */
+.policy-page {
+  padding: calc(var(--cabecera-alto) + clamp(1.5rem, 4vw, 3rem)) 1rem clamp(3rem, 7vw, 5rem);
+  color: var(--text-primary);
+}
+
+.policy-page .container {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.policy-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.policy-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.policy-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.policy-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.policy-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.policy-section h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.policy-section p,
+.policy-section li {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.policy-section p {
+  margin: 0 0 0.75rem;
+}
+
+.policy-section ul,
+.policy-section ol {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.policy-section ol {
+  list-style: decimal;
+}
+
+.policy-section strong {
+  color: var(--text-primary);
+}
+
+.policy-section a {
+  color: var(--primary-text);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.policy-section table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.policy-section th,
+.policy-section td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-secondary);
+}
+
+.policy-section th {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.policy-page .section-divider {
+  display: none;
+}
+
+.pie__cookies,
+.policy-boton {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pie__cookies {
+  color: var(--pie-texto-2);
+}
+
+.pie__cookies:hover {
+  color: var(--pie-texto);
+}
+
+.policy-boton {
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+.pie__cookies:focus-visible,
+.policy-boton:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+.pie .pie__cookies:focus-visible {
+  outline-color: var(--marca-amarillo);
+}

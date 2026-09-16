@@ -6,18 +6,16 @@ export type GraciasPage = {
   heading: string;
   subtitle: string;
   icon: IconName;
-  color: string;
   nextSteps: string[];
 };
 
 export const graciasPages: GraciasPage[] = [
   {
     slug: 'web',
-    title: '¡Consulta Web Recibida! | alamia.es',
-    heading: '¡Consulta de Desarrollo Web Recibida!',
+    title: 'Consulta de web recibida | alamia.es',
+    heading: 'Tu consulta sobre una web ha llegado',
     subtitle: 'Gracias por tu interés en desarrollo web. Revisaré tu proyecto y te contactaré en menos de 24 horas.',
     icon: 'laptop-code',
-    color: '#4f46e5',
     nextSteps: [
       'Revisaré los detalles de tu proyecto',
       'Te enviaré una propuesta personalizada',
@@ -26,11 +24,10 @@ export const graciasPages: GraciasPage[] = [
   },
   {
     slug: 'mobile',
-    title: '¡Consulta App Móvil Recibida! | alamia.es',
-    heading: '¡Consulta de App Móvil Recibida!',
+    title: 'Consulta de app móvil recibida | alamia.es',
+    heading: 'Tu consulta sobre una app ha llegado',
     subtitle: 'Gracias por tu interés en desarrollo de aplicaciones móviles.',
     icon: 'mobile',
-    color: '#06b6d4',
     nextSteps: [
       'Analizaré los requisitos de tu app',
       'Te propondré la mejor tecnología (nativa o híbrida)',
@@ -39,11 +36,10 @@ export const graciasPages: GraciasPage[] = [
   },
   {
     slug: 'ecommerce',
-    title: '¡Consulta E-Commerce Recibida! | alamia.es',
-    heading: '¡Consulta de E-Commerce Recibida!',
+    title: 'Consulta de tienda online recibida | alamia.es',
+    heading: 'Tu consulta sobre una tienda online ha llegado',
     subtitle: 'Gracias por tu interés en tu tienda online.',
     icon: 'shopping-cart',
-    color: '#10b981',
     nextSteps: [
       'Evaluaré las funcionalidades que necesitas',
       'Te propondré la plataforma ideal',
@@ -52,11 +48,10 @@ export const graciasPages: GraciasPage[] = [
   },
   {
     slug: 'mantenimiento',
-    title: '¡Consulta Mantenimiento Recibida! | alamia.es',
-    heading: '¡Consulta de Mantenimiento Recibida!',
+    title: 'Consulta de mantenimiento recibida | alamia.es',
+    heading: 'Tu consulta sobre mantenimiento ha llegado',
     subtitle: 'Gracias por confiar en mis servicios de mantenimiento web.',
     icon: 'tools',
-    color: '#f59e0b',
     nextSteps: [
       'Revisaré el estado actual de tu sitio',
       'Te propondré un plan de mantenimiento',
@@ -65,11 +60,10 @@ export const graciasPages: GraciasPage[] = [
   },
   {
     slug: 'otros',
-    title: '¡Consulta Recibida! | alamia.es',
-    heading: '¡Consulta Recibida!',
+    title: 'Consulta recibida | alamia.es',
+    heading: 'Tu consulta ha llegado',
     subtitle: 'Gracias por contactarme. Revisaré tu mensaje y te responderé pronto.',
     icon: 'envelope',
-    color: '#8b5cf6',
     nextSteps: [
       'Leeré tu mensaje con atención',
       'Te responderé en menos de 24 horas',
@@ -80,10 +74,9 @@ export const graciasPages: GraciasPage[] = [
 
 export const graciasDefault: GraciasPage = {
   slug: '',
-  title: '¡Mensaje Recibido! | alamia.es',
-  heading: '¡Mensaje Recibido!',
+  title: 'Mensaje recibido | alamia.es',
+  heading: 'Tu mensaje ha llegado',
   subtitle: 'Gracias por contactarme. Te responderé lo antes posible.',
   icon: 'check-circle',
-  color: '#10b981',
   nextSteps: ['Revisaré tu mensaje', 'Te contactaré en menos de 24 horas'],
 };
