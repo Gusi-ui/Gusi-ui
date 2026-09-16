@@ -3,32 +3,35 @@ import { projectServices, maintenanceService } from '@/data/services';
 import ServiceCard from '@/islands/ServiceCard.tsx';
 import MaintenanceCard from '@/islands/MaintenanceCard.tsx';
 import { isStripeConfigured } from '@/lib/payments/stripe-client';
+import { WHATSAPP_URL } from '@/lib/constants';
 
 const stripeEnabled = isStripeConfigured();
 ---
 
-<section id="servicios" class="services" itemscope itemtype="https://schema.org/Service">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Mis Servicios</h2>
-      <p class="section-subtitle">
-        Elige el servicio que necesitas. Un clic y pagas de forma segura.
+<section id="servicios" class="apartado" aria-labelledby="servicios-titulo">
+  <div class="apartado__contenido">
+    <header class="apartado__cabeza">
+      <h2 id="servicios-titulo" class="apartado__titulo">Lo que cuesta</h2>
+      <p class="apartado__entrada">
+        Precios publicados. Puedes contratar y pagar aquí mismo con tarjeta o Bizum, o escribirme
+        antes si tienes dudas.
       </p>
-      <div class="section-divider"></div>
-    </div>
+    </header>
 
-    <div class="services-grid services-grid--projects">
+    <div class="tarifas">
       {
         projectServices.map((service) => (
-          <div class="services-grid__cell">
-            <ServiceCard client:visible service={service} stripeEnabled={stripeEnabled} />
-          </div>
+          <ServiceCard client:visible service={service} stripeEnabled={stripeEnabled} />
         ))
       }
     </div>
 
-    <div class="maintenance-band__cell">
-      <MaintenanceCard client:visible service={maintenanceService} stripeEnabled={stripeEnabled} />
-    </div>
+    <MaintenanceCard client:visible service={maintenanceService} stripeEnabled={stripeEnabled} />
+
+    <p class="apartado__pie">
+      ¿No sabes cuál encaja con lo tuyo?
+      <a href={WHATSAPP_URL} target="_blank" rel="noopener">Pregúntame por WhatsApp</a> y te lo
+      digo.
+    </p>
   </div>
 </section>

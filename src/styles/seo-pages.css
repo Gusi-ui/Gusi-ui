@@ -77,7 +77,7 @@
   color: var(--text-primary, #0f172a);
 }
 
-.service-landing__section p {
+.service-landing__section p:not(:is(.tarifa, .mantenimiento) p) {
   line-height: 1.7;
   color: var(--text-secondary, #475569);
   max-width: 48rem;
@@ -830,21 +830,6 @@
 
 .blog-post__inline-cta-actions .btn {
   text-decoration: none;
-}
-
-.service-card__detail-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.service-card__detail-link:hover {
-  text-decoration: underline;
 }
 
 .dark .service-landing__card,

@@ -320,3 +320,261 @@
     max-width: 34rem;
   }
 }
+
+/* ----- Apartados de la home ----- */
+.apartado {
+  padding: clamp(3.5rem, 8vw, 6rem) 1rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.apartado__contenido {
+  /* Las tarifas se reparten según el hueco que tienen, no según la pantalla:
+     en la página de cada servicio van en una columna estrecha. */
+  container-type: inline-size;
+  max-width: 72rem;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2rem);
+}
+
+.apartado__cabeza {
+  max-width: 40rem;
+}
+
+.apartado__titulo {
+  margin: 0 0 0.6rem;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+.apartado__entrada {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.apartado__pie {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.apartado__pie a {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration-color: var(--marca-amarillo);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ----- Tarifas -----
+   Suelta (página de cada servicio) es una tarjeta; dentro de .tarifas, una
+   fila de la lista de precios. */
+.tarifa {
+  display: grid;
+  gap: 0.9rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.tarifa__cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+}
+
+.tarifa__nombre,
+.mantenimiento__nombre {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.tarifa__sello {
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--marca-amarillo);
+  color: #132238;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tarifa__resumen,
+.mantenimiento__resumen {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.tarifa__incluye,
+.mantenimiento__incluye {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tarifa__incluye li,
+.mantenimiento__incluye li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.tarifa__incluye .icon,
+.mantenimiento__incluye .icon {
+  flex: none;
+  font-size: 0.85rem;
+  color: var(--whatsapp-boton);
+}
+
+.dark .tarifa__incluye .icon,
+.dark .mantenimiento__incluye .icon {
+  color: #4fbf85;
+}
+
+.tarifa__detalle {
+  justify-self: start;
+  color: var(--primary-text);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.tarifa__compra,
+.mantenimiento__compra {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.tarifa__precio {
+  margin: 0;
+  font-size: 2.1rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.tarifa__periodo {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+.tarifa__pago {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tarifa__boton {
+  justify-content: center;
+  width: 100%;
+}
+
+.tarifa__boton:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* Lista de precios de la home */
+.tarifas {
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.tarifas .tarifa {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Cada tarifa llega envuelta en su <astro-island>, así que el separador se
+   pone entre islas y no entre .tarifa hermanas. */
+.tarifas > :not(:first-child) .tarifa {
+  border-top: 1px solid var(--rule);
+}
+
+@container (min-width: 50rem) {
+  .tarifas .tarifa {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 14rem;
+    grid-template-areas:
+      'cabeza incluye compra'
+      'resumen incluye compra'
+      'detalle incluye compra';
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    padding: 1.75rem 2rem;
+  }
+
+  .tarifas .tarifa__cabeza { grid-area: cabeza; }
+  .tarifas .tarifa__resumen { grid-area: resumen; }
+  .tarifas .tarifa__detalle { grid-area: detalle; align-self: start; }
+  .tarifas .tarifa__incluye { grid-area: incluye; align-self: center; }
+  .tarifas .tarifa__compra { grid-area: compra; text-align: right; }
+}
+
+/* Mantenimiento: la única oferta recurrente, en banda propia. */
+.mantenimiento {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 1.25rem;
+  background: var(--burbuja-jose);
+  color: var(--text-primary);
+}
+
+.mantenimiento__texto {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+
+.mantenimiento__gestionar {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-underline-offset: 3px;
+}
+
+.mantenimiento__gestionar:hover {
+  color: var(--text-primary);
+}
+
+@container (min-width: 50rem) {
+  .mantenimiento {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 14rem;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .mantenimiento__compra {
+    text-align: right;
+  }
+}
+
+.tarifa a:focus-visible,
+.mantenimiento a:focus-visible,
+.apartado__pie a:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}

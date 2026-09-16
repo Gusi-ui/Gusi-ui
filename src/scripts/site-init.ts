@@ -74,15 +74,11 @@ const initScrollAnimations = (): void => {
 
   [
     '.section-header',
-    '.services-grid__cell',
-    '.maintenance-band__cell',
     '.project-card',
     '.contact-item',
   ].forEach((selector) => {
     document.querySelectorAll(selector).forEach((el, index) => {
       if (
-        selector === '.services-grid__cell' ||
-        selector === '.maintenance-band__cell' ||
         selector === '.project-card'
       ) {
         (el as HTMLElement).style.animationDelay = `${index * 0.1}s`;
