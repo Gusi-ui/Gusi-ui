@@ -80,6 +80,17 @@ describe('contraste de los tokens de tema', () => {
         AA_TEXTO_NORMAL
       );
     });
+
+    it.each(['boton-fondo', 'boton-fondo-hover'])(
+      'el texto blanco sobre --%s cumple AA',
+      (fondo) => {
+        expect(contraste('#ffffff', tokens[fondo])).toBeGreaterThanOrEqual(AA_TEXTO_NORMAL);
+      }
+    );
+
+    it('el botón principal se distingue del fondo de la página (3:1, WCAG 1.4.11)', () => {
+      expect(contraste(tokens['boton-fondo'], tokens['bg-primary'])).toBeGreaterThanOrEqual(3);
+    });
   });
 });
 

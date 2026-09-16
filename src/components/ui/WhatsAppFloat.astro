@@ -1,15 +1,22 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
 import { WHATSAPP_URL } from '@/lib/constants';
+
+interface Props {
+  /** La página abre con la portada, que ya tiene su botón de WhatsApp. */
+  conPortada?: boolean;
+}
+
+const { conPortada = false } = Astro.props;
 ---
 
 <a
   href={WHATSAPP_URL}
-  class="whatsapp-float"
+  class:list={['whatsapp-float', { 'whatsapp-float--oculto': conPortada }]}
+  inert={conPortada}
   target="_blank"
   rel="noopener"
-  aria-label="Contactar por WhatsApp - Abre en ventana nueva"
+  aria-label="Escribir por WhatsApp (se abre en otra pestaña)"
 >
   <Icon name="whatsapp" />
-  <span class="whatsapp-text">Contratar</span>
 </a>

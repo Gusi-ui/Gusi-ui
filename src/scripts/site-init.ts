@@ -107,6 +107,24 @@ const initSmoothScrolling = (): void => {
   });
 };
 
+const initWhatsAppFlotante = (): void => {
+  // En la home, la portada ya tiene su botón de WhatsApp: el flotante solo
+  // aparece cuando la portada deja de verse, y en móvil no tapa el chat.
+  const flotante = document.querySelector('.whatsapp-float');
+  const portada = document.querySelector('.portada');
+  if (!flotante || !portada || !('IntersectionObserver' in window)) return;
+
+  const observer = new IntersectionObserver(
+    ([entrada]) => {
+      const visible = entrada.isIntersecting;
+      flotante.classList.toggle('whatsapp-float--oculto', visible);
+      flotante.toggleAttribute('inert', visible);
+    },
+    { threshold: 0.15 }
+  );
+  observer.observe(portada);
+};
+
 const initWebVitals = (): void => {
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
 
@@ -131,6 +149,7 @@ const init = (): void => {
   initHeaderScroll();
   initScrollAnimations();
   initSmoothScrolling();
+  initWhatsAppFlotante();
   initWebVitals();
 };
 

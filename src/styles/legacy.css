@@ -1,6 +1,8 @@
 /* ===== GRADIENTES Y SOMBRAS ===== */
 :root {
-    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #4f46e5 100%);
+    /* Ya no es un degradado: fondo plano de acción, con texto blanco AA en
+       ambos temas. Se mantiene el nombre porque lo usan varias secciones. */
+    --gradient-primary: var(--boton-fondo);
     --gradient-hero: none;
     --hero-text: #132238;
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
@@ -44,6 +46,8 @@
        Este tono conserva el reconocimiento y llega a 5,39:1. */
     --whatsapp-boton: #147a45;
     --whatsapp-boton-hover: #0f6638;
+    --boton-fondo: #1d5b9e;
+    --boton-fondo-hover: #154577;
     
     /* WhatsApp */
     --whatsapp-color: #25D366;
@@ -116,6 +120,8 @@
     --burbuja-jose: #1f3d61;
     --whatsapp-boton: #147a45;
     --whatsapp-boton-hover: #0f6638;
+    --boton-fondo: #2f6fb5;
+    --boton-fondo-hover: #2a68ad;
 }
 
 /* ===== RESET Y BASE OPTIMIZADO ===== */
@@ -221,7 +227,7 @@ select:focus {
 [role="button"]:hover,
 [role="button"]:focus {
     cursor: pointer;
-    background-color: rgba(37, 99, 235, 0.1);
+    background-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .section-header {
@@ -257,54 +263,31 @@ select:focus {
     gap: var(--spacing-sm);
     padding: var(--spacing-md) var(--spacing-xl);
     border: none;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-full);
     font-size: var(--font-size-base);
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     cursor: pointer;
-    transition: all var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left var(--transition-slow);
-}
-
-.btn:hover::before {
-    left: 100%;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
+    background: var(--boton-fondo);
     color: var(--text-white);
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    background: var(--boton-fondo-hover);
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-    box-shadow: none;
+    color: var(--primary-text);
+    border: 2px solid currentColor;
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: rgba(79, 70, 229, 0.08);
-    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--primary-text) 8%, transparent);
 }
 
 .btn-secondary:disabled {
@@ -313,16 +296,17 @@ select:focus {
 }
 
 .btn-whatsapp {
-    background: var(--whatsapp-color);
+    background: var(--whatsapp-boton);
     color: var(--text-white);
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .btn-whatsapp:hover {
-    background: var(--whatsapp-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    background: var(--whatsapp-boton-hover);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 3px;
 }
 
 .btn-google {
@@ -363,73 +347,54 @@ select:focus {
     justify-content: center;
 }
 
-/* ===== WHATSAPP FLOTANTE ===== */
+/* ===== WHATSAPP FLOTANTE =====
+   Mismo verde accesible que el botón de la portada. En la home se oculta
+   mientras la portada está a la vista, porque allí ya hay un botón de
+   WhatsApp y el flotante tapaba el chat en móvil (site-init.ts). */
 .whatsapp-float {
     position: fixed;
-    bottom: var(--spacing-xl);
-    right: var(--spacing-xl);
-    background: var(--whatsapp-color);
-    color: var(--text-white);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    right: max(1rem, env(safe-area-inset-right, 0px));
+    bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--whatsapp-boton);
+    color: var(--text-white);
     text-decoration: none;
-    box-shadow: var(--shadow-xl);
-    z-index: 1000;
-    transition: all var(--transition-normal);
-    animation: pulse 2s infinite;
+    box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--marca-noche) 60%, transparent);
+    transition: background-color var(--transition-fast), opacity var(--transition-normal),
+        transform var(--transition-normal), visibility var(--transition-normal);
 }
 
 .whatsapp-float:hover {
-    transform: scale(1.1);
-    background: var(--whatsapp-dark);
+    background: var(--whatsapp-boton-hover);
 }
 
-.whatsapp-float i {
-    font-size: var(--font-size-xl);
+.whatsapp-float:focus-visible {
+    outline: 2px solid var(--primary-text);
+    outline-offset: 3px;
 }
 
-.whatsapp-text {
-    position: absolute;
-    right: 70px;
-    background: var(--whatsapp-color);
-    color: var(--text-white);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    white-space: nowrap;
+.whatsapp-float .icon {
+    font-size: 1.5rem;
+}
+
+.whatsapp-float--oculto {
     opacity: 0;
-    transform: translateX(10px);
-    transition: all var(--transition-normal);
+    visibility: hidden;
+    transform: translateY(0.75rem);
     pointer-events: none;
 }
 
-.whatsapp-float:hover .whatsapp-text {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+@media (prefers-reduced-motion: reduce) {
+    .whatsapp-float {
+        transition: background-color var(--transition-fast);
     }
 }
-
-/* ===== HEADER ===== */
-
-/* Asegurar que el header tenga prioridad en todos los dispositivos */
-
-/* Dark mode header styles */
 
 /* Dark mode body and global styles */
 .dark body {
@@ -702,7 +667,7 @@ select:focus {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 70%);
+    background: radial-gradient(circle at top right, color-mix(in srgb, var(--primary-color) 5%, transparent), transparent 70%);
     z-index: -1;
     opacity: 0;
     transition: opacity var(--transition-normal);
@@ -711,7 +676,7 @@ select:focus {
 .service-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
-    border-color: rgba(99, 102, 241, 0.1);
+    border-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .service-card:hover::before {
@@ -725,7 +690,7 @@ select:focus {
 .service-icon {
     width: 64px;
     height: 64px;
-    background: rgba(99, 102, 241, 0.1);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
     border-radius: var(--radius-xl);
     display: flex;
     align-items: center;
@@ -865,7 +830,7 @@ select:focus {
 }
 
 .service-card--best-seller {
-    border-color: rgba(99, 102, 241, 0.45);
+    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
 }
 
 .service-card--best-value {
@@ -886,9 +851,9 @@ select:focus {
 }
 
 .service-badge--best-seller {
-    background: rgba(99, 102, 241, 0.15);
+    background: color-mix(in srgb, var(--primary-color) 15%, transparent);
     color: var(--primary-color);
-    border: 1px solid rgba(99, 102, 241, 0.35);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
 }
 
 .service-badge--best-value {
@@ -1058,7 +1023,7 @@ select:focus {
 .service-card:hover .service-btn-primary {
     background: var(--primary-dark);
     color: var(--text-white);
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--primary-color) 35%, transparent);
     border-color: transparent;
 }
 
@@ -1179,7 +1144,7 @@ select:focus {
 }
 
 .checkout-manage-return {
-    background: rgba(79, 70, 229, 0.08);
+    background: color-mix(in srgb, var(--primary-color) 8%, transparent);
     border-radius: var(--radius-lg);
     padding: var(--spacing-md);
 }
@@ -1328,7 +1293,7 @@ select:focus {
 .project-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
-    border-color: rgba(99, 102, 241, 0.1);
+    border-color: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .project-image {
@@ -1452,13 +1417,13 @@ select:focus {
 }
 
 .tech-tag {
-    background: rgba(99, 102, 241, 0.1);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
     color: var(--primary-color);
     padding: var(--spacing-xs) var(--spacing-md);
     border-radius: var(--radius-full);
     font-size: var(--font-size-xs);
     font-weight: 600;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
     transition: all var(--transition-fast);
 }
 
@@ -1466,7 +1431,7 @@ select:focus {
     background: var(--primary-color);
     color: var(--text-white);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--primary-color) 30%, transparent);
 }
 
 .project-card-meta {
@@ -1607,7 +1572,7 @@ select:focus {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--primary-color) 10%, transparent) 0%, transparent 70%);
     pointer-events: none;
     animation: float 6s ease-in-out infinite;
 }
@@ -1718,7 +1683,7 @@ select:focus {
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-xl);
     transition: all var(--transition-normal);
-    border: 2px solid rgba(99, 102, 241, 0.1);
+    border: 2px solid color-mix(in srgb, var(--primary-color) 10%, transparent);
     position: relative;
     overflow: hidden;
     scroll-snap-align: center;
@@ -1862,7 +1827,7 @@ select:focus {
     align-items: center;
     gap: var(--spacing-lg);
     padding: var(--spacing-md);
-    background: rgba(99, 102, 241, 0.05);
+    background: color-mix(in srgb, var(--primary-color) 5%, transparent);
     border-radius: var(--radius-lg);
     border-left: 4px solid var(--primary-color);
 }
@@ -1876,7 +1841,7 @@ select:focus {
     align-items: center;
     justify-content: center;
     border: 3px solid var(--primary-color);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 30%, transparent);
     /* Ensure perfect circle across layouts */
     aspect-ratio: 1 / 1;
     overflow: hidden;
@@ -1949,7 +1914,7 @@ select:focus {
     padding: var(--spacing-4xl) var(--spacing-xl);
     background: linear-gradient(135deg, var(--bg-card) 0%, #ffffff 100%);
     border-radius: var(--radius-2xl);
-    border: 2px dashed rgba(99, 102, 241, 0.3);
+    border: 2px dashed color-mix(in srgb, var(--primary-color) 30%, transparent);
     margin-bottom: var(--spacing-3xl);
 }
 
@@ -2128,7 +2093,7 @@ select:focus {
 .review-form textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .review-form textarea {
@@ -2470,10 +2435,10 @@ select:focus {
 }
 
 .footer-technologies .tech-tag:hover {
-    background: rgba(99, 102, 241, 0.2);
+    background: color-mix(in srgb, var(--primary-color) 20%, transparent);
     color: var(--primary-light);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 30%, transparent);
     border-color: var(--primary-color);
 }
 
@@ -2654,18 +2619,6 @@ select:focus {
     }
     .footer-bottom-links {
         justify-content: center;
-    }
-    .whatsapp-float {
-        bottom: var(--spacing-md);
-        right: var(--spacing-md);
-        width: 40px;
-        height: 40px;
-    }
-    .whatsapp-float i {
-        font-size: var(--font-size-base);
-    }
-    .whatsapp-text {
-        display: none;
     }
 }
 
