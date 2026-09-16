@@ -11,17 +11,10 @@ type ServiceCardProps = {
   stripeEnabled: boolean;
 };
 
+// Una tarifa: suelta en la página de cada servicio, o como fila dentro de la
+// lista `.tarifas` de la home. El CSS decide la disposición según el contexto.
 const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-
-  const cardClassName = [
-    'service-card',
-    service.highlight === 'featured' ? 'service-card--featured' : '',
-    service.badge === 'best-value' ? 'service-card--best-value' : '',
-    service.badge === 'best-seller' ? 'service-card--best-seller' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
 
   const handleCheckout = async () => {
     setIsCheckingOut(true);
@@ -43,60 +36,48 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
 
   return (
     <article
-      className={cardClassName}
+      className="tarifa"
       itemScope
       itemType="https://schema.org/Service"
       aria-labelledby={service.id}
     >
-      {service.badge && (
-        <span className={`service-badge service-badge--${service.badge}`}>
-          {BADGE_LABELS[service.badge]}
-        </span>
-      )}
-
-      <div className="service-icon" aria-hidden="true">
-        <Icon name={service.icon} />
+      <div className="tarifa__cabeza">
+        <h3 className="tarifa__nombre" itemProp="name" id={service.id}>
+          {service.title}
+        </h3>
+        {service.badge && <span className="tarifa__sello">{BADGE_LABELS[service.badge]}</span>}
       </div>
 
-      <h3 className="service-title" itemProp="name" id={service.id}>
-        {service.title}
-      </h3>
-
-      <p className="service-description" itemProp="description">
+      <p className="tarifa__resumen" itemProp="description">
         {service.description}
       </p>
 
-      <a href={`/servicios/${service.slug}/`} className="service-card__detail-link">
-        Ver detalles del servicio
-      </a>
-
-      <div className="service-features">
+      <ul className="tarifa__incluye">
         {service.features.map((feature) => (
-          <div className="feature-item" key={feature}>
+          <li key={feature}>
             <Icon name="check" />
             <span itemProp="serviceType">{feature}</span>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div className="service-footer">
-        <div
-          className="service-price"
-          itemProp="offers"
-          itemScope
-          itemType="https://schema.org/Offer"
-        >
+      <a href={`/servicios/${service.slug}/`} className="tarifa__detalle">
+        Ver qué incluye
+      </a>
+
+      <div className="tarifa__compra">
+        <p className="tarifa__precio" itemProp="offers" itemScope itemType="https://schema.org/Offer">
           <meta itemProp="priceCurrency" content="EUR" />
-          <span itemProp="priceCurrency">€</span>
-          <span itemProp="price">{service.price}</span>
-          <span className="price-period">pago único</span>
-        </div>
-
-        <p className="price-hint">{service.priceHint}</p>
+          <span itemProp="price" content={String(service.price)}>
+            {service.price}
+          </span>{' '}
+          €
+        </p>
+        <p className="tarifa__pago">{service.priceHint}</p>
 
         <button
           type="button"
-          className="service-btn service-btn-primary"
+          className="btn btn-primary tarifa__boton"
           onClick={handleCheckout}
           onMouseEnter={prefetchStripe}
           onFocus={prefetchStripe}
@@ -105,8 +86,8 @@ const ServiceCard = ({ service, stripeEnabled }: ServiceCardProps) => {
             isCheckingOut ? 'Procesando pago...' : `Contratar ${service.title} con pago único`
           }
         >
-          <Icon name={isCheckingOut ? 'spinner' : 'credit-card'} spin={isCheckingOut} />
-          <span>{isCheckingOut ? 'Procesando...' : 'Contratar ahora'}</span>
+          {isCheckingOut && <Icon name="spinner" spin />}
+          <span>{isCheckingOut ? 'Procesando...' : 'Contratar'}</span>
         </button>
       </div>
     </article>

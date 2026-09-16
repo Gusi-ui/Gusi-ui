@@ -46,7 +46,7 @@ const portfolioBadge = liveProject ? 'Proyecto en producción' : 'Proyecto de de
 
       <p class="project-case__price-badge" aria-label={`Servicio recomendado desde ${project.servicePrice} euros`}>
         <span>{project.serviceLabel}</span>
-        <span>desde €{project.servicePrice}</span>
+        <span>Desde {project.servicePrice} €</span>
       </p>
 
       <div class="project-case__cta-row">
@@ -224,7 +224,7 @@ const portfolioBadge = liveProject ? 'Proyecto en producción' : 'Proyecto de de
       <div class="project-case__cta-row">
         <a href={serviceHref} class="btn btn-primary" role="button">
           <Icon name="credit-card" />
-          <span>Contratar desde €{project.servicePrice}</span>
+          <span>Contratar desde {project.servicePrice} €</span>
         </a>
         <a
           href={whatsappHref}

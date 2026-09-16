@@ -27,17 +27,3 @@ export const fetchReviews = async (): Promise<Review[]> => {
   }
   return [];
 };
-
-import { iconSvgHtml } from '@/lib/icons';
-
-export const generateStars = (rating: number): string => {
-  let html = '';
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating % 1 !== 0;
-  for (let i = 0; i < 5; i++) {
-    if (i < fullStars) html += iconSvgHtml('star');
-    else if (i === fullStars && hasHalf) html += iconSvgHtml('star-half');
-    else html += iconSvgHtml('star-outline');
-  }
-  return html;
-};

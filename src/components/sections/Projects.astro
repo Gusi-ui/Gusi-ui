@@ -12,21 +12,22 @@ interface Props {
 
 const { mode = 'rotating' } = Astro.props;
 const displayProjects = toDisplayProjects(projects);
+const Titulo = mode === 'rotating' ? 'h2' : 'h1';
 ---
 
-<section id="proyectos" class="projects">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Mis Proyectos</h2>
-      <p class="section-subtitle">
-        {
-          mode === 'rotating'
-            ? 'Casos de estudio con demos en vivo. Cada visita muestra una selección distinta para que descubras más soluciones.'
-            : 'Explora todos los casos de estudio con demos funcionales. Cada proyecto resuelve un problema real de negocio.'
-        }
+<section
+  id="proyectos"
+  class:list={['apartado', 'proyectos', { 'apartado--pagina': mode === 'all' }]}
+  aria-labelledby="proyectos-titulo"
+>
+  <div class="apartado__contenido">
+    <header class="apartado__cabeza">
+      <Titulo id="proyectos-titulo" class="apartado__titulo">Demos que puedes probar</Titulo>
+      <p class="apartado__entrada">
+        Proyectos de ejemplo para negocios distintos. Ábrelos en el móvil y úsalos: funcionan de
+        verdad, y cada uno explica cómo se hizo.
       </p>
-      <div class="section-divider"></div>
-    </div>
+    </header>
 
     {
       mode === 'rotating' ? (
@@ -40,7 +41,7 @@ const displayProjects = toDisplayProjects(projects);
       ) : (
         <>
           <ProjectFilter client:visible />
-          <div class="projects-grid" id="projects-grid">
+          <div class="proyectos__rejilla">
             {projects.map((project) => (
               <ProjectCard project={project} whatsappUrl={WHATSAPP_URL} />
             ))}

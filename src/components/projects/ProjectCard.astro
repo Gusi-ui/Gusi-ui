@@ -1,5 +1,4 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
 import type { ProjectCaseStudy } from '@/data/project-case-studies';
 import { getProjectDemoLabel, isExternalDemo } from '@/lib/project-demo';
 
@@ -8,61 +7,39 @@ interface Props {
   whatsappUrl: string;
 }
 
+// Mismo marcado que la tarjeta de src/islands/ProjectsShowcase.tsx (home).
 const { project, whatsappUrl } = Astro.props;
 const whatsappHref = `${whatsappUrl}?text=${encodeURIComponent(project.whatsappMessage)}`;
 const externalDemo = isExternalDemo(project.demoUrl);
-const demoLabel = getProjectDemoLabel(project.demoUrl);
 ---
 
-<article class="project-card" data-project-type={project.type} data-project-id={project.id}>
-  <div class="project-image">
+<article class="proyecto" data-project-type={project.type} data-project-id={project.id}>
+  <a class="proyecto__imagen" href={`/proyectos/${project.id}/`} tabindex="-1" aria-hidden="true">
     <picture>
       {project.image.avif && <source srcset={`/${project.image.avif}`} type="image/avif" />}
       {project.image.webp && <source srcset={`/${project.image.webp}`} type="image/webp" />}
-      <img src={`/${project.image.jpg}`} alt={project.image.alt} loading="lazy" />
+      <img src={`/${project.image.jpg}`} alt="" loading="lazy" width="1200" height="630" />
     </picture>
-    <div class="project-overlay">
-      <div class="project-actions">
-        <a
-          href={project.demoUrl}
-          class="project-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Icon name="eye" />
-          <span>{externalDemo ? 'Visitar' : 'Ver demo'}</span>
-        </a>
-        <a href={`/proyectos/${project.id}/`} class="project-btn project-btn-case">
-          <Icon name="compass" />
-          <span>Ver caso</span>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="project-content">
-    <div class="project-card-meta">
-      <div class="project-badge">{project.badge}</div>
-      <span class="project-demo-label">{demoLabel}</span>
-    </div>
-    <h3 class="project-title">
+  </a>
+  <div class="proyecto__cuerpo">
+    <p class="proyecto__sector">
+      {project.badge}
+      <span class="proyecto__estado">{getProjectDemoLabel(project.demoUrl)}</span>
+    </p>
+    <h3 class="proyecto__titulo">
       <a href={`/proyectos/${project.id}/`}>{project.title}</a>
     </h3>
-    <p class="project-description">{project.hook}</p>
-    <p class="project-metric">
-      <Icon name="bolt" />
-      <span>{project.featuredMetric}</span>
-    </p>
-    <div class="project-tech">
-      {project.tech.map((tech) => (
-        <span class="tech-tag">{tech}</span>
-      ))}
-    </div>
-    <div class="project-card-footer">
-      <span class="project-price">desde €{project.servicePrice}</span>
-      <a href={whatsappHref} class="project-whatsapp-link" target="_blank" rel="noopener">
-        <Icon name="whatsapp" />
-        <span>Quiero algo similar</span>
+    <p class="proyecto__resumen">{project.hook}</p>
+    <p class="proyecto__resultado">{project.featuredMetric}</p>
+    <div class="proyecto__acciones">
+      <a href={project.demoUrl} class="proyecto__demo" target="_blank" rel="noopener noreferrer">
+        {externalDemo ? 'Visitar la web' : 'Probar la demo'}
       </a>
+      <a href={`/proyectos/${project.id}/`} class="proyecto__caso">Cómo se hizo</a>
     </div>
+    <p class="proyecto__pie">
+      <span>Desde {project.servicePrice} €</span>
+      <a href={whatsappHref} target="_blank" rel="noopener noreferrer">Quiero algo parecido</a>
+    </p>
   </div>
 </article>

@@ -61,6 +61,36 @@ describe('contraste de los tokens de tema', () => {
         );
       }
     );
+
+    // El hero es una conversación: el texto tiene que leerse dentro de las dos
+    // burbujas, no solo sobre el fondo de la página.
+    it.each(['burbuja-cliente', 'burbuja-jose'])(
+      '--text-primary y --text-secondary cumplen AA sobre --%s',
+      (burbuja) => {
+        for (const texto of ['text-primary', 'text-secondary']) {
+          expect(contraste(tokens[texto], tokens[burbuja])).toBeGreaterThanOrEqual(
+            AA_TEXTO_NORMAL
+          );
+        }
+      }
+    );
+
+    it('el texto blanco del botón de WhatsApp cumple AA', () => {
+      expect(contraste('#ffffff', tokens['whatsapp-boton'])).toBeGreaterThanOrEqual(
+        AA_TEXTO_NORMAL
+      );
+    });
+
+    it.each(['boton-fondo', 'boton-fondo-hover'])(
+      'el texto blanco sobre --%s cumple AA',
+      (fondo) => {
+        expect(contraste('#ffffff', tokens[fondo])).toBeGreaterThanOrEqual(AA_TEXTO_NORMAL);
+      }
+    );
+
+    it('el botón principal se distingue del fondo de la página (3:1, WCAG 1.4.11)', () => {
+      expect(contraste(tokens['boton-fondo'], tokens['bg-primary'])).toBeGreaterThanOrEqual(3);
+    });
   });
 });
 

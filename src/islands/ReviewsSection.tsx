@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import Icon from '@/components/ui/Icon';
-import { fetchReviews, generateStars, type Review } from '@/lib/reviews';
+import { fetchReviews, type Review } from '@/lib/reviews';
 import { getReviewsApi } from '@/lib/constants';
 import { isValidEmail } from '@/lib/utils';
 import { showNotification } from '@/lib/notifications';
@@ -9,18 +9,31 @@ type Props = {
   googleReviewsUrl: string;
 };
 
+const FORMULARIO_VACIO = { name: '', email: '', company: '', message: '', consent: false };
+
+const Estrellas = ({ rating }: { rating: number }) => (
+  <span className="opinion__estrellas" role="img" aria-label={`${rating} de 5 estrellas`}>
+    {[1, 2, 3, 4, 5].map((n) => (
+      <span key={n} className={Math.round(rating) >= n ? undefined : 'apagada'}>
+        <Icon name="star" />
+      </span>
+    ))}
+  </span>
+);
+
 const ReviewsSection = ({ googleReviewsUrl }: Props) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [rating, setRating] = useState(0);
-  const [form, setForm] = useState({ name: '', email: '', company: '', message: '', consent: false });
+  const [form, setForm] = useState(FORMULARIO_VACIO);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const listaRef = useRef<HTMLUListElement>(null);
 
   const loadReviews = useCallback(async () => {
     try {
-      const data = await fetchReviews();
-      setReviews(data);
+      setReviews(await fetchReviews());
     } catch {
       setReviews([]);
     } finally {
@@ -32,32 +45,43 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
     loadReviews();
   }, [loadReviews]);
 
-  const avgRating =
-    reviews.length > 0
-      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
-      : '0.0';
+  // <dialog> nativo: atrapa el foco, cierra con Escape y lo devuelve al botón.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (modalOpen && !dialog.open) dialog.showModal();
+    if (!modalOpen && dialog.open) dialog.close();
+  }, [modalOpen]);
 
-  const handleCarousel = (direction: 'prev' | 'next') => {
-    const container = document.getElementById('testimonials-container');
-    if (!container) return;
-    const firstCard = container.querySelector('.testimonial-card') as HTMLElement | null;
-    const gap = parseFloat(getComputedStyle(container).gap) || 32;
-    const scrollAmount = firstCard ? firstCard.offsetWidth + gap : 400;
-    container.scrollBy({ left: direction === 'prev' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+  const media =
+    reviews.length > 0
+      ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toLocaleString('es-ES', {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        })
+      : null;
+
+  const desplazar = (direction: 'prev' | 'next') => {
+    const lista = listaRef.current;
+    if (!lista) return;
+    const primera = lista.querySelector('li');
+    const gap = parseFloat(getComputedStyle(lista).columnGap) || 16;
+    const paso = primera ? primera.offsetWidth + gap : lista.clientWidth;
+    lista.scrollBy({ left: direction === 'prev' ? -paso : paso, behavior: 'smooth' });
   };
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !rating || !form.message || !form.consent) {
-      showNotification('Por favor, completa todos los campos obligatorios', 'error');
+      showNotification('Completa los campos obligatorios y elige una valoración', 'error');
       return;
     }
     if (!isValidEmail(form.email)) {
-      showNotification('Por favor, introduce un email válido', 'error');
+      showNotification('Revisa el email: no parece válido', 'error');
       return;
     }
     if (form.message.length < 10) {
-      showNotification('La reseña debe tener al menos 10 caracteres', 'error');
+      showNotification('La reseña necesita al menos 10 caracteres', 'error');
       return;
     }
 
@@ -84,12 +108,12 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
 
       const data = await response.json();
       setModalOpen(false);
-      setForm({ name: '', email: '', company: '', message: '', consent: false });
+      setForm(FORMULARIO_VACIO);
       setRating(0);
       showNotification(
         data.requiresApproval
-          ? '¡Gracias! Tu reseña será revisada antes de publicarse.'
-          : '¡Gracias! Tu reseña ha sido publicada.',
+          ? 'Gracias. La reviso y la publico en cuanto pueda.'
+          : 'Gracias. Tu reseña ya está publicada.',
         'success'
       );
       await loadReviews();
@@ -101,215 +125,176 @@ const ReviewsSection = ({ googleReviewsUrl }: Props) => {
   };
 
   const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    new Date(dateString).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' });
 
   return (
     <>
-      <div className="testimonials-actions">
-        <button
-          className="btn btn-primary"
-          aria-label="Dejar una reseña"
-          type="button"
-          onClick={() => setModalOpen(true)}
-        >
-          <Icon name="star" />
-          <span>Dejar una Reseña</span>
-        </button>
-        <a
-          href={googleReviewsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn-google"
-          aria-label="Dejar reseña en Google"
-        >
-          <Icon name="google" />
-          <span>Reseñar en Google</span>
-        </a>
-      </div>
-
-      <div className="testimonials-carousel-wrapper">
-        <button
-          className="carousel-btn prev-btn"
-          aria-label="Reseña anterior"
-          type="button"
-          onClick={() => handleCarousel('prev')}
-        >
-          <Icon name="chevron-left" />
-        </button>
-        <div className="testimonials-carousel" id="testimonials-container">
-          {loading && <p className="text-center text-muted">Cargando reseñas...</p>}
-          {!loading && reviews.length === 0 && (
-            <p className="text-center text-muted">No se pudieron cargar las reseñas.</p>
-          )}
-          {reviews.slice(0, 15).map((review) => {
-            const isGoogle = review.source === 'google';
-            return (
-              <div key={review.id || `${review.name}-${review.date}`} className="testimonial-card">
-                <div className={`review-badge ${isGoogle ? 'google' : 'web'}`}>
-                  <Icon name={isGoogle ? 'google' : 'globe'} />
-                  <span>{isGoogle ? 'Google' : 'Web'}</span>
-                </div>
-                <div className="testimonial-content">
-                  <div
-                    className="stars"
-                    aria-label={`${review.rating} de 5 estrellas`}
-                    dangerouslySetInnerHTML={{ __html: generateStars(review.rating) }}
-                  />
-                  <p>&quot;{review.message}&quot;</p>
-                </div>
-                <div className="testimonial-author">
-                  <div className="author-avatar">
-                    <Icon name={isGoogle ? 'google' : 'user'} />
-                  </div>
-                  <div className="author-info">
-                    <h4>{review.name}</h4>
-                    <p>{review.company || (isGoogle ? 'Usuario de Google' : 'Cliente')}</p>
-                    <span className="review-date">{formatDate(review.date)}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <button
-          className="carousel-btn next-btn"
-          aria-label="Siguiente reseña"
-          type="button"
-          onClick={() => handleCarousel('next')}
-        >
-          <Icon name="chevron-right" />
-        </button>
-      </div>
-
-      <div className="testimonials-stats" id="testimonials-stats">
-        <div className="stat-item">
-          <div className="stat-number" id="avg-rating">
-            {avgRating}
-          </div>
-          <div className="stat-label">Valoración Promedio</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number" id="total-reviews">
-            {reviews.length}
-          </div>
-          <div className="stat-label">Reseñas Totales</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number">100%</div>
-          <div className="stat-label">Clientes Satisfechos</div>
-        </div>
-      </div>
-
-      <div
-        id="review-modal"
-        className={`review-modal${modalOpen ? ' active' : ''}`}
-        role="dialog"
-        aria-labelledby="review-modal-title"
-        aria-hidden={!modalOpen}
-      >
-        <div
-          className="review-modal-overlay"
-          onClick={() => setModalOpen(false)}
-          onKeyDown={(e) => e.key === 'Escape' && setModalOpen(false)}
-          role="button"
-          tabIndex={0}
-          aria-label="Cerrar modal"
-        />
-        <div className="review-modal-content">
-          <button
-            className="review-modal-close"
-            aria-label="Cerrar formulario de reseña"
-            type="button"
-            onClick={() => setModalOpen(false)}
-          >
-            <Icon name="times" />
+      <div className="opiniones__resumen">
+        <p className="opiniones__media" aria-live="polite">
+          {loading
+            ? 'Cargando reseñas…'
+            : media
+              ? `${media} de 5 de media en ${reviews.length} ${reviews.length === 1 ? 'reseña' : 'reseñas'}`
+              : 'Aquí aún no hay reseñas que mostrar.'}
+        </p>
+        <div className="opiniones__acciones">
+          <button className="btn btn-secondary" type="button" onClick={() => setModalOpen(true)}>
+            Dejar una reseña
           </button>
-          <h2 id="review-modal-title" className="review-modal-title">
-            Deja tu Reseña
-          </h2>
-          <p className="review-modal-subtitle">Tu opinión es muy importante para nosotros</p>
+          <a href={googleReviewsUrl} target="_blank" rel="noopener noreferrer" className="opiniones__google">
+            Ver y dejar reseñas en Google
+          </a>
+        </div>
+      </div>
 
-          <form className="review-form" onSubmit={handleSubmitReview}>
-            <div style={{ display: 'none' }} aria-hidden="true">
+      {reviews.length > 0 && (
+        <div
+          className={`opiniones__carrusel${reviews.length <= 3 ? ' opiniones__carrusel--caben' : ''}`}
+        >
+          <ul className="opiniones__lista" ref={listaRef} aria-label="Reseñas">
+            {reviews.slice(0, 15).map((review) => {
+              const isGoogle = review.source === 'google';
+              return (
+                <li key={review.id || `${review.name}-${review.date}`} className="opinion">
+                  <figure className="opinion__burbuja">
+                    <Estrellas rating={review.rating} />
+                    <blockquote className="opinion__texto">
+                      <p>{review.message}</p>
+                    </blockquote>
+                    <figcaption className="opinion__autor">
+                      <strong>{review.name}</strong>
+                      {review.company && <span>{review.company}</span>}
+                      <span className="opinion__origen">
+                        {isGoogle ? 'En Google' : 'En esta web'} · {formatDate(review.date)}
+                      </span>
+                    </figcaption>
+                  </figure>
+                </li>
+              );
+            })}
+          </ul>
+          {reviews.length > 1 && (
+            <div className="opiniones__flechas">
+              <button type="button" aria-label="Reseñas anteriores" onClick={() => desplazar('prev')}>
+                <Icon name="chevron-left" />
+              </button>
+              <button type="button" aria-label="Más reseñas" onClick={() => desplazar('next')}>
+                <Icon name="chevron-right" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      <dialog
+        ref={dialogRef}
+        className="resena-dialogo"
+        aria-labelledby="resena-titulo"
+        onClose={() => setModalOpen(false)}
+        onClick={(e) => {
+          // Clic en el fondo (fuera del contenido) cierra.
+          if (e.target === e.currentTarget) setModalOpen(false);
+        }}
+      >
+        <div className="resena-dialogo__contenido">
+          <div className="resena-dialogo__cabeza">
+            <h2 id="resena-titulo">Deja tu reseña</h2>
+            <button
+              className="resena-dialogo__cerrar"
+              aria-label="Cerrar"
+              type="button"
+              onClick={() => setModalOpen(false)}
+            >
+              <Icon name="times" />
+            </button>
+          </div>
+          <p className="resena-dialogo__entrada">
+            Si hemos trabajado juntos, me ayuda mucho que cuentes cómo fue.
+          </p>
+
+          <form className="formulario" onSubmit={handleSubmitReview}>
+            <div hidden aria-hidden="true">
               <input type="text" name="website" tabIndex={-1} autoComplete="off" value="" readOnly />
             </div>
-            <div className="form-group">
-              <label htmlFor="review-name">Nombre *</label>
+            <div className="formulario__campo">
+              <label htmlFor="review-name">Nombre</label>
               <input
                 type="text"
                 id="review-name"
+                autoComplete="name"
                 required
-                placeholder="Tu nombre"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="review-email">Email *</label>
+            <div className="formulario__campo">
+              <label htmlFor="review-email">
+                Email <span className="formulario__nota">(no se publica)</span>
+              </label>
               <input
                 type="email"
                 id="review-email"
+                autoComplete="email"
                 required
-                placeholder="tu@email.com"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="review-company">Empresa / Cargo (opcional)</label>
+            <div className="formulario__campo">
+              <label htmlFor="review-company">
+                Negocio o cargo <span className="formulario__nota">(opcional)</span>
+              </label>
               <input
                 type="text"
                 id="review-company"
-                placeholder="Ej: CEO de Mi Empresa"
+                autoComplete="organization"
                 value={form.company}
                 onChange={(e) => setForm({ ...form, company: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label>Valoración *</label>
-              <div className="rating-input" role="radiogroup" aria-label="Seleccionar valoración">
+            <fieldset className="formulario__campo formulario__valoracion">
+              <legend>Valoración</legend>
+              <div className="formulario__estrellas">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     type="button"
-                    className={`rating-star${rating >= star ? ' illuminated' : ''}`}
-                    aria-label={`${star} estrellas`}
+                    className={rating >= star ? 'encendida' : undefined}
+                    aria-label={`${star} de 5`}
+                    aria-pressed={rating === star}
                     onClick={() => setRating(star)}
                   >
                     <Icon name="star" />
                   </button>
                 ))}
               </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="review-message">Tu Reseña *</label>
+            </fieldset>
+            <div className="formulario__campo">
+              <label htmlFor="review-message">Tu reseña</label>
               <textarea
                 id="review-message"
                 required
                 rows={5}
-                placeholder="Comparte tu experiencia trabajando conmigo..."
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
               />
             </div>
-            <div className="form-group">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  required
-                  checked={form.consent}
-                  onChange={(e) => setForm({ ...form, consent: e.target.checked })}
-                />
-                <span>Acepto que mi reseña sea publicada en el sitio web</span>
-              </label>
-            </div>
+            <label className="formulario__casilla">
+              <input
+                type="checkbox"
+                required
+                checked={form.consent}
+                onChange={(e) => setForm({ ...form, consent: e.target.checked })}
+              />
+              <span>Acepto que mi reseña se publique en esta web</span>
+            </label>
             <button type="submit" className="btn btn-primary btn-full" disabled={submitting}>
-              <Icon name={submitting ? 'spinner' : 'paper-plane'} spin={submitting} />
-              <span>{submitting ? 'Publicando...' : 'Publicar Reseña'}</span>
+              {submitting && <Icon name="spinner" spin />}
+              <span>{submitting ? 'Publicando…' : 'Publicar reseña'}</span>
             </button>
           </form>
         </div>
-      </div>
+      </dialog>
     </>
   );
 };

@@ -1,0 +1,1542 @@
+/* ===== Dirección «Conversación» =====
+   La web empieza como empiezan los encargos: por WhatsApp. El hero es una
+   conversación de ejemplo con precio y plazo reales, y la acción principal
+   lleva a ese mismo canal. Los colores salen de los tokens de legacy.css, así
+   que el tema oscuro no necesita reglas propias aquí. */
+
+:root {
+  --cabecera-alto: 4.25rem;
+}
+
+/* ----- Cabecera ----- */
+.cabecera {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 999;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+
+.cabecera.scrolled {
+  border-bottom-color: var(--rule);
+}
+
+.cabecera__barra {
+  max-width: 72rem;
+  height: var(--cabecera-alto);
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cabecera__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-right: auto;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.cabecera__marca img {
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+
+.cabecera__menu {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cabecera__menu a {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.cabecera__menu a:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.cabecera__acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cabecera .theme-toggle,
+.cabecera__abrir {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.cabecera .theme-toggle:hover,
+.cabecera__abrir:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.cabecera .theme-toggle svg,
+.cabecera__abrir svg {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.cabecera__abrir {
+  display: none;
+}
+
+.cabecera a:focus-visible,
+.cabecera button:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .cabecera__abrir {
+    display: inline-grid;
+  }
+
+  .cabecera__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.5rem 1rem 1rem;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .cabecera__menu.active {
+    display: flex;
+  }
+
+  .cabecera__menu a {
+    padding: 0.85rem 0.25rem;
+    border-radius: 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 1.05rem;
+  }
+
+  .cabecera__menu a:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* ----- Portada ----- */
+.portada {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  padding: calc(var(--cabecera-alto) + clamp(2rem, 6vw, 4.5rem)) 1rem clamp(3rem, 7vw, 5.5rem);
+}
+
+.portada__contenido {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.portada__titulo {
+  margin: 0 0 1.1rem;
+  font-size: clamp(2.4rem, 5.6vw, 4.1rem);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+.portada__entrada {
+  max-width: 36ch;
+  margin: 0 0 2rem;
+  font-size: clamp(1.08rem, 1.6vw, 1.25rem);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.portada__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.portada__whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.9rem 1.35rem;
+  border-radius: var(--radius-full);
+  background: var(--whatsapp-boton);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.portada__whatsapp svg {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.portada__whatsapp:hover {
+  background: var(--whatsapp-boton-hover);
+}
+
+.portada__enlace {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--marca-amarillo);
+  text-underline-offset: 5px;
+}
+
+.portada__enlace:hover {
+  color: var(--primary-text);
+}
+
+.portada a:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+/* La conversación: lo único que se levanta del fondo. */
+.portada__chat {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 1.4rem;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--marca-noche) 55%, transparent);
+}
+
+.portada__chat-aviso {
+  padding: 0 0.35rem 0.6rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.portada__mensajes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.portada__mensaje {
+  max-width: 86%;
+  padding: 0.65rem 0.9rem 0.45rem;
+  border-radius: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.portada__mensaje strong {
+  font-weight: 700;
+}
+
+.portada__mensaje--cliente {
+  justify-self: start;
+  background: var(--burbuja-cliente);
+  border: 1px solid var(--rule);
+  border-bottom-left-radius: 0.3rem;
+}
+
+.portada__mensaje--jose {
+  justify-self: end;
+  background: var(--burbuja-jose);
+  border-bottom-right-radius: 0.3rem;
+}
+
+.portada__hora {
+  display: block;
+  margin-top: 0.15rem;
+  text-align: right;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Un único momento de movimiento: los mensajes llegan en orden, como en el
+   móvil. Parten visibles si el visitante pidió reducir el movimiento. */
+@media (prefers-reduced-motion: no-preference) {
+  .portada__mensaje {
+    animation: portada-llega 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .portada__mensaje:nth-child(2) { animation-delay: 0.5s; }
+  .portada__mensaje:nth-child(3) { animation-delay: 1s; }
+  .portada__mensaje:nth-child(4) { animation-delay: 1.5s; }
+}
+
+@keyframes portada-llega {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (max-width: 860px) {
+  .portada__contenido {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .portada__chat {
+    max-width: 34rem;
+  }
+}
+
+/* ----- Apartados de la home ----- */
+.apartado {
+  padding: clamp(3.5rem, 8vw, 6rem) 1rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.apartado__contenido {
+  /* Las tarifas se reparten según el hueco que tienen, no según la pantalla:
+     en la página de cada servicio van en una columna estrecha. */
+  container-type: inline-size;
+  max-width: 72rem;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2rem);
+}
+
+.apartado__cabeza {
+  max-width: 40rem;
+}
+
+.apartado__titulo {
+  margin: 0 0 0.6rem;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: var(--text-primary);
+}
+
+.apartado__entrada {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.apartado__pie {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.apartado__pie a {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration-color: var(--marca-amarillo);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* ----- Tarifas -----
+   Suelta (página de cada servicio) es una tarjeta; dentro de .tarifas, una
+   fila de la lista de precios. */
+.tarifa {
+  display: grid;
+  gap: 0.9rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.tarifa__cabeza {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+}
+
+.tarifa__nombre,
+.mantenimiento__nombre {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.tarifa__sello {
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--marca-amarillo);
+  color: #132238;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.tarifa__resumen,
+.mantenimiento__resumen {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.tarifa__incluye,
+.mantenimiento__incluye {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tarifa__incluye li,
+.mantenimiento__incluye li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.tarifa__incluye .icon,
+.mantenimiento__incluye .icon {
+  flex: none;
+  font-size: 0.85rem;
+  color: var(--whatsapp-boton);
+}
+
+.dark .tarifa__incluye .icon,
+.dark .mantenimiento__incluye .icon {
+  color: #4fbf85;
+}
+
+.tarifa__detalle {
+  justify-self: start;
+  color: var(--primary-text);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.tarifa__compra,
+.mantenimiento__compra {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.tarifa__precio {
+  margin: 0;
+  font-size: 2.1rem;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+
+.tarifa__periodo {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+.tarifa__pago {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tarifa__boton {
+  justify-content: center;
+  width: 100%;
+}
+
+.tarifa__boton:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* Lista de precios de la home */
+.tarifas {
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  overflow: hidden;
+}
+
+.tarifas .tarifa {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Cada tarifa llega envuelta en su <astro-island>, así que el separador se
+   pone entre islas y no entre .tarifa hermanas. */
+.tarifas > :not(:first-child) .tarifa {
+  border-top: 1px solid var(--rule);
+}
+
+@container (min-width: 50rem) {
+  .tarifas .tarifa {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 14rem;
+    grid-template-areas:
+      'cabeza incluye compra'
+      'resumen incluye compra'
+      'detalle incluye compra';
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    padding: 1.75rem 2rem;
+  }
+
+  .tarifas .tarifa__cabeza { grid-area: cabeza; }
+  .tarifas .tarifa__resumen { grid-area: resumen; }
+  .tarifas .tarifa__detalle { grid-area: detalle; align-self: start; }
+  .tarifas .tarifa__incluye { grid-area: incluye; align-self: center; }
+  .tarifas .tarifa__compra { grid-area: compra; text-align: right; }
+}
+
+/* Mantenimiento: la única oferta recurrente, en banda propia. */
+.mantenimiento {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 1.25rem;
+  background: var(--burbuja-jose);
+  color: var(--text-primary);
+}
+
+.mantenimiento__texto {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+
+.mantenimiento__gestionar {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-underline-offset: 3px;
+}
+
+.mantenimiento__gestionar:hover {
+  color: var(--text-primary);
+}
+
+@container (min-width: 50rem) {
+  .mantenimiento {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 14rem;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .mantenimiento__compra {
+    text-align: right;
+  }
+}
+
+.tarifa a:focus-visible,
+.mantenimiento a:focus-visible,
+.apartado__pie a:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+/* ----- Proyectos ----- */
+.apartado--pagina {
+  padding-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.proyectos {
+  background: var(--bg-primary);
+}
+
+.proyectos__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.proyectos__filtro {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.proyectos__filtro:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.proyectos__filtro[aria-pressed='true'] {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.proyectos__filtro--otros {
+  margin-left: auto;
+  border-style: dashed;
+}
+
+.proyectos__rejilla {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: 1.25rem;
+}
+
+.proyecto {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.proyecto[hidden] {
+  display: none;
+}
+
+.proyecto__imagen {
+  display: block;
+  aspect-ratio: 1200 / 630;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--rule);
+}
+
+.proyecto__imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.proyecto__cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem;
+}
+
+.proyecto__sector {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.proyecto__estado {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.proyecto__titulo {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.proyecto__titulo a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.proyecto__titulo a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--marca-amarillo);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.proyecto__resumen {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.proyecto__resultado {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.proyecto__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.proyecto__demo,
+.proyecto__caso {
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.proyecto__demo {
+  background: var(--boton-fondo);
+  color: #ffffff;
+}
+
+.proyecto__demo:hover {
+  background: var(--boton-fondo-hover);
+}
+
+.proyecto__caso {
+  border: 2px solid var(--rule);
+  color: var(--text-primary);
+}
+
+.proyecto__caso:hover {
+  border-color: var(--text-secondary);
+}
+
+.proyecto__pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.proyecto__pie a {
+  color: var(--whatsapp-boton);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.dark .proyecto__pie a {
+  color: #4fbf85;
+}
+
+.proyectos__todos {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.proyectos__todos a {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-decoration-color: var(--marca-amarillo);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.proyectos__filtro:focus-visible,
+.proyecto a:focus-visible,
+.proyectos__todos a:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+/* ----- Opiniones ----- */
+.opiniones__resumen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+
+.opiniones__media {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.opiniones__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.opiniones__google {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-decoration-color: var(--marca-amarillo);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.opiniones__carrusel {
+  display: grid;
+  gap: 1rem;
+}
+
+.opiniones__lista {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0.1rem 0.75rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(85%, 22rem);
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.opinion {
+  scroll-snap-align: start;
+  display: flex;
+}
+
+/* Cada reseña es un mensaje de cliente, como las burbujas de la portada. */
+.opinion__burbuja {
+  flex: 1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  border-bottom-left-radius: 0.35rem;
+  background: var(--burbuja-cliente);
+  color: var(--text-primary);
+}
+
+.opinion__estrellas {
+  display: inline-flex;
+  gap: 0.15rem;
+  color: #b7791f;
+  font-size: 0.95rem;
+}
+
+.dark .opinion__estrellas {
+  color: var(--marca-amarillo);
+}
+
+.opinion__estrellas .apagada {
+  color: var(--rule);
+}
+
+/* Si caben todas, sin scroll ni flechas. */
+@media (min-width: 900px) {
+  .opiniones__carrusel--caben .opiniones__lista {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .opiniones__carrusel--caben .opiniones__flechas {
+    display: none;
+  }
+}
+
+.opinion__texto {
+  margin: 0;
+}
+
+.opinion__texto p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.opinion__autor {
+  margin-top: auto;
+  display: grid;
+  gap: 0.1rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.opinion__autor strong {
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.opiniones__flechas {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.opiniones__flechas button {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.opiniones__flechas button:hover {
+  border-color: var(--text-secondary);
+}
+
+.opiniones__google:focus-visible,
+.opiniones__flechas button:focus-visible,
+.opiniones__lista:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+/* ----- Formularios (contacto y reseña) ----- */
+.formulario {
+  display: grid;
+  gap: 1rem;
+}
+
+.formulario__titulo {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.formulario__campo {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.formulario__campo label,
+.formulario__campo legend {
+  padding: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.formulario__nota {
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.formulario input[type='text'],
+.formulario input[type='email'],
+.formulario select,
+.formulario textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.formulario textarea {
+  resize: vertical;
+}
+
+.formulario input::placeholder,
+.formulario textarea::placeholder {
+  color: var(--text-light);
+}
+
+.formulario input:focus-visible,
+.formulario select:focus-visible,
+.formulario textarea:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.formulario__estrellas {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.formulario__estrellas button {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--rule);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.formulario__estrellas button.encendida {
+  color: #b7791f;
+}
+
+.dark .formulario__estrellas button.encendida {
+  color: var(--marca-amarillo);
+}
+
+.formulario__estrellas button:focus-visible {
+  outline: 2px solid var(--primary-text);
+}
+
+.formulario__casilla {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: var(--text-secondary);
+}
+
+.formulario__casilla input {
+  margin-top: 0.3rem;
+  accent-color: var(--boton-fondo);
+}
+
+.resena-dialogo {
+  width: min(100% - 2rem, 32rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  border: 0;
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 30px 60px -20px rgb(8 15 26 / 0.5);
+}
+
+.resena-dialogo::backdrop {
+  background: rgb(8 15 26 / 0.55);
+}
+
+.resena-dialogo__contenido {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.resena-dialogo__cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.resena-dialogo__cabeza h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.resena-dialogo__cerrar {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.resena-dialogo__cerrar:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.resena-dialogo__entrada {
+  margin: 0 0 0.5rem;
+  color: var(--text-secondary);
+}
+
+/* ----- Contacto ----- */
+.contacto {
+  background: var(--bg-primary);
+}
+
+.contacto__contenido {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.contacto__vias {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.contacto__whatsapp {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+  padding: 1.25rem 1.4rem;
+  border-radius: 1.25rem;
+  border-bottom-right-radius: 0.35rem;
+  background: var(--burbuja-jose);
+}
+
+.contacto__whatsapp p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.contacto__telefono {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.contacto__datos {
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.contacto__datos div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.contacto__datos dt {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.contacto__datos dd {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.contacto__datos a {
+  color: var(--primary-text);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.contacto__formulario {
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--bg-card);
+}
+
+@media (max-width: 860px) {
+  .contacto__contenido {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ----- Pie ----- */
+.pie {
+  --pie-fondo: var(--marca-noche);
+  --pie-texto: #e6edf5;
+  --pie-texto-2: #a9b8cc;
+  --pie-linea: rgb(230 237 245 / 0.14);
+  background: var(--pie-fondo);
+  color: var(--pie-texto);
+  padding: clamp(3rem, 7vw, 5rem) 1rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.dark .pie {
+  --pie-fondo: #080f1a;
+}
+
+.pie__contenido {
+  max-width: 72rem;
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+}
+
+.pie a {
+  color: inherit;
+}
+
+.pie a:focus-visible {
+  outline: 2px solid var(--marca-amarillo);
+  outline-offset: 3px;
+}
+
+.pie__cierre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+  border-bottom: 1px solid var(--pie-linea);
+}
+
+.pie__titulo {
+  margin: 0 0 0.6rem;
+  max-width: 16ch;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.02;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  color: var(--pie-texto);
+}
+
+.pie__entrada {
+  margin: 0;
+  max-width: 40ch;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--pie-texto-2);
+}
+
+.pie__cierre-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.pie .pie__whatsapp {
+  display: inline-flex;
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-full);
+  background: var(--marca-amarillo);
+  color: var(--marca-noche);
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.pie .pie__whatsapp:hover {
+  background: #ffe07a;
+}
+
+.pie__email {
+  font-weight: 600;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--marca-amarillo);
+}
+
+.pie__columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem clamp(1.5rem, 4vw, 3rem);
+}
+
+.pie__marca {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.pie__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.pie__logo img {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+
+.pie__marca p {
+  margin: 0;
+  max-width: 28ch;
+  line-height: 1.5;
+  color: var(--pie-texto-2);
+}
+
+.pie__bloque h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--pie-texto);
+}
+
+.pie__bloque ul,
+.pie__legal ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pie__bloque li {
+  padding: 0.3rem 0;
+  color: var(--pie-texto-2);
+}
+
+.pie__bloque a {
+  color: var(--pie-texto-2);
+  text-decoration: none;
+}
+
+.pie__bloque a:hover {
+  color: var(--pie-texto);
+  text-decoration: underline;
+  text-decoration-color: var(--marca-amarillo);
+  text-underline-offset: 3px;
+}
+
+/* La carta: nombre, puntos guía y precio, como en la lista de «Lo que cuesta». */
+.pie__carta a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.pie__carta-puntos {
+  flex: 1;
+  min-width: 1rem;
+  border-bottom: 2px dotted var(--pie-linea);
+  transform: translateY(-0.25rem);
+}
+
+.pie__carta-precio {
+  color: var(--marca-amarillo);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pie__legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--pie-linea);
+  font-size: 0.9rem;
+  color: var(--pie-texto-2);
+}
+
+.pie__legal p {
+  margin: 0;
+}
+
+.pie__legal ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.pie__legal a {
+  color: var(--pie-texto-2);
+  text-underline-offset: 3px;
+}
+
+.pie__legal a:hover {
+  color: var(--pie-texto);
+}
+
+@media (max-width: 900px) {
+  .pie__columnas {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .pie__marca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .pie__columnas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ----- Páginas legales -----
+   El HTML viene de src/assets/legal/ y sus clases policy-* no tenían estilos. */
+.policy-page {
+  padding: calc(var(--cabecera-alto) + clamp(1.5rem, 4vw, 3rem)) 1rem clamp(3rem, 7vw, 5rem);
+  color: var(--text-primary);
+}
+
+.policy-page .container {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.policy-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.policy-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.policy-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.policy-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.policy-section h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.policy-section h3 {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.policy-section p,
+.policy-section li {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.policy-section p {
+  margin: 0 0 0.75rem;
+}
+
+.policy-section ul,
+.policy-section ol {
+  margin: 0 0 0.75rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.policy-section ol {
+  list-style: decimal;
+}
+
+.policy-section strong {
+  color: var(--text-primary);
+}
+
+.policy-section a {
+  color: var(--primary-text);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+.policy-section table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.policy-section th,
+.policy-section td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+  color: var(--text-secondary);
+}
+
+.policy-section th {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.policy-page .section-divider {
+  display: none;
+}
+
+.pie__cookies,
+.policy-boton {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pie__cookies {
+  color: var(--pie-texto-2);
+}
+
+.pie__cookies:hover {
+  color: var(--pie-texto);
+}
+
+.policy-boton {
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+.pie__cookies:focus-visible,
+.policy-boton:focus-visible {
+  outline: 2px solid var(--primary-text);
+  outline-offset: 3px;
+}
+
+.pie .pie__cookies:focus-visible {
+  outline-color: var(--marca-amarillo);
+}

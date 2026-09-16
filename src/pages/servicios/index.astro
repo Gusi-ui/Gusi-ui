@@ -31,8 +31,8 @@ const description =
           const service = allServices.find((s) => s.slug === landing.slug)!;
           const priceLabel =
             service.kind === 'maintenance'
-              ? `€${service.price}/mes`
-              : `€${service.price} pago único`;
+              ? `${service.price} €/mes`
+              : `${service.price} € pago único`;
 
           return (
             <a href={getServiceLandingPath(landing.slug)} class="services-hub__card">
@@ -51,7 +51,6 @@ const description =
         <span>Presupuesto personalizado</span>
       </a>
       <a href="/blog/" class="btn btn-secondary">
-        <Icon name="compass" />
         <span>Leer el blog</span>
       </a>
     </div>
