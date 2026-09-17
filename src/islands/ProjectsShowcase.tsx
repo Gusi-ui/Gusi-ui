@@ -7,6 +7,9 @@ import { getProjectDemoLabel, isExternalDemo } from '@/lib/project-demo';
 
 type Filter = 'all' | 'web' | 'ecommerce';
 
+/** Webs de clientes en producción que la home enseña siempre, si el filtro las tiene. */
+const MIN_EN_VIVO = 2;
+
 interface Props {
   projects: DisplayProject[];
   whatsappUrl: string;
@@ -73,7 +76,7 @@ const ProjectsShowcase = ({
 
   const refreshVisible = useCallback(
     (nextFilter: Filter) => {
-      setVisibleProjects(pickVisibleProjects(projects, nextFilter, visibleCount));
+      setVisibleProjects(pickVisibleProjects(projects, nextFilter, visibleCount, MIN_EN_VIVO));
     },
     [projects, visibleCount],
   );

@@ -173,30 +173,34 @@ const portfolioBadge = liveProject ? 'Proyecto en producción' : 'Proyecto de de
     )
   }
 
-  <section class="project-case__section" aria-labelledby="metrics-heading">
-    <div class="container">
-      <h2 id="metrics-heading">Resultados del proyecto</h2>
-      <div class="project-case__metrics-table" role="table" aria-label="Métricas antes y después">
-        <div class="project-case__metrics-row project-case__metrics-row--head" role="row">
-          <span role="columnheader">Indicador</span>
-          <span role="columnheader">Antes</span>
-          <span role="columnheader">Después</span>
-        </div>
-        {project.metrics.map((metric) => (
-          <div class="project-case__metrics-row" role="row">
-            <span class="project-case__metrics-label" role="cell">{metric.label}</span>
-            <span role="cell">{metric.before}</span>
-            <span class="project-case__metrics-after" role="cell">{metric.after}</span>
+  {
+    project.metrics.length > 0 && (
+      <section class="project-case__section" aria-labelledby="metrics-heading">
+        <div class="container">
+          <h2 id="metrics-heading">Resultados del proyecto</h2>
+          <div class="project-case__metrics-table" role="table" aria-label="Métricas antes y después">
+            <div class="project-case__metrics-row project-case__metrics-row--head" role="row">
+              <span role="columnheader">Indicador</span>
+              <span role="columnheader">Antes</span>
+              <span role="columnheader">Después</span>
+            </div>
+            {project.metrics.map((metric) => (
+              <div class="project-case__metrics-row" role="row">
+                <span class="project-case__metrics-label" role="cell">{metric.label}</span>
+                <span role="cell">{metric.before}</span>
+                <span class="project-case__metrics-after" role="cell">{metric.after}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <p class="project-case__disclaimer">
-        {liveProject
-          ? 'Proyecto real en producción. Métricas basadas en objetivos de diseño y experiencia de uso.'
-          : 'Proyecto conceptual. Métricas basadas en objetivos de diseño y benchmarks del sector.'}
-      </p>
-    </div>
-  </section>
+          <p class="project-case__disclaimer">
+            {liveProject
+              ? 'Proyecto real en producción. Métricas basadas en objetivos de diseño y experiencia de uso.'
+              : 'Proyecto conceptual. Métricas basadas en objetivos de diseño y benchmarks del sector.'}
+          </p>
+        </div>
+      </section>
+    )
+  }
 
   <section class="project-case__section project-case__section--cta" aria-labelledby="hire-heading">
     <div class="container">

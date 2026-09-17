@@ -378,6 +378,31 @@ const PROJECTS = [
       { prompt: true, t: 'launch nexus-7' },
     ] },
   },
+  {
+    id: 'amparo-medium', label: 'WEB DE CLIENTE', title: 'AmparoMédium',
+    subtitle: 'Consultas espirituales con reserva online', accent: '#a855f7', accent2: '#e879f9',
+    archetype: 'listView', data: { rows: [
+      { label: 'Registros Akáshicos', tag: 'Reservar' },
+      { label: 'Videncia canalizada', tag: 'Reservar' },
+      { label: 'Limpieza energética a distancia', tag: 'Online' },
+      { label: 'Pack de 3 consultas', tag: 'Pack' },
+    ] },
+  },
+  {
+    id: 'irene-puigdemont', label: 'WEB DE CLIENTE', title: 'Irene Puigdemont',
+    subtitle: 'Nutricionista en Girona · reserva en tres idiomas', accent: '#65a30d', accent2: '#bef264',
+    archetype: 'calendar', data: { month: 'Reserva de cita', panel: 'Consulta', s1: 'Presencial · Girona', s2: 'Online', s3: 'Pack de 3 sesiones', cta: 'Reservar' },
+  },
+  {
+    id: 'carlos-plua', label: 'WEB DE CLIENTE', title: 'Carlos Plua',
+    subtitle: 'Reparaciones e instalaciones en Barcelona', accent: '#ef4444', accent2: '#fca5a5',
+    archetype: 'listView', data: { rows: [
+      { label: 'Reparación de electrodomésticos', tag: 'Urgencias' },
+      { label: 'Instalaciones de agua, luz y gas', tag: 'Barcelona' },
+      { label: 'Aire acondicionado y calefacción', tag: 'Presupuesto' },
+      { label: 'Reformas de pisos y locales', tag: 'WhatsApp' },
+    ] },
+  },
 ];
 
 // ---------- Render de la imagen completa ----------
