@@ -1,15 +1,6 @@
 ---
 import { WHATSAPP_URL } from '@/lib/constants';
-import { projectServices, maintenanceService } from '@/data/services';
-
-// Las cifras de la conversación salen de los datos de servicios: si cambia un
-// precio, el hero no puede quedarse contando el antiguo.
-const desarrollo = projectServices.find((s) => s.slug === 'desarrollo-web');
-const precioWeb = desarrollo?.price ?? 250;
-const plazo =
-  desarrollo?.features.find((f) => f.startsWith('Entrega en'))?.replace('Entrega en ', '') ??
-  '7–10 días';
-const precioMantenimiento = maintenanceService.price;
+import { conversaciones } from '@/data/conversaciones';
 ---
 
 <section id="inicio" class="portada" aria-labelledby="portada-titulo">
@@ -35,27 +26,50 @@ const precioMantenimiento = maintenanceService.price;
 
     <figure class="portada__chat">
       <figcaption class="portada__chat-aviso">Ejemplo de cómo suele empezar</figcaption>
-      <ol class="portada__mensajes">
-        <li class="portada__mensaje portada__mensaje--cliente">
-          Hola, tengo una clínica de fisio y me pasan el día llamando para pedir cita
-          <span class="portada__hora" aria-hidden="true">10:12</span>
-        </li>
-        <li class="portada__mensaje portada__mensaje--jose">
-          Eso se arregla con reserva online y recordatorio. Una web sencilla parte de
-          <strong>{precioWeb} €</strong> y está en <strong>{plazo}</strong>; la agenda te la
-          presupuesto aparte
-          <span class="portada__hora" aria-hidden="true">10:20</span>
-        </li>
-        <li class="portada__mensaje portada__mensaje--cliente">
-          ¿Y si luego quiero cambiar horarios o precios?
-          <span class="portada__hora" aria-hidden="true">10:21</span>
-        </li>
-        <li class="portada__mensaje portada__mensaje--jose">
-          Con el mantenimiento, <strong>{precioMantenimiento} € al mes</strong>, tienes una hora de
-          cambios incluida
-          <span class="portada__hora" aria-hidden="true">10:23</span>
-        </li>
-      </ol>
+      {/* Todas las conversaciones ocupan la misma celda: la figura mide lo que la
+          más larga y cambiar de una a otra no mueve la página. Sin JavaScript se
+          queda la primera. */}
+      <div class="portada__conversaciones">
+        {
+          conversaciones.map((conversacion, i) => (
+            <ol
+              class="portada__mensajes"
+              data-conversacion={conversacion.id}
+              data-activa={i === 0 ? '' : undefined}
+            >
+              {conversacion.mensajes.map((mensaje) => (
+                <li class:list={['portada__mensaje', `portada__mensaje--${mensaje.de}`]}>
+                  {mensaje.texto.map((trozo) =>
+                    typeof trozo === 'string' ? trozo : <strong>{trozo.fuerte}</strong>,
+                  )}
+                  <span class="portada__hora" aria-hidden="true">
+                    {mensaje.hora}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          ))
+        }
+      </div>
+      {/* Inline y justo aquí para elegir antes del primer pintado: sin parpadeo de
+          la primera conversación. Evita repetir la última que vio este visitante. */}
+      <script is:inline>
+        (() => {
+          const listas = document.querySelectorAll('.portada__mensajes');
+          if (listas.length < 2) return;
+          const CLAVE = 'portada-conversacion';
+          let anterior = null;
+          try {
+            anterior = localStorage.getItem(CLAVE);
+          } catch {}
+          const candidatas = [...listas].filter((l) => l.dataset.conversacion !== anterior);
+          const elegida = candidatas[Math.floor(Math.random() * candidatas.length)];
+          listas.forEach((l) => l.toggleAttribute('data-activa', l === elegida));
+          try {
+            localStorage.setItem(CLAVE, elegida.dataset.conversacion);
+          } catch {}
+        })();
+      </script>
     </figure>
   </div>
 </section>
