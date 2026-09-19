@@ -6,17 +6,53 @@ preview_urls = false
 main = "src/index.ts"
 compatibility_date = "2024-12-29"
 
-# Secrets: RESEND_API_KEY, ADMIN_TOKEN, GOOGLE_API_KEY, GOOGLE_PLACE_ID
-# Desde la raíz del repo:
-# pnpm exec wrangler secret put RESEND_API_KEY --config worker/wrangler.toml
+# Secrets: ver docs/DEPLOY.md. Producción es el entorno raíz; staging, --env staging.
+# Con el wrangler global (el valor se escribe en la terminal, nunca por chat):
+# wrangler secret put RESEND_API_KEY --config worker/wrangler.toml [--env staging]
+
+# Producción (rama main). El DNS de alamia.es no cambia: estas rutas tienen
+# prioridad sobre el origen (GitHub Pages). Para volver atrás, dejar solo
+# { pattern = "*alamia.es/api/*", zone_name = "alamia.es" }.
+routes = [
+  { pattern = "alamia.es/*", zone_name = "alamia.es" },
+  { pattern = "www.alamia.es/*", zone_name = "alamia.es" }
+]
 
 kv_namespaces = [
   { binding = "REVIEWS_KV", id = "6d1616fd6ada4d109170b1e11a28ce2f" }
 ]
 
-routes = [
-  { pattern = "*alamia.es/api/*", zone_name = "alamia.es" }
-]
+# Este Worker sirve la web (dist/ de Astro) y la API (/api/*). Recibe todas las
+# peticiones para poder redirigir www y fijar cabeceras de caché y seguridad.
+# Compilar la web (pnpm build en la raíz) antes de desplegar.
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "404-page"
+
+[vars]
+ENVIRONMENT = "production"
+SITE_ORIGIN = "https://alamia.es"
 
 [dev]
 port = 8787
+
+# Staging (rama develop) en https://dev.alamia.es. Las bindings y vars no se
+# heredan: se repiten. Secretos propios con --env staging (Stripe en modo test).
+[env.staging]
+name = "formulario-contacto-staging"
+workers_dev = false
+preview_urls = false
+routes = [
+  { pattern = "dev.alamia.es", custom_domain = true }
+]
+# KV propio: compartir el de producción mezclaría reseñas, tokens del portal y
+# límites de envío de ambos entornos.
+kv_namespaces = [
+  { binding = "REVIEWS_KV", id = "PENDIENTE_KV_STAGING" }
+]
+
+[env.staging.vars]
+ENVIRONMENT = "staging"
+SITE_ORIGIN = "https://dev.alamia.es"

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { getAdminReviewsApi } from '@/lib/constants';
 
 type Review = {
   id: string;
@@ -13,8 +14,6 @@ type Review = {
 };
 
 type Stats = { total: number; approved: number; pending: number };
-
-const API_URL = 'https://alamia.es/api/admin/resenas';
 
 const AdminPanel = () => {
   const [token, setToken] = useState('');
@@ -31,7 +30,7 @@ const AdminPanel = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(getAdminReviewsApi(), {
         headers: {
           Authorization: `Bearer ${authToken.trim()}`,
           'Content-Type': 'application/json',
@@ -75,7 +74,7 @@ const AdminPanel = () => {
 
   const handleModerate = async (reviewId: string, action: 'approve' | 'reject') => {
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(getAdminReviewsApi(), {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token.trim()}`,
