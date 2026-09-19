@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
-import { Resend } from 'resend';
 import { matchAllowedOrigin, resolveCorsOrigin, siteOriginFrom } from './origins';
+import { isMailConfigured, sendMail } from './mail';
 import {
   PORTAL_TOKEN_TTL_SECONDS,
   createPortalToken,
@@ -223,7 +223,7 @@ const customerIdFromEmail = async (stripe: Stripe, email: string): Promise<strin
   return null;
 };
 
-const PORTAL_EMAIL_REMITENTE = 'Alamia <info@alamia.es>';
+const PORTAL_EMAIL_REMITENTE = 'Alamia';
 
 const esEmailValido = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -267,7 +267,7 @@ export const handlePortalRequest = async (
     return jsonError('Pasarela de pago no configurada', 503, corsRequest);
   }
 
-  if (!env.REVIEWS_KV || !env.RESEND_API_KEY) {
+  if (!env.REVIEWS_KV || !isMailConfigured(env)) {
     return jsonError('El envío de enlaces no está disponible ahora mismo', 503, corsRequest);
   }
 
@@ -310,9 +310,9 @@ export const handlePortalRequest = async (
     );
 
     const enlace = `${getSiteUrl(corsRequest, env)}/mantenimiento/gestionar/?token=${token}`;
-    await new Resend(env.RESEND_API_KEY).emails.send({
-      from: PORTAL_EMAIL_REMITENTE,
-      to: [normalizeEmail(email)],
+    await sendMail(env, {
+      fromName: PORTAL_EMAIL_REMITENTE,
+      to: normalizeEmail(email),
       subject: 'Tu enlace para gestionar el mantenimiento',
       html: emailEnlacePortalHTML(enlace),
     });

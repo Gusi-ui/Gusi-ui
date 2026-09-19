@@ -7,7 +7,7 @@
 | Frontend | Astro 6 + React islands + Tailwind CSS v4 (`@tailwindcss/vite`) |
 | Estilos legacy | `src/styles/legacy.css` (migrado desde styles.css) |
 | Backend | Cloudflare Worker (`worker/src/index.ts`) |
-| Email | Resend |
+| Email | SMTP de IONOS (info@alamia.es) |
 | Storage | Cloudflare KV (`REVIEWS_KV`) |
 | Package manager | pnpm 10 |
 | Deploy FE | GitHub Pages → alamia.es |
@@ -32,6 +32,6 @@ public/         # Assets estáticos, demos, CNAME
 
 | Endpoint | Método | Descripción |
 |----------|--------|-------------|
-| `/api/contacto` | POST | Formulario → Resend |
+| `/api/contacto` | POST | Formulario → correo (SMTP IONOS) |
 | `/api/resenas` | GET/POST | Reseñas públicas + Google Places |
 | `/api/admin/resenas` | GET/POST | Moderación (Bearer token) |

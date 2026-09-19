@@ -1,14 +1,9 @@
 /**
- * CLOUDFLARE WORKER - Formulario de Contacto con Resend
+ * CLOUDFLARE WORKER - Web, formulario de contacto, reseñas y pagos de alamia.es
  *
- * Solución con Cloudflare Workers + Resend:
- * - Cloudflare Workers (infraestructura)
- * - Resend (servicio de email recomendado por Cloudflare)
- * - 3,000 emails/mes gratis
- * - Integración oficial y simple
+ * El correo sale por SMTP del buzón de IONOS (ver mail.ts).
  */
 
-import { Resend } from 'resend';
 import {
   handleCreateCheckout,
   handleVerifySession,
@@ -19,10 +14,10 @@ import { handleStripeWebhook } from './stripe-webhook';
 import { matchAllowedOrigin, resolveCorsOrigin, siteOriginFrom } from './origins';
 import { toPublicReview } from './reviews-public';
 import { serveStatic } from './static-site';
+import { isMailConfigured, sendMail } from './mail';
 
 const CONFIG = {
   emailDestino: 'info@alamia.es',
-  emailRemitente: 'info@alamia.es',
   nombreRemitente: 'Formulario alamia.es',
   dominio: 'alamia.es',
   maxEnviosPorHora: 10,
@@ -151,14 +146,12 @@ async function handleContacto(request, env) {
     const servicio = sanitizar(datos.service);
     const mensaje = sanitizar(datos.message);
 
-    // Verificar API key de Resend
-    if (!env.RESEND_API_KEY) {
+    if (!isMailConfigured(env)) {
       return jsonError('Servicio de email no disponible', 500, request);
     }
 
-    // Enviar email con Resend
-    const enviado = await enviarEmailResend(
-      env.RESEND_API_KEY,
+    const enviado = await enviarEmailContacto(
+      env,
       nombre,
       email,
       servicio,
@@ -600,11 +593,9 @@ async function moderarResena(request, env) {
   }
 }
 
-// ===== ENVÍO CON RESEND =====
-async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
+// ===== ENVÍO DEL FORMULARIO =====
+async function enviarEmailContacto(env, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
   try {
-    const resend = new Resend(apiKey);
-
     const nombreServicio = {
       'web': 'Desarrollo Web',
       'mobile': 'App Móvil',
@@ -619,23 +610,18 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
       timeStyle: 'short'
     });
 
-    const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
+    const asunto = `Nuevo mensaje desde alamia.es - ${nombreServicio}`;
 
-    const { error } = await resend.emails.send({
-      from: `${CONFIG.nombreRemitente} <${CONFIG.emailRemitente}>`,
-      to: [CONFIG.emailDestino],
-      reply_to: `${nombreUsuario} <${emailUsuario}>`,
+    await sendMail(env, {
+      fromName: CONFIG.nombreRemitente,
+      to: CONFIG.emailDestino,
+      replyTo: emailUsuario,
       subject: asunto,
       html: generarEmailHTML(nombreUsuario, emailUsuario, nombreServicio, mensaje, fecha, ip)
     });
-
-    if (error) {
-      return false;
-    }
-
     return true;
-
-  } catch {
+  } catch (error) {
+    console.error('[contacto] envío fallido', error);
     return false;
   }
 }

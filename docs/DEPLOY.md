@@ -56,10 +56,18 @@ wrangler secret put NOMBRE --config worker/wrangler.toml               # producc
 wrangler secret put NOMBRE --config worker/wrangler.toml --env staging # staging
 ```
 
-`ADMIN_TOKEN, GOOGLE_API_KEY, GOOGLE_PLACE_ID, RESEND_API_KEY, SMTP_PASS, SMTP_USER,
+`ADMIN_TOKEN, GOOGLE_API_KEY, GOOGLE_PLACE_ID, SMTP_USER, SMTP_PASS,
 STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_DESARROLLO_WEB_ONETIME,
 STRIPE_PRICE_OPTIMIZACION_WEB_ONETIME, STRIPE_PRICE_BACKEND_APIS_ONETIME,
 STRIPE_PRICE_MANTENIMIENTO_MONTHLY`
+
+## Correo
+
+Sale por SMTP del buzón de IONOS `info@alamia.es` (`worker/src/mail.ts`,
+`smtp.ionos.es:465`), con `SMTP_USER` (la dirección completa) y `SMTP_PASS`.
+Opcionales como vars: `SMTP_HOST`, `SMTP_PORT` (587 usa STARTTLS). En staging el
+asunto lleva el prefijo `[staging]`. Si falta la configuración, el formulario
+responde «Servicio de email no disponible» y el webhook de Stripe no envía nada.
 
 ## Post-deploy checklist
 
