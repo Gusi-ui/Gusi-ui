@@ -1,0 +1,83 @@
+name: Deploy (web + API en Cloudflare Workers)
+
+# develop → staging (https://dev.alamia.es) · main → producción (https://alamia.es)
+# Compila la web con las variables del entorno, despliega el Worker (que la sirve
+# junto a la API) y pasa pruebas de humo contra la URL desplegada.
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    if: github.ref_name == 'main' || github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      TARGET_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      SITE_URL: ${{ github.ref_name == 'main' && 'https://alamia.es' || 'https://dev.alamia.es' }}
+    # El entorno de GitHub "staging" tiene su propio PUBLIC_STRIPE_PUBLISHABLE_KEY
+    # (pk_test_); producción usa el del repositorio (pk_live_).
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      url: ${{ github.ref_name == 'main' && 'https://alamia.es' || 'https://dev.alamia.es' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm test
+
+      - name: Verificar secretos
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          STRIPE_PK: ${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Falta CLOUDFLARE_API_TOKEN en GitHub → Settings → Secrets → Actions"
+            exit 1
+          fi
+          # Staging nunca debe cobrar de verdad; producción nunca en modo prueba.
+          case "$TARGET_ENV:$STRIPE_PK" in
+            staging:pk_test_*|production:pk_live_*) echo "Clave publicable de Stripe OK para $TARGET_ENV" ;;
+            staging:*) echo "::error::Staging necesita PUBLIC_STRIPE_PUBLISHABLE_KEY pk_test_ en el entorno 'staging' de GitHub" && exit 1 ;;
+            *) echo "::error::Producción necesita PUBLIC_STRIPE_PUBLISHABLE_KEY pk_live_" && exit 1 ;;
+          esac
+
+      - name: Build de la web
+        run: pnpm run build
+        env:
+          PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+
+      - name: Deploy Worker (${{ env.TARGET_ENV }})
+        # Producción es el entorno raíz de wrangler (--env=""); staging, --env staging.
+        run: |
+          if [ "$TARGET_ENV" = "production" ]; then
+            pnpm exec wrangler deploy --config worker/wrangler.toml --env=""
+          else
+            pnpm exec wrangler deploy --config worker/wrangler.toml --env staging
+          fi
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Pruebas de humo contra ${{ env.SITE_URL }}
+        run: node scripts/smoke.mjs "$SITE_URL"

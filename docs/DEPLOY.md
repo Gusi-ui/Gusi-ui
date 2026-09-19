@@ -1,35 +1,72 @@
 # Deploy — alamia.es
 
-## Frontend (GitHub Pages)
+La web (`dist/` de Astro) y la API (`/api/*`) las sirve un único Cloudflare Worker
+(`worker/`, static assets con `run_worker_first`). El DNS no cambia: las rutas del
+Worker tienen prioridad sobre el origen.
 
-El CI despliega automáticamente `dist/` a GitHub Pages con dominio `alamia.es` (CNAME en `public/CNAME`).
+| Rama      | Entorno    | URL                     | Worker                        |
+| --------- | ---------- | ----------------------- | ----------------------------- |
+| `develop` | staging    | https://dev.alamia.es   | `formulario-contacto-staging` |
+| `main`    | producción | https://alamia.es       | `formulario-contacto`         |
 
-Manual:
+## Flujo de trabajo
+
+1. Rama `feat/*` desde `develop` → PR a `develop`. El CI (`ci.yml`) pasa lint, build y tests.
+2. Merge a `develop` → `deploy.yml` despliega staging y pasa las pruebas de humo.
+3. Probar en https://dev.alamia.es (pagos con tarjetas de prueba de Stripe).
+4. PR `develop → main` con **merge commit** → `deploy.yml` despliega producción.
+
+`deploy.yml` compila la web con las variables del entorno, despliega con
+`wrangler deploy --env staging` (develop) o `--env=""` (main) y lanza
+`scripts/smoke.mjs` contra la URL desplegada. También en local:
 
 ```bash
-pnpm build
-# Subir contenido de dist/ a gh-pages
+pnpm build && pnpm worker:dev   # web + API en http://localhost:8787
+pnpm smoke http://localhost:8787
 ```
 
-## Backend (Cloudflare Worker)
+## Volver atrás (producción)
+
+GitHub Pages sigue publicándose desde `main` (`ci.yml`, job `deploy-frontend`)
+como respaldo temporal. Para volver a servir la web desde Pages, dejar en
+`worker/wrangler.toml` solo la ruta `*alamia.es/api/*` y desplegar (o cambiarla
+en el panel: Workers → formulario-contacto → Settings → Domains & Routes).
+
+## Entornos y datos
+
+- Cada entorno tiene su propio KV `REVIEWS_KV`: nunca compartir el de producción.
+- `SITE_ORIGIN` (vars de `wrangler.toml`) fija el origen permitido en CORS y las
+  URLs de retorno de Stripe.
+- Staging responde con `X-Robots-Tag: noindex, nofollow`.
+- Stripe: staging usa **modo prueba** (`sk_test_`/`pk_test_`, precios y webhook de
+  prueba hacia `https://dev.alamia.es/api/payments/webhook`). Nunca claves `live` en staging.
+
+## Secretos
+
+GitHub Actions:
+
+- `CLOUDFLARE_API_TOKEN` — deploy del Worker (repositorio).
+- `PUBLIC_STRIPE_PUBLISHABLE_KEY` — `pk_live_` en el repositorio; el entorno de
+  GitHub `staging` tiene la suya `pk_test_`. El deploy falla si no corresponden.
+
+Worker (con el wrangler global, en tu terminal; el valor se escribe allí):
 
 ```bash
-pnpm deploy:worker
+wrangler secret put NOMBRE --config worker/wrangler.toml               # producción
+wrangler secret put NOMBRE --config worker/wrangler.toml --env staging # staging
 ```
 
-Rutas configuradas: `*alamia.es/api/*`
-
-## Secrets requeridos en GitHub Actions
-
-- `CLOUDFLARE_API_TOKEN` — para deploy del Worker
-- `PUBLIC_STRIPE_PUBLISHABLE_KEY` — clave publicable Stripe (`pk_test_` o `pk_live_`)
-- `GITHUB_TOKEN` — automático para GitHub Pages
+`ADMIN_TOKEN, GOOGLE_API_KEY, GOOGLE_PLACE_ID, RESEND_API_KEY, SMTP_PASS, SMTP_USER,
+STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_DESARROLLO_WEB_ONETIME,
+STRIPE_PRICE_OPTIMIZACION_WEB_ONETIME, STRIPE_PRICE_BACKEND_APIS_ONETIME,
+STRIPE_PRICE_MANTENIMIENTO_MONTHLY`
 
 ## Post-deploy checklist
 
+- [ ] `pnpm smoke <url>` en verde
 - [ ] Formulario de contacto responde en `/api/contacto`
 - [ ] Reseñas cargan en `#testimonios`
-- [ ] Checkout Stripe funciona en `#servicios`
+- [ ] Checkout Stripe carga (en staging: pago completo con tarjeta de prueba)
 - [ ] `sitemap-index.xml` accesible
 - [ ] PWA service worker registrado
 
