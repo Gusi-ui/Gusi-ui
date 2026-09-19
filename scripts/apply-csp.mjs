@@ -1,10 +1,11 @@
 /**
  * Inserta una Content-Security-Policy en cada página generada.
  *
- * Va por <meta http-equiv> y no por cabecera porque el sitio se sirve desde
- * GitHub Pages, que no permite definir cabeceras propias. Eso deja fuera
- * frame-ancestors, report-uri y sandbox, que los navegadores ignoran en <meta>;
- * para esas hace falta una Transform Rule en Cloudflare (ver docs/DEPLOY.md).
+ * Va por <meta http-equiv> porque nació cuando el sitio se servía desde GitHub
+ * Pages, sin cabeceras propias. Eso deja fuera frame-ancestors, report-uri y
+ * sandbox, que los navegadores ignoran en <meta>; frame-ancestors la pone una
+ * Transform Rule en Cloudflare. Ahora que sirve el Worker podría ir en cabecera
+ * (ver docs/DEPLOY.md, «Scripts que inyecta Cloudflare»).
  *
  * Los hashes se calculan después del build porque Astro emite scripts inline de
  * hidratación que cambian según las islas de cada página. Escribirlos a mano
