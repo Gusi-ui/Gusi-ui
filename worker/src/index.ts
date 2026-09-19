@@ -673,7 +673,7 @@ function generarEmailHTML(nombre, email, servicio, mensaje, fecha, ip) {
             </div>
         </div>
         <div class="footer">
-            <p>Enviado desde <strong>Gusi.dev - Portfolio Profesional</strong></p>
+            <p>Enviado desde el formulario de <strong>alamia.es</strong></p>
             <p style="margin: 5px 0; font-size: 12px;">
                 📅 ${fecha}<br>
                 🌐 IP: ${ip}
