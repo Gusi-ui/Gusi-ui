@@ -13,6 +13,19 @@ if (!base) {
 }
 
 const { hostname } = new URL(base);
+
+// Un custom domain recién creado tarda en resolver: se espera hasta 3 minutos.
+const { lookup } = await import('node:dns/promises');
+for (let intento = 1; ; intento++) {
+  try {
+    await lookup(hostname);
+    break;
+  } catch (error) {
+    if (intento >= 18) throw error;
+    console.log(`Esperando DNS de ${hostname}…`);
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+  }
+}
 const isProduction = hostname === 'alamia.es';
 const isStaging = hostname === 'dev.alamia.es';
 const fallos = [];

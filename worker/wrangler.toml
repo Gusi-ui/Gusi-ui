@@ -44,8 +44,12 @@ port = 8787
 name = "formulario-contacto-staging"
 workers_dev = false
 preview_urls = false
+# La ruta de /api/* es necesaria mientras producción tenga "*alamia.es/api/*",
+# que también cubre dev.alamia.es y tiene prioridad sobre el custom domain.
+# Con el host exacto, esta ruta es más específica y gana.
 routes = [
-  { pattern = "dev.alamia.es", custom_domain = true }
+  { pattern = "dev.alamia.es", custom_domain = true },
+  { pattern = "dev.alamia.es/api/*", zone_name = "alamia.es" }
 ]
 # KV propio (formulario-contacto-staging-reviews): compartir el de producción
 # mezclaría reseñas, tokens del portal y límites de envío de ambos entornos.
