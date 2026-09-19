@@ -47,10 +47,10 @@ preview_urls = false
 routes = [
   { pattern = "dev.alamia.es", custom_domain = true }
 ]
-# KV propio: compartir el de producción mezclaría reseñas, tokens del portal y
-# límites de envío de ambos entornos.
+# KV propio (formulario-contacto-staging-reviews): compartir el de producción
+# mezclaría reseñas, tokens del portal y límites de envío de ambos entornos.
 kv_namespaces = [
-  { binding = "REVIEWS_KV", id = "PENDIENTE_KV_STAGING" }
+  { binding = "REVIEWS_KV", id = "6f2973fa60ae4acca3fd2d3e782db939" }
 ]
 
 [env.staging.vars]
