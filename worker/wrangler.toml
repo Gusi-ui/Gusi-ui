@@ -8,7 +8,7 @@ compatibility_date = "2024-12-29"
 
 # Secrets: ver docs/DEPLOY.md. Producción es el entorno raíz; staging, --env staging.
 # Con el wrangler global (el valor se escribe en la terminal, nunca por chat):
-# wrangler secret put RESEND_API_KEY --config worker/wrangler.toml [--env staging]
+# wrangler secret put SMTP_PASS --config worker/wrangler.toml [--env staging]
 
 # Producción (rama main). El DNS de alamia.es no cambia: estas rutas tienen
 # prioridad sobre el origen (GitHub Pages). Para volver atrás, dejar solo

@@ -1,10 +1,11 @@
 # Copia este archivo a .dev.vars y rellena tus valores reales.
 # cp .dev.vars.example .dev.vars
 #
-# Obtén RESEND_API_KEY en https://resend.com/api-keys
+# Correo: buzón IONOS por SMTP (smtp.ionos.es:465). SMTP_USER es la dirección completa.
 # ADMIN_TOKEN: el mismo que usas en producción (wrangler secret put ADMIN_TOKEN)
 
-RESEND_API_KEY=re_tu_api_key_aqui
+SMTP_USER=info@alamia.es
+SMTP_PASS=contraseña_del_buzon
 ADMIN_TOKEN=tu_token_admin_aqui
 
 # Opcionales (reseñas de Google)

@@ -5,7 +5,7 @@
 - Node.js 20+ (recomendado 22)
 - pnpm 10+ (ver sección de instalación abajo)
 - Cuenta Cloudflare (Worker + KV)
-- Cuenta Resend (emails)
+- Buzón IONOS `info@alamia.es` (envío de emails por SMTP)
 
 ## Instalar pnpm en macOS (si `corepack enable` falla con EACCES)
 
@@ -52,7 +52,7 @@ pnpm install
 pnpm dev
 
 # Backend Worker (puerto 8787)
-# Requiere worker/.dev.vars con RESEND_API_KEY (ver abajo)
+# Requiere worker/.dev.vars con SMTP_USER y SMTP_PASS (ver abajo)
 pnpm worker:dev
 ```
 
@@ -63,7 +63,7 @@ pnpm worker:dev
 ```bash
 cd worker
 cp .dev.vars.example .dev.vars
-# Edita .dev.vars con tu RESEND_API_KEY real
+# Edita .dev.vars con SMTP_USER y SMTP_PASS reales
 cd ..
 pnpm worker:dev
 ```
@@ -75,7 +75,8 @@ El archivo `.dev.vars` está en `.gitignore` y no se sube a GitHub.
 Ejecuta estos comandos **desde la raíz del repo** (no desde `worker/`), usando siempre `--config worker/wrangler.toml`:
 
 ```bash
-pnpm exec wrangler secret put RESEND_API_KEY --config worker/wrangler.toml
+pnpm exec wrangler secret put SMTP_USER --config worker/wrangler.toml   # info@alamia.es
+pnpm exec wrangler secret put SMTP_PASS --config worker/wrangler.toml   # contraseña del buzón IONOS
 pnpm exec wrangler secret put ADMIN_TOKEN --config worker/wrangler.toml
 pnpm exec wrangler secret put GOOGLE_API_KEY --config worker/wrangler.toml    # opcional
 pnpm exec wrangler secret put GOOGLE_PLACE_ID --config worker/wrangler.toml   # opcional

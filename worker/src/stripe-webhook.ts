@@ -1,8 +1,7 @@
 import Stripe from 'stripe';
-import { Resend } from 'resend';
+import { isMailConfigured, sendMail } from './mail';
 
 const EMAIL_DESTINO = 'info@alamia.es';
-const EMAIL_REMITENTE = 'info@alamia.es';
 const NOMBRE_REMITENTE = 'Pagos alamia.es';
 
 const getStripe = (secretKey: string) =>
@@ -76,7 +75,7 @@ const sendPaymentEmails = async (
   env: Record<string, string | undefined>,
   session: Stripe.Checkout.Session
 ): Promise<void> => {
-  if (!env.RESEND_API_KEY) return;
+  if (!isMailConfigured(env)) return;
 
   const customerEmail = session.customer_details?.email;
   if (!customerEmail) return;
@@ -85,22 +84,27 @@ const sendPaymentEmails = async (
   const billingPlan = session.metadata?.billingPlan;
   const billingLabel = billingPlan === 'monthly' ? 'Suscripción mensual' : 'Pago único';
   const amount = formatAmount(session.amount_total, session.currency);
-  const resend = new Resend(env.RESEND_API_KEY);
-
-  await resend.emails.send({
-    from: `${NOMBRE_REMITENTE} <${EMAIL_REMITENTE}>`,
-    to: [EMAIL_DESTINO],
-    reply_to: customerEmail,
-    subject: `Nuevo pago — ${productTitle}`,
-    html: generarEmailPagoHTML(productTitle, billingLabel, amount, customerEmail, session.id),
-  });
-
-  await resend.emails.send({
-    from: `${NOMBRE_REMITENTE} <${EMAIL_REMITENTE}>`,
-    to: [customerEmail],
-    subject: `Confirmación de pago — ${productTitle}`,
-    html: generarEmailClienteHTML(productTitle, billingLabel, amount, billingPlan === 'monthly'),
-  });
+  // Como con Resend, un fallo de correo no hace fallar el webhook: Stripe
+  // reintentaría y duplicaría el aviso que sí hubiera salido.
+  try {
+    await sendMail(env, [
+      {
+        fromName: NOMBRE_REMITENTE,
+        to: EMAIL_DESTINO,
+        replyTo: customerEmail,
+        subject: `Nuevo pago — ${productTitle}`,
+        html: generarEmailPagoHTML(productTitle, billingLabel, amount, customerEmail, session.id),
+      },
+      {
+        fromName: NOMBRE_REMITENTE,
+        to: customerEmail,
+        subject: `Confirmación de pago — ${productTitle}`,
+        html: generarEmailClienteHTML(productTitle, billingLabel, amount, billingPlan === 'monthly'),
+      },
+    ]);
+  } catch (error) {
+    console.error('[webhook] envío de correos fallido', session.id, error);
+  }
 };
 
 const isEventProcessed = async (
