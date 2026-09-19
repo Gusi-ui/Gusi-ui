@@ -42,29 +42,51 @@ const comprobar = (nombre, ok, detalle = '') => {
   if (!ok) fallos.push(nombre);
 };
 
-const home = await get('/');
-const html = await home.text();
-comprobar(
-  'portada 200 HTML',
-  home.status === 200 && /text\/html/.test(home.headers.get('content-type') ?? ''),
-  `${home.status}`
-);
-comprobar(
-  'portada sin caché',
-  home.headers.get('cache-control') === 'no-cache',
-  home.headers.get('cache-control') ?? ''
-);
+// Cloudflare (Bot Fight Mode) puede responder con un desafío 403 a las IPs de
+// centros de datos, como los runners de GitHub. No afecta a los visitantes, así
+// que se prueba otra página HTML y, si todas están desafiadas, solo se avisa.
+const esDesafio = async (res) => {
+  if (res.status !== 403) return false;
+  if ((res.headers.get('cf-mitigated') ?? '').includes('challenge')) return true;
+  const cuerpo = await res.clone().text();
+  return /challenge-platform|cf-chl|Just a moment/i.test(cuerpo);
+};
+
+let home;
+let html = '';
+for (const path of ['/', '/servicios/', '/proyectos/']) {
+  const res = await get(path);
+  if (await esDesafio(res)) {
+    console.log(`⚠ ${path} — desafío de Cloudflare (${res.status}), se prueba otra página`);
+    continue;
+  }
+  home = res;
+  html = await res.text();
+  comprobar(
+    `${path} 200 HTML`,
+    res.status === 200 && /text\/html/.test(res.headers.get('content-type') ?? ''),
+    `${res.status}${res.headers.get('cf-mitigated') ? ` cf-mitigated=${res.headers.get('cf-mitigated')}` : ''}`
+  );
+  comprobar(
+    `${path} sin caché`,
+    res.headers.get('cache-control') === 'no-cache',
+    res.headers.get('cache-control') ?? ''
+  );
+  break;
+}
+if (!home)
+  console.log('⚠ Todas las páginas HTML devolvieron un desafío: comprobaciones de HTML omitidas');
 
 const css = html.match(/\/_astro\/[^"']+\.css/)?.[0];
 if (css) {
   const res = await get(css);
   comprobar(
-    'CSS de la portada existe e inmutable',
+    'CSS enlazado existe e inmutable',
     res.status === 200 && /immutable/.test(res.headers.get('cache-control') ?? ''),
     `${css} ${res.status}`
   );
-} else {
-  comprobar('la portada enlaza su CSS', false);
+} else if (home) {
+  comprobar('la página enlaza su CSS', false);
 }
 
 const sw = await get('/sw.js');
@@ -107,10 +129,11 @@ comprobar(
   resenas.headers.get('access-control-allow-origin') ?? ''
 );
 
-const robots = home.headers.get('x-robots-tag');
-if (isStaging) comprobar('staging con noindex', robots === 'noindex, nofollow', robots ?? '');
+const robots = home?.headers.get('x-robots-tag') ?? null;
+if (isStaging && home)
+  comprobar('staging con noindex', robots === 'noindex, nofollow', robots ?? '');
 if (isProduction) {
-  comprobar('producción indexable', robots === null, robots ?? '');
+  if (home) comprobar('producción indexable', robots === null, robots ?? '');
   const www = await fetch('https://www.alamia.es/servicios/?a=1', { redirect: 'manual' });
   comprobar(
     'www → 301 sin www',
