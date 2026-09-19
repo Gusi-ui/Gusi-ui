@@ -7,31 +7,27 @@ export const GA_ID = 'G-165E9VQDD8';
 export const GOOGLE_REVIEWS_URL =
   'https://search.google.com/local/writereview?placeid=ChIJSadCmoe1pBIRcuyJg--BusU';
 
-export const getReviewsApi = (): string => {
-  if (typeof window === 'undefined') return `${SITE_URL}/api/resenas`;
+/**
+ * Base de la API. En el navegador es el mismo origen de la página (alamia.es en
+ * producción, dev.alamia.es en staging), salvo en `pnpm dev`, que llama al worker
+ * local. En el build (sin window) se usa producción.
+ */
+const getApiBase = (): string => {
+  if (typeof window === 'undefined') return `${SITE_URL}/api`;
   const hostname = window.location.hostname;
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:8787/api/resenas';
+    return 'http://localhost:8787/api';
   }
-  return `${SITE_URL}/api/resenas`;
+  return `${window.location.origin}/api`;
 };
 
-export const getContactApi = (): string => {
-  if (typeof window === 'undefined') return `${SITE_URL}/api/contacto`;
-  const hostname = window.location.hostname;
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:8787/api/contacto';
-  }
-  return `${SITE_URL}/api/contacto`;
-};
+export const getReviewsApi = (): string => `${getApiBase()}/resenas`;
+
+export const getContactApi = (): string => `${getApiBase()}/contacto`;
+
+export const getAdminReviewsApi = (): string => `${getApiBase()}/admin/resenas`;
 
 export const getPaymentsApi = (path = ''): string => {
-  const base =
-    typeof window === 'undefined'
-      ? `${SITE_URL}/api/payments`
-      : window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:8787/api/payments'
-        : `${SITE_URL}/api/payments`;
-
+  const base = `${getApiBase()}/payments`;
   return path ? `${base}${path.startsWith('/') ? path : `/${path}`}` : base;
 };

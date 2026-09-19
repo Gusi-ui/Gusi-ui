@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { PRODUCTION_ORIGIN, matchAllowedOrigin, resolveCorsOrigin } from '../worker/src/origins';
+import {
+  PRODUCTION_ORIGIN,
+  matchAllowedOrigin,
+  resolveCorsOrigin,
+  siteOriginFrom,
+} from '../worker/src/origins';
 
 const requestWithOrigin = (origin: string | null): Request =>
   new Request('https://alamia.es/api/resenas', {
@@ -52,5 +57,34 @@ describe('resolveCorsOrigin', () => {
     expect(resolveCorsOrigin(requestWithOrigin('http://localhost:4321'))).toBe(
       'http://localhost:4321'
     );
+  });
+});
+
+describe('origen por entorno (staging)', () => {
+  const STAGING = 'https://dev.alamia.es';
+
+  it('siteOriginFrom lee SITE_ORIGIN y cae a producción si falta o no es válido', () => {
+    expect(siteOriginFrom({ SITE_ORIGIN: STAGING })).toBe(STAGING);
+    expect(siteOriginFrom({})).toBe(PRODUCTION_ORIGIN);
+    expect(siteOriginFrom(null)).toBe(PRODUCTION_ORIGIN);
+    expect(siteOriginFrom({ SITE_ORIGIN: 'http://dev.alamia.es' })).toBe(PRODUCTION_ORIGIN);
+    expect(siteOriginFrom({ SITE_ORIGIN: 'https://dev.alamia.es/' })).toBe(PRODUCTION_ORIGIN);
+    expect(siteOriginFrom({ SITE_ORIGIN: 'no-es-una-url' })).toBe(PRODUCTION_ORIGIN);
+  });
+
+  it('staging acepta su origen y rechaza el de producción', () => {
+    expect(matchAllowedOrigin(STAGING, STAGING)).toBe(STAGING);
+    expect(matchAllowedOrigin(PRODUCTION_ORIGIN, STAGING)).toBeNull();
+    expect(matchAllowedOrigin('https://dev.alamia.es.atacante.com', STAGING)).toBeNull();
+    expect(matchAllowedOrigin('http://localhost:4321', STAGING)).toBe('http://localhost:4321');
+  });
+
+  it('producción rechaza el origen de staging', () => {
+    expect(matchAllowedOrigin(STAGING)).toBeNull();
+  });
+
+  it('resolveCorsOrigin cae al origen del entorno', () => {
+    expect(resolveCorsOrigin(requestWithOrigin('https://atacante.com'), STAGING)).toBe(STAGING);
+    expect(resolveCorsOrigin(null, STAGING)).toBe(STAGING);
   });
 });

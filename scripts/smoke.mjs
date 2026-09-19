@@ -1,0 +1,149 @@
+/**
+ * Pruebas de humo contra una URL desplegada (o `wrangler dev`):
+ *   node scripts/smoke.mjs https://dev.alamia.es
+ *
+ * Comprueba web, caché, redirecciones, 404 y la API de solo lectura. No envía
+ * formularios ni crea pagos.
+ */
+
+const base = (process.argv[2] || '').replace(/\/$/, '');
+if (!base) {
+  console.error('Uso: node scripts/smoke.mjs <url base>');
+  process.exit(2);
+}
+
+const { hostname } = new URL(base);
+
+// Un custom domain recién creado tarda en resolver: se espera hasta 3 minutos.
+const { lookup } = await import('node:dns/promises');
+for (let intento = 1; ; intento++) {
+  try {
+    await lookup(hostname);
+    break;
+  } catch (error) {
+    if (intento >= 18) throw error;
+    console.log(`Esperando DNS de ${hostname}…`);
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+  }
+}
+const isProduction = hostname === 'alamia.es';
+const isStaging = hostname === 'dev.alamia.es';
+const fallos = [];
+
+const get = (path, init = {}) =>
+  fetch(`${base}${path}`, {
+    redirect: 'manual',
+    ...init,
+    headers: { 'User-Agent': 'alamia-smoke', ...init.headers },
+  });
+
+const comprobar = (nombre, ok, detalle = '') => {
+  console.log(`${ok ? '✔' : '✘'} ${nombre}${detalle ? ` — ${detalle}` : ''}`);
+  if (!ok) fallos.push(nombre);
+};
+
+// Cloudflare (Bot Fight Mode) puede responder con un desafío 403 a las IPs de
+// centros de datos, como los runners de GitHub. No afecta a los visitantes, así
+// que se prueba otra página HTML y, si todas están desafiadas, solo se avisa.
+const esDesafio = async (res) => {
+  if (res.status !== 403) return false;
+  if ((res.headers.get('cf-mitigated') ?? '').includes('challenge')) return true;
+  const cuerpo = await res.clone().text();
+  return /challenge-platform|cf-chl|Just a moment/i.test(cuerpo);
+};
+
+let home;
+let html = '';
+for (const path of ['/', '/servicios/', '/proyectos/']) {
+  const res = await get(path);
+  if (await esDesafio(res)) {
+    console.log(`⚠ ${path} — desafío de Cloudflare (${res.status}), se prueba otra página`);
+    continue;
+  }
+  home = res;
+  html = await res.text();
+  comprobar(
+    `${path} 200 HTML`,
+    res.status === 200 && /text\/html/.test(res.headers.get('content-type') ?? ''),
+    `${res.status}${res.headers.get('cf-mitigated') ? ` cf-mitigated=${res.headers.get('cf-mitigated')}` : ''}`
+  );
+  comprobar(
+    `${path} sin caché`,
+    res.headers.get('cache-control') === 'no-cache',
+    res.headers.get('cache-control') ?? ''
+  );
+  break;
+}
+if (!home)
+  console.log('⚠ Todas las páginas HTML devolvieron un desafío: comprobaciones de HTML omitidas');
+
+const css = html.match(/\/_astro\/[^"']+\.css/)?.[0];
+if (css) {
+  const res = await get(css);
+  comprobar(
+    'CSS enlazado existe e inmutable',
+    res.status === 200 && /immutable/.test(res.headers.get('cache-control') ?? ''),
+    `${css} ${res.status}`
+  );
+} else if (home) {
+  comprobar('la página enlaza su CSS', false);
+}
+
+const sw = await get('/sw.js');
+comprobar(
+  'sw.js sin caché',
+  sw.status === 200 && sw.headers.get('cache-control') === 'no-cache',
+  `${sw.status}`
+);
+
+for (const [desde, hasta] of [
+  ['/servicios', '/servicios/'],
+  ['/gracias.html', '/gracias/'],
+]) {
+  const res = await get(desde);
+  const location = res.headers.get('location') ?? '';
+  comprobar(
+    `${desde} → 301 ${hasta}`,
+    res.status === 301 && location.endsWith(hasta),
+    `${res.status} ${location}`
+  );
+}
+
+const noExiste = await get('/esta-pagina-no-existe/');
+comprobar(
+  '404 con página propia',
+  noExiste.status === 404 && /text\/html/.test(noExiste.headers.get('content-type') ?? ''),
+  `${noExiste.status}`
+);
+
+const resenas = await get('/api/resenas', { headers: { Origin: base } });
+const challenge = resenas.headers.get('cf-mitigated') === 'challenge';
+comprobar(
+  '/api/resenas 200 JSON',
+  resenas.status === 200 && /json/.test(resenas.headers.get('content-type') ?? ''),
+  challenge ? `${resenas.status} (desafío de Cloudflare: ¿Bot Fight Mode?)` : `${resenas.status}`
+);
+comprobar(
+  'CORS del entorno',
+  resenas.headers.get('access-control-allow-origin') === base,
+  resenas.headers.get('access-control-allow-origin') ?? ''
+);
+
+const robots = home?.headers.get('x-robots-tag') ?? null;
+if (isStaging && home)
+  comprobar('staging con noindex', robots === 'noindex, nofollow', robots ?? '');
+if (isProduction) {
+  if (home) comprobar('producción indexable', robots === null, robots ?? '');
+  const www = await fetch('https://www.alamia.es/servicios/?a=1', { redirect: 'manual' });
+  comprobar(
+    'www → 301 sin www',
+    www.status === 301 && www.headers.get('location') === 'https://alamia.es/servicios/?a=1',
+    `${www.status} ${www.headers.get('location')}`
+  );
+}
+
+if (fallos.length) {
+  console.error(`\n${fallos.length} comprobación(es) fallida(s)`);
+  process.exit(1);
+}
+console.log('\nTodo OK');

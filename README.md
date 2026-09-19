@@ -20,6 +20,6 @@ pnpm build        # Build estático → dist/
 ## Stack
 
 - **Frontend:** Astro 6, React islands, Tailwind CSS v4
-- **Backend:** Cloudflare Worker + KV + Resend
+- **Backend:** Cloudflare Worker (web + API) + KV + SMTP de IONOS
 - **Package manager:** pnpm 10
 - **Deploy:** GitHub Pages (frontend) + Wrangler (API)

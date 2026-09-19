@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
-import { Resend } from 'resend';
-import { PRODUCTION_ORIGIN, matchAllowedOrigin, resolveCorsOrigin } from './origins';
+import { matchAllowedOrigin, resolveCorsOrigin, siteOriginFrom } from './origins';
+import { isMailConfigured, sendMail } from './mail';
 import {
   PORTAL_TOKEN_TTL_SECONDS,
   createPortalToken,
@@ -16,8 +16,6 @@ import {
   type BillingPlan,
 } from './catalog';
 
-const SITE_URL = PRODUCTION_ORIGIN;
-
 const isPlaceholderSecret = (value?: string): boolean =>
   !value ||
   value.includes('xxx') ||
@@ -30,8 +28,10 @@ const isPlaceholderSecret = (value?: string): boolean =>
 // solo pueden apuntar a un origen de la allowlist. Derivarlas del Origin sin
 // validar convertía el checkout en una redirección abierta que filtraba el
 // session_id al dominio del atacante.
-const getSiteUrl = (request: Request | null): string =>
-  matchAllowedOrigin(request?.headers.get('Origin')) ?? SITE_URL;
+const getSiteUrl = (request: Request | null, env: { SITE_ORIGIN?: string }): string => {
+  const siteOrigin = siteOriginFrom(env);
+  return matchAllowedOrigin(request?.headers.get('Origin'), siteOrigin) ?? siteOrigin;
+};
 
 const getStripe = (secretKey: string) =>
   new Stripe(secretKey, {
@@ -86,7 +86,7 @@ export const handleCreateCheckout = async (
       );
     }
 
-    const siteUrl = getSiteUrl(corsRequest);
+    const siteUrl = getSiteUrl(corsRequest, env);
     const stripe = getStripe(env.STRIPE_SECRET_KEY);
 
     const session = await stripe.checkout.sessions.create({
@@ -223,7 +223,7 @@ const customerIdFromEmail = async (stripe: Stripe, email: string): Promise<strin
   return null;
 };
 
-const PORTAL_EMAIL_REMITENTE = 'Alamia <info@alamia.es>';
+const PORTAL_EMAIL_REMITENTE = 'Alamia';
 
 const esEmailValido = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -267,7 +267,7 @@ export const handlePortalRequest = async (
     return jsonError('Pasarela de pago no configurada', 503, corsRequest);
   }
 
-  if (!env.REVIEWS_KV || !env.RESEND_API_KEY) {
+  if (!env.REVIEWS_KV || !isMailConfigured(env)) {
     return jsonError('El envío de enlaces no está disponible ahora mismo', 503, corsRequest);
   }
 
@@ -309,10 +309,10 @@ export const handlePortalRequest = async (
       { expirationTtl: PORTAL_TOKEN_TTL_SECONDS }
     );
 
-    const enlace = `${getSiteUrl(corsRequest)}/mantenimiento/gestionar/?token=${token}`;
-    await new Resend(env.RESEND_API_KEY).emails.send({
-      from: PORTAL_EMAIL_REMITENTE,
-      to: [normalizeEmail(email)],
+    const enlace = `${getSiteUrl(corsRequest, env)}/mantenimiento/gestionar/?token=${token}`;
+    await sendMail(env, {
+      fromName: PORTAL_EMAIL_REMITENTE,
+      to: normalizeEmail(email),
       subject: 'Tu enlace para gestionar el mantenimiento',
       html: emailEnlacePortalHTML(enlace),
     });
@@ -384,7 +384,7 @@ export const handleCustomerPortal = async (
       );
     }
 
-    const siteUrl = getSiteUrl(corsRequest);
+    const siteUrl = getSiteUrl(corsRequest, env);
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
       return_url: `${siteUrl}/mantenimiento/gestionar/?portal=return`,

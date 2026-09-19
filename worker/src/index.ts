@@ -1,14 +1,9 @@
 /**
- * CLOUDFLARE WORKER - Formulario de Contacto con Resend
+ * CLOUDFLARE WORKER - Web, formulario de contacto, reseñas y pagos de alamia.es
  *
- * Solución con Cloudflare Workers + Resend:
- * - Cloudflare Workers (infraestructura)
- * - Resend (servicio de email recomendado por Cloudflare)
- * - 3,000 emails/mes gratis
- * - Integración oficial y simple
+ * El correo sale por SMTP del buzón de IONOS (ver mail.ts).
  */
 
-import { Resend } from 'resend';
 import {
   handleCreateCheckout,
   handleVerifySession,
@@ -16,12 +11,13 @@ import {
   handlePortalRequest,
 } from './payments';
 import { handleStripeWebhook } from './stripe-webhook';
-import { matchAllowedOrigin, resolveCorsOrigin } from './origins';
+import { matchAllowedOrigin, resolveCorsOrigin, siteOriginFrom } from './origins';
 import { toPublicReview } from './reviews-public';
+import { serveStatic } from './static-site';
+import { isMailConfigured, sendMail } from './mail';
 
 const CONFIG = {
   emailDestino: 'info@alamia.es',
-  emailRemitente: 'info@alamia.es',
   nombreRemitente: 'Formulario alamia.es',
   dominio: 'alamia.es',
   maxEnviosPorHora: 10,
@@ -35,65 +31,83 @@ const getRateLimitKv = (env) => env.RATE_LIMIT || env.REVIEWS_KV;
 export default {
   async fetch(request, env, _ctx) {
     const url = new URL(request.url);
-    
-    // CORS Preflight - DEBE ser lo primero, sin ninguna validación
-    if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': resolveCorsOrigin(request),
-          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-          'Access-Control-Max-Age': '86400'
-        }
-      });
+
+    // www.alamia.es → alamia.es (antes lo hacía GitHub Pages).
+    if (url.hostname.startsWith('www.')) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
     }
 
-    // Para requests reales, validar origen contra la allowlist por host exacto.
-    // Sin cabecera Origin no se rechaza: las llamadas servidor a servidor (webhook
-    // de Stripe) no la envían y su autenticidad se comprueba por firma.
-    const origin = request.headers.get('Origin');
-    if (origin && !matchAllowedOrigin(origin)) {
-      return jsonError('Origen no autorizado', 403, request);
-    }
+    if (!url.pathname.startsWith('/api/')) return serveStatic(request, env, url);
 
-    // Determinar ruta
-    if (url.pathname === '/api/contacto' || url.pathname.endsWith('/api/contacto')) {
-      return handleContacto(request, env);
-    } else if (url.pathname === '/api/resenas' || url.pathname.endsWith('/api/resenas')) {
-      return handleResenas(request, env);
-    } else if (url.pathname === '/api/admin/resenas' || url.pathname.endsWith('/api/admin/resenas')) {
-      return handleAdminResenas(request, env);
-    } else if (
-      url.pathname === '/api/payments/checkout' ||
-      url.pathname.endsWith('/api/payments/checkout')
-    ) {
-      return handleCreateCheckout(request, env, request);
-    } else if (
-      url.pathname === '/api/payments/verify-session' ||
-      url.pathname.endsWith('/api/payments/verify-session')
-    ) {
-      return handleVerifySession(request, env, request);
-    } else if (
-      url.pathname === '/api/payments/webhook' ||
-      url.pathname.endsWith('/api/payments/webhook')
-    ) {
-      return handleStripeWebhook(request, env);
-    } else if (
-      url.pathname === '/api/payments/portal-request' ||
-      url.pathname.endsWith('/api/payments/portal-request')
-    ) {
-      return handlePortalRequest(request, env, request);
-    } else if (
-      url.pathname === '/api/payments/customer-portal' ||
-      url.pathname.endsWith('/api/payments/customer-portal')
-    ) {
-      return handleCustomerPortal(request, env, request);
-    } else {
-      return jsonError('Ruta no encontrada', 404, request);
-    }
+    // Los manejadores calculan CORS contra producción; aquí se fija con el origen
+    // del entorno (dev.alamia.es en staging) para todas las respuestas de la API.
+    const siteOrigin = siteOriginFrom(env);
+    const apiResponse = await handleApi(request, env, url, siteOrigin);
+    const response = new Response(apiResponse.body, apiResponse);
+    response.headers.set('Access-Control-Allow-Origin', resolveCorsOrigin(request, siteOrigin));
+    return response;
   }
 };
+
+async function handleApi(request, env, url, siteOrigin) {
+  // CORS Preflight - DEBE ser lo primero, sin ninguna validación
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': resolveCorsOrigin(request),
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Max-Age': '86400'
+      }
+    });
+  }
+
+  // Para requests reales, validar origen contra la allowlist por host exacto.
+  // Sin cabecera Origin no se rechaza: las llamadas servidor a servidor (webhook
+  // de Stripe) no la envían y su autenticidad se comprueba por firma.
+  const origin = request.headers.get('Origin');
+  if (origin && !matchAllowedOrigin(origin, siteOrigin)) {
+    return jsonError('Origen no autorizado', 403, request);
+  }
+
+  // Determinar ruta
+  if (url.pathname === '/api/contacto' || url.pathname.endsWith('/api/contacto')) {
+    return handleContacto(request, env);
+  } else if (url.pathname === '/api/resenas' || url.pathname.endsWith('/api/resenas')) {
+    return handleResenas(request, env);
+  } else if (url.pathname === '/api/admin/resenas' || url.pathname.endsWith('/api/admin/resenas')) {
+    return handleAdminResenas(request, env);
+  } else if (
+    url.pathname === '/api/payments/checkout' ||
+    url.pathname.endsWith('/api/payments/checkout')
+  ) {
+    return handleCreateCheckout(request, env, request);
+  } else if (
+    url.pathname === '/api/payments/verify-session' ||
+    url.pathname.endsWith('/api/payments/verify-session')
+  ) {
+    return handleVerifySession(request, env, request);
+  } else if (
+    url.pathname === '/api/payments/webhook' ||
+    url.pathname.endsWith('/api/payments/webhook')
+  ) {
+    return handleStripeWebhook(request, env);
+  } else if (
+    url.pathname === '/api/payments/portal-request' ||
+    url.pathname.endsWith('/api/payments/portal-request')
+  ) {
+    return handlePortalRequest(request, env, request);
+  } else if (
+    url.pathname === '/api/payments/customer-portal' ||
+    url.pathname.endsWith('/api/payments/customer-portal')
+  ) {
+    return handleCustomerPortal(request, env, request);
+  } else {
+    return jsonError('Ruta no encontrada', 404, request);
+  }
+}
 
 // ===== MANEJO DE CONTACTO =====
 async function handleContacto(request, env) {
@@ -132,14 +146,12 @@ async function handleContacto(request, env) {
     const servicio = sanitizar(datos.service);
     const mensaje = sanitizar(datos.message);
 
-    // Verificar API key de Resend
-    if (!env.RESEND_API_KEY) {
+    if (!isMailConfigured(env)) {
       return jsonError('Servicio de email no disponible', 500, request);
     }
 
-    // Enviar email con Resend
-    const enviado = await enviarEmailResend(
-      env.RESEND_API_KEY,
+    const enviado = await enviarEmailContacto(
+      env,
       nombre,
       email,
       servicio,
@@ -581,11 +593,9 @@ async function moderarResena(request, env) {
   }
 }
 
-// ===== ENVÍO CON RESEND =====
-async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
+// ===== ENVÍO DEL FORMULARIO =====
+async function enviarEmailContacto(env, nombreUsuario, emailUsuario, servicio, mensaje, ip) {
   try {
-    const resend = new Resend(apiKey);
-
     const nombreServicio = {
       'web': 'Desarrollo Web',
       'mobile': 'App Móvil',
@@ -600,23 +610,18 @@ async function enviarEmailResend(apiKey, nombreUsuario, emailUsuario, servicio, 
       timeStyle: 'short'
     });
 
-    const asunto = `Nuevo mensaje desde Gusi.dev - ${nombreServicio}`;
+    const asunto = `Nuevo mensaje desde alamia.es - ${nombreServicio}`;
 
-    const { error } = await resend.emails.send({
-      from: `${CONFIG.nombreRemitente} <${CONFIG.emailRemitente}>`,
-      to: [CONFIG.emailDestino],
-      reply_to: `${nombreUsuario} <${emailUsuario}>`,
+    await sendMail(env, {
+      fromName: CONFIG.nombreRemitente,
+      to: CONFIG.emailDestino,
+      replyTo: emailUsuario,
       subject: asunto,
       html: generarEmailHTML(nombreUsuario, emailUsuario, nombreServicio, mensaje, fecha, ip)
     });
-
-    if (error) {
-      return false;
-    }
-
     return true;
-
-  } catch {
+  } catch (error) {
+    console.error('[contacto] envío fallido', error);
     return false;
   }
 }

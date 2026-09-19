@@ -1,0 +1,3 @@
+# Solo tienen sentido en GitHub Pages; no se publican en el Worker.
+CNAME
+.nojekyll
