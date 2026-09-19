@@ -135,11 +135,15 @@ if (isStaging && home)
 if (isProduction) {
   if (home) comprobar('producción indexable', robots === null, robots ?? '');
   const www = await fetch('https://www.alamia.es/servicios/?a=1', { redirect: 'manual' });
-  comprobar(
-    'www → 301 sin www',
-    www.status === 301 && www.headers.get('location') === 'https://alamia.es/servicios/?a=1',
-    `${www.status} ${www.headers.get('location')}`
-  );
+  if (await esDesafio(www)) {
+    console.log('⚠ www — desafío de Cloudflare (403), comprobación omitida');
+  } else {
+    comprobar(
+      'www → 301 sin www',
+      www.status === 301 && www.headers.get('location') === 'https://alamia.es/servicios/?a=1',
+      `${www.status} ${www.headers.get('location')}`
+    );
+  }
 }
 
 if (fallos.length) {
