@@ -77,6 +77,24 @@ responde «Servicio de email no disponible» y el webhook de Stripe no envía na
 - [ ] Checkout Stripe carga (en staging: pago completo con tarjeta de prueba)
 - [ ] `sitemap-index.xml` accesible
 - [ ] PWA service worker registrado
+- [ ] Sin excepciones nuevas en los logs del Worker (ver abajo)
+
+## Logs y errores del Worker
+
+`[observability]` está activo en los dos entornos (`worker/wrangler.toml`), así
+que hay **histórico**: Workers → el Worker → Observability, con 3 días de
+retención en el plan Free. Sin esto solo quedaba `wrangler tail`, que es en
+directo y no sirve para saber qué pasó ayer.
+
+Qué mirar: excepciones (`outcome` distinto de `ok`) y **1101**, que es una
+excepción sin capturar del Worker. Un 1101 esporádico no se nota desde fuera —
+la web parece funcionar — pero significa que alguna petición está fallando.
+
+```sh
+# En directo, para una prueba concreta
+pnpm exec wrangler tail --config worker/wrangler.toml            # producción
+pnpm exec wrangler tail --config worker/wrangler.toml --env staging
+```
 
 ## Cabeceras de seguridad
 
