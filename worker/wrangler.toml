@@ -35,6 +35,13 @@ not_found_handling = "404-page"
 ENVIRONMENT = "production"
 SITE_ORIGIN = "https://alamia.es"
 
+# Workers Logs: sin esto no hay histórico de errores y los 1101 esporádicos
+# pasan desapercibidos (solo se ven con `wrangler tail`, en directo). En el plan
+# Free se retienen 3 días. No se hereda en [env.staging]: se repite abajo.
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [dev]
 port = 8787
 
@@ -60,3 +67,7 @@ kv_namespaces = [
 [env.staging.vars]
 ENVIRONMENT = "staging"
 SITE_ORIGIN = "https://dev.alamia.es"
+
+[env.staging.observability]
+enabled = true
+head_sampling_rate = 1
