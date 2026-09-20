@@ -77,17 +77,41 @@ responde «Servicio de email no disponible» y el webhook de Stripe no envía na
 - [ ] Checkout Stripe carga (en staging: pago completo con tarjeta de prueba)
 - [ ] `sitemap-index.xml` accesible
 - [ ] PWA service worker registrado
+- [ ] Sin excepciones nuevas en los logs del Worker (ver abajo)
+
+## Logs y errores del Worker
+
+`[observability]` está activo en los dos entornos (`worker/wrangler.toml`), así
+que hay **histórico**: Workers → el Worker → Observability, con 3 días de
+retención en el plan Free. Sin esto solo quedaba `wrangler tail`, que es en
+directo y no sirve para saber qué pasó ayer.
+
+Qué mirar: excepciones (`outcome` distinto de `ok`) y **1101**, que es una
+excepción sin capturar del Worker. Un 1101 esporádico no se nota desde fuera —
+la web parece funcionar — pero significa que alguna petición está fallando.
+
+```sh
+# En directo, para una prueba concreta
+pnpm exec wrangler tail --config worker/wrangler.toml            # producción
+pnpm exec wrangler tail --config worker/wrangler.toml --env staging
+```
 
 ## Cabeceras de seguridad
 
-El sitio se sirve desde **GitHub Pages**, que no permite definir cabeceras
-propias. `public/_headers` es un fichero de Cloudflare Pages / Netlify y **nunca
-llegó a aplicarse**: durante meses declaró `X-Frame-Options`, `Referrer-Policy`
-y `Cache-Control: immutable` sin que ninguna llegase al navegador. Se eliminó
-para no seguir dando una falsa sensación de protección.
+Desde el 2026-09-19 la web la sirve el Worker, así que las cabeceras vienen de
+dos sitios:
 
-Lo que sí llega hoy lo pone GitHub Pages por su cuenta:
-`Strict-Transport-Security` y `X-Content-Type-Options`.
+- **El Worker** (`worker/src/static-site.ts`, `SECURITY_HEADERS`), solo en las
+  páginas y ficheros de la web: `Strict-Transport-Security`,
+  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+  `Permissions-Policy` y `Cache-Control`. En staging, además,
+  `X-Robots-Tag: noindex, nofollow`.
+- **La Transform Rule de Cloudflare** (ver abajo), que se aplica a todo lo que
+  sale de la zona, incluidas las respuestas de la API.
+
+Política de caché (`cacheControlFor`): HTML, `sw.js` y `registerSW.js` en
+`no-cache`; `/_astro/*` inmutable un año; el resto, una hora. El HTML nunca
+debe cachearse: uno viejo pediría CSS/JS con hashes que ya no existen.
 
 ### Content-Security-Policy
 
@@ -114,10 +138,11 @@ pasarela), hay que declarar su origen en `construirCsp` o dejará de cargar.
 
 ### Cabeceras desde Cloudflare
 
-Los navegadores **ignoran** estas directivas en `<meta>`, así que las pone una
+Los navegadores **ignoran** `frame-ancestors` en `<meta>`, así que la pone una
 Transform Rule de respuesta en el panel de Cloudflare (zona `alamia.es` →
 Reglas → Regla de transformación de encabezado de respuesta), con
-*Establecer estático*. Aplicada y verificada el 2026-09-16:
+*Establecer estático*. Aplicada el 2026-09-16 y verificada de nuevo con el
+Worker el 2026-09-19 (llega tanto a la web como a `/api/*`):
 
 | Cabecera | Valor |
 | --- | --- |
@@ -127,8 +152,13 @@ Reglas → Regla de transformación de encabezado de respuesta), con
 | `X-Frame-Options` | `DENY` (equivalente para navegadores antiguos) |
 
 Esta CSP convive con la del `<meta>`: el navegador aplica ambas, y esta solo
-restringe quién puede incrustar la web en un iframe. Si cambias la regla, no
-hay nada en el repo que lo refleje; actualiza esta tabla. Para comprobarla:
+restringe quién puede incrustar la web en un iframe. `Referrer-Policy`,
+`Permissions-Policy` y `X-Frame-Options` coinciden con las del Worker; la regla
+se aplica después y, al ser *Establecer*, gana si alguna vez difieren. **Si el
+Worker llegara a enviar su propia `Content-Security-Policy` en cabecera, esta
+regla la sustituiría**: habría que añadir `frame-ancestors` a la del Worker y
+quitarla de aquí. Si cambias la regla, no hay nada en el repo que lo refleje;
+actualiza esta tabla. Para comprobarla:
 
 ```bash
 curl -sI https://alamia.es/ | grep -iE 'content-security|referrer|permissions|x-frame'
@@ -145,10 +175,22 @@ conoce:
   inline cuyo contenido cambia en cada petición, así que no admite hash. La CSP
   lo bloquea. Solo alimenta la detección de bots de Cloudflare y no afecta a
   los visitantes. **En el plan Free no se puede desactivar**: sigue inyectándose
-  aunque se apague Bot Fight Mode (comprobado el 2026-09-16), y la única
-  solución que da Cloudflare es un `nonce` en cabecera HTTP, que GitHub Pages no
-  permite. Se acepta el error en consola; no relajar la CSP con
-  `'unsafe-inline'` por esto. Bot Fight Mode se deja activado.
+  aunque se apague Bot Fight Mode (comprobado el 2026-09-16). La solución de
+  Cloudflare es un `nonce` en una CSP enviada como **cabecera** HTTP: Cloudflare
+  lo copia a su script. Con GitHub Pages era imposible; con el Worker ya se
+  puede (mover la CSP del `<meta>` a cabecera con nonce por petición y
+  ajustar la Transform Rule, ver arriba). Mientras tanto se acepta el error en
+  consola; no relajar la CSP con `'unsafe-inline'` por esto.
+
+### Bot Fight Mode
+
+Está **activado** en la zona. En el plan Free desafía (403 con
+`cf-mitigated: challenge`) a peticiones desde IPs de centros de datos, como
+los runners de GitHub Actions, y no admite excepciones con reglas WAF. Por eso
+`scripts/smoke.mjs` trata el desafío como aviso y prueba otra página. No afecta
+a los visitantes, y el webhook de Stripe sí llega: comprobado el 2026-09-19 con
+un pago de prueba en staging (misma zona). Si algún día fallaran las entregas
+del webhook con 403, este sería el primer sospechoso.
 
 ## Cookies y analítica
 

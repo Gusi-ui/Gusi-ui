@@ -79,5 +79,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
+      # Las rutas nuevas tardan unos segundos en propagarse por la red de
+      # Cloudflare: se reintenta hasta 4 veces antes de dar el fallo por bueno.
       - name: Pruebas de humo contra ${{ env.SITE_URL }}
-        run: node scripts/smoke.mjs "$SITE_URL"
+        run: |
+          for intento in 1 2 3 4; do
+            node scripts/smoke.mjs "$SITE_URL" && exit 0
+            echo "Intento $intento fallido; se reintenta en 30 s"
+            sleep 30
+          done
+          exit 1
