@@ -10,12 +10,12 @@ compatibility_date = "2024-12-29"
 # Con el wrangler global (el valor se escribe en la terminal, nunca por chat):
 # wrangler secret put SMTP_PASS --config worker/wrangler.toml [--env staging]
 
-# Producción (rama main). El DNS de alamia.es no cambia: estas rutas tienen
-# prioridad sobre el origen (GitHub Pages). Para volver atrás, dejar solo
-# { pattern = "*alamia.es/api/*", zone_name = "alamia.es" }.
+# Producción (rama main). GitHub Pages ya está retirado (registros DNS
+# antiguos borrados). Custom domain: Cloudflare crea y gestiona él solo el
+# registro DNS al desplegar, igual que en [env.staging] con dev.alamia.es.
 routes = [
-  { pattern = "alamia.es/*", zone_name = "alamia.es" },
-  { pattern = "www.alamia.es/*", zone_name = "alamia.es" }
+  { pattern = "alamia.es", custom_domain = true },
+  { pattern = "www.alamia.es", custom_domain = true }
 ]
 
 kv_namespaces = [
